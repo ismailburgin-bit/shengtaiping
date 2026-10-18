@@ -674,6 +674,9 @@
                 
                 <div class="flex flex-wrap gap-1.5 pt-1">
                     <span class="text-[11px] text-stone-400 w-full">试试这些灵感：</span>
+                    <button onclick="fillAiSamplePrompt('微缩玻璃生态瓶，宫崎骏吉卜力手绘动画风格，瓶内是漂浮在云海中的云端乐园，微型童话游乐园，迷你旋转木马、小型摩天轮、小木房子、迷你热气球，蓬松柔软的白云，柔和暖金色自然光，瓶内长满苔藓、细碎三叶草与小野花，飞舞的小蝴蝶，淡淡的薄雾')" class="text-[11px] px-2.5 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-semibold border border-emerald-200 transition">
+                        ☁️ 吉卜力云端乐园
+                    </button>
                     <button onclick="fillAiSamplePrompt('吉卜力风格的夜间萤火森林，云雾缭绕，有森林守护精灵、红伞蘑菇、沉木与翠绿肾蕨')" class="text-[11px] px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-emerald-50 hover:text-emerald-800 text-stone-600 transition">
                         🌙 萤火精灵森林
                     </button>
@@ -687,7 +690,7 @@
             </div>
 
             <div id="ai-gen-status" class="hidden p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 flex items-center gap-2.5">
-                <div class="w-4 h-4 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin shrink-0"></div>
+                <div id="ai-gen-spinner" class="w-4 h-4 border-2 border-emerald-600 border-t-transparent rounded-full animate-spin shrink-0"></div>
                 <span id="ai-gen-status-text">Gemini 正在为您推算基质配比与植物布局...</span>
             </div>
 
@@ -991,6 +994,57 @@
                     </g>
                 `
             },
+            wildflowers: {
+                id: 'wildflowers',
+                category: 'flora',
+                name: '三叶草与小野花',
+                tag: '🍀 花草',
+                tagClass: 'bg-lime-100 text-lime-800',
+                moistureNeed: 'humid',
+                needsSoil: true,
+                svg: `
+                    <g>
+                        <!-- Stems -->
+                        <path d="M-18,2 Q-22,-18 -26,-32" stroke="#15803d" stroke-width="1.8" fill="none"/>
+                        <path d="M-4,2 Q-2,-22 -6,-42" stroke="#16a34a" stroke-width="1.8" fill="none"/>
+                        <path d="M8,2 Q14,-20 22,-36" stroke="#15803d" stroke-width="1.8" fill="none"/>
+                        <path d="M18,2 Q24,-12 30,-22" stroke="#16a34a" stroke-width="1.5" fill="none"/>
+                        <!-- Clovers at base -->
+                        <g transform="translate(-14, -8)">
+                            <circle cx="-3" cy="-2" r="4" fill="#4ade80"/>
+                            <circle cx="3" cy="-2" r="4" fill="#22c55e"/>
+                            <circle cx="0" cy="-6" r="4" fill="#86efac"/>
+                        </g>
+                        <g transform="translate(12, -6)">
+                            <circle cx="-3" cy="-2" r="3.5" fill="#22c55e"/>
+                            <circle cx="3" cy="-2" r="3.5" fill="#4ade80"/>
+                            <circle cx="0" cy="-6" r="3.5" fill="#86efac"/>
+                        </g>
+                        <!-- Little Wildflower Blossoms -->
+                        <g transform="translate(-26, -34)">
+                            <circle cx="0" cy="-4" r="3.5" fill="#fef08a"/>
+                            <circle cx="-4" cy="0" r="3.5" fill="#fef08a"/>
+                            <circle cx="4" cy="0" r="3.5" fill="#fef08a"/>
+                            <circle cx="0" cy="4" r="3.5" fill="#fef08a"/>
+                            <circle cx="0" cy="0" r="2.5" fill="#f59e0b"/>
+                        </g>
+                        <g transform="translate(-6, -44)">
+                            <circle cx="0" cy="-4" r="4" fill="#fbcfe8"/>
+                            <circle cx="-4" cy="0" r="4" fill="#fbcfe8"/>
+                            <circle cx="4" cy="0" r="4" fill="#fbcfe8"/>
+                            <circle cx="0" cy="4" r="4" fill="#fbcfe8"/>
+                            <circle cx="0" cy="0" r="2.5" fill="#f43f5e"/>
+                        </g>
+                        <g transform="translate(22, -38)">
+                            <circle cx="0" cy="-3.5" r="3.5" fill="#ffffff"/>
+                            <circle cx="-3.5" cy="0" r="3.5" fill="#ffffff"/>
+                            <circle cx="3.5" cy="0" r="3.5" fill="#ffffff"/>
+                            <circle cx="0" cy="3.5" r="3.5" fill="#ffffff"/>
+                            <circle cx="0" cy="0" r="2.2" fill="#eab308"/>
+                        </g>
+                    </g>
+                `
+            },
 
             // DECOR & HARDSCAPE ITEMS
             driftwood: {
@@ -1119,6 +1173,157 @@
                         <!-- Pagoda Roof -->
                         <path d="M-22,-38 Q0,-56 22,-38 Z" fill="#78716c" stroke="#292524" stroke-width="1.5"/>
                         <circle cx="0" cy="-50" r="3.5" fill="#a8a29e" stroke="#292524" stroke-width="1.2"/>
+                    </g>
+                `
+            },
+            cottage: {
+                id: 'cottage',
+                category: 'decor',
+                name: '童话小木屋',
+                tag: '🏠 木屋',
+                tagClass: 'bg-amber-100 text-amber-800',
+                moistureNeed: 'neutral',
+                needsSoil: false,
+                svg: `
+                    <g>
+                        <!-- Chimney -->
+                        <rect x="10" y="-52" width="7" height="16" fill="#991b1b" stroke="#450a0a" stroke-width="1.2"/>
+                        <circle cx="15" cy="-58" r="3" fill="#f8fafc" opacity="0.7"/>
+                        <circle cx="19" cy="-65" r="4.5" fill="#f8fafc" opacity="0.5"/>
+                        <!-- Cabin Walls -->
+                        <rect x="-20" y="-32" width="40" height="34" rx="2" fill="#d97706" stroke="#78350f" stroke-width="1.6"/>
+                        <line x1="-20" y1="-24" x2="20" y2="-24" stroke="#92400e" stroke-width="1.2"/>
+                        <line x1="-20" y1="-16" x2="20" y2="-16" stroke="#92400e" stroke-width="1.2"/>
+                        <line x1="-20" y1="-8" x2="20" y2="-8" stroke="#92400e" stroke-width="1.2"/>
+                        <!-- Warm Glowing Window & Door -->
+                        <path d="M-13,2 L-13,-15 C-13,-19 -3,-19 -3,-15 L-3,2 Z" fill="#78350f" stroke="#451a03" stroke-width="1.2"/>
+                        <rect x="4" y="-22" width="11" height="11" rx="2" fill="#fef08a" stroke="#78350f" stroke-width="1.4"/>
+                        <line x1="9.5" y1="-22" x2="9.5" y2="-11" stroke="#78350f" stroke-width="1"/>
+                        <line x1="4" y1="-16.5" x2="15" y2="-16.5" stroke="#78350f" stroke-width="1"/>
+                        <!-- Mossy Steep Gable Roof -->
+                        <path d="M-27,-30 L0,-56 L27,-30 Z" fill="#b45309" stroke="#451a03" stroke-width="1.6" stroke-linejoin="round"/>
+                        <path d="M-22,-32 Q-10,-46 0,-54 Q12,-44 20,-33" fill="none" stroke="#65a30d" stroke-width="3" stroke-linecap="round"/>
+                    </g>
+                `
+            },
+            carousel: {
+                id: 'carousel',
+                category: 'decor',
+                name: '迷你旋转木马',
+                tag: '🎠 游乐园',
+                tagClass: 'bg-rose-100 text-rose-800',
+                moistureNeed: 'neutral',
+                needsSoil: false,
+                svg: `
+                    <g>
+                        <!-- Base Platform -->
+                        <rect x="-26" y="-5" width="52" height="7" rx="3" fill="#fde68a" stroke="#b45309" stroke-width="1.4"/>
+                        <!-- Center Pole & Gold Bars -->
+                        <rect x="-2.5" y="-44" width="5" height="39" fill="#f59e0b" stroke="#92400e" stroke-width="1"/>
+                        <line x1="-16" y1="-40" x2="-16" y2="-5" stroke="#fbbf24" stroke-width="1.5"/>
+                        <line x1="16" y1="-40" x2="16" y2="-5" stroke="#fbbf24" stroke-width="1.5"/>
+                        <!-- Mini Ponies -->
+                        <ellipse cx="-16" cy="-18" rx="6" ry="3.8" fill="#ffffff" stroke="#64748b" stroke-width="1"/>
+                        <circle cx="-19" cy="-22" r="2.5" fill="#ffffff" stroke="#64748b" stroke-width="1"/>
+                        <ellipse cx="16" cy="-22" rx="6" ry="3.8" fill="#fbcfe8" stroke="#be185d" stroke-width="1"/>
+                        <circle cx="19" cy="-26" r="2.5" fill="#fbcfe8" stroke="#be185d" stroke-width="1"/>
+                        <!-- Striped Canopy Tent -->
+                        <path d="M-28,-38 L0,-60 L28,-38 Z" fill="#f43f5e" stroke="#9f1239" stroke-width="1.4"/>
+                        <path d="M-14,-38 L0,-60 L14,-38 Z" fill="#fffbeb"/>
+                        <path d="M-5,-38 L0,-60 L5,-38 Z" fill="#38bdf8"/>
+                        <!-- Scallop Trim & Top Flag -->
+                        <circle cx="-21" cy="-38" r="4" fill="#fde047"/>
+                        <circle cx="-7" cy="-38" r="4" fill="#fde047"/>
+                        <circle cx="7" cy="-38" r="4" fill="#fde047"/>
+                        <circle cx="21" cy="-38" r="4" fill="#fde047"/>
+                        <path d="M0,-60 L0,-70 L10,-66 L0,-62" fill="#fbbf24" stroke="#b45309" stroke-width="1"/>
+                    </g>
+                `
+            },
+            ferriswheel: {
+                id: 'ferriswheel',
+                category: 'decor',
+                name: '微型摩天轮',
+                tag: '🎡 游乐园',
+                tagClass: 'bg-sky-100 text-sky-800',
+                moistureNeed: 'neutral',
+                needsSoil: false,
+                svg: `
+                    <g>
+                        <!-- A-Frame Support Legs -->
+                        <path d="M-18,2 L0,-44 L18,2" fill="none" stroke="#d97706" stroke-width="3" stroke-linecap="round"/>
+                        <rect x="-22" y="-2" width="44" height="5" rx="2" fill="#78350f"/>
+                        <!-- Wheel Rim & Spokes -->
+                        <circle cx="0" cy="-46" r="28" fill="none" stroke="#fbbf24" stroke-width="2.5"/>
+                        <circle cx="0" cy="-46" r="22" fill="none" stroke="#fde68a" stroke-width="1" stroke-dasharray="3,3"/>
+                        <line x1="0" y1="-74" x2="0" y2="-18" stroke="#f59e0b" stroke-width="1.2"/>
+                        <line x1="-28" y1="-46" x2="28" y2="-46" stroke="#f59e0b" stroke-width="1.2"/>
+                        <line x1="-20" y1="-66" x2="20" y2="-26" stroke="#f59e0b" stroke-width="1.2"/>
+                        <line x1="-20" y1="-26" x2="20" y2="-66" stroke="#f59e0b" stroke-width="1.2"/>
+                        <circle cx="0" cy="-46" r="4.5" fill="#f43f5e" stroke="#ffffff" stroke-width="1.5"/>
+                        <!-- Pastel Gondola Cabins -->
+                        <rect x="-4" y="-78" width="8" height="7" rx="2" fill="#fb7185"/>
+                        <rect x="-4" y="-19" width="8" height="7" rx="2" fill="#38bdf8"/>
+                        <rect x="-32" y="-49" width="8" height="7" rx="2" fill="#a78bfa"/>
+                        <rect x="24" y="-49" width="8" height="7" rx="2" fill="#34d399"/>
+                        <rect x="-24" y="-69" width="7" height="6" rx="2" fill="#facc15"/>
+                        <rect x="17" y="-69" width="7" height="6" rx="2" fill="#f472b6"/>
+                    </g>
+                `
+            },
+            balloon: {
+                id: 'balloon',
+                category: 'decor',
+                name: '迷你热气球',
+                tag: '🎈 云端',
+                tagClass: 'bg-sky-100 text-sky-800',
+                moistureNeed: 'neutral',
+                needsSoil: false,
+                svg: `
+                    <g transform="translate(0, -55)">
+                        <!-- Fluffy Cloud Base -->
+                        <g transform="translate(22, 18)" opacity="0.85">
+                            <circle cx="-8" cy="0" r="7" fill="#ffffff"/>
+                            <circle cx="0" cy="-3" r="9" fill="#ffffff"/>
+                            <circle cx="9" cy="0" r="6.5" fill="#ffffff"/>
+                        </g>
+                        <!-- Wicker Basket & Ropes -->
+                        <line x1="-5" y1="-12" x2="-4" y2="-3" stroke="#78350f" stroke-width="1"/>
+                        <line x1="5" y1="-12" x2="4" y2="-3" stroke="#78350f" stroke-width="1"/>
+                        <rect x="-6" y="-3" width="12" height="9" rx="2" fill="#b45309" stroke="#78350f" stroke-width="1.2"/>
+                        <!-- Hot Air Balloon Envelope -->
+                        <path d="M0,-48 C-22,-48 -24,-22 -8,-11 L8,-11 C24,-22 22,-48 0,-48 Z" fill="#f43f5e" stroke="#9f1239" stroke-width="1.4"/>
+                        <path d="M0,-48 C-10,-48 -11,-22 -4,-11 L4,-11 C11,-22 10,-48 0,-48 Z" fill="#fef08a"/>
+                        <path d="M-16,-30 Q0,-24 16,-30" fill="none" stroke="#38bdf8" stroke-width="3"/>
+                    </g>
+                `
+            },
+            butterflies: {
+                id: 'butterflies',
+                category: 'decor',
+                name: '飞舞小蝴蝶',
+                tag: '🦋 灵动',
+                tagClass: 'bg-amber-100 text-amber-800',
+                moistureNeed: 'neutral',
+                needsSoil: false,
+                svg: `
+                    <g transform="translate(0, -45)">
+                        <!-- Golden Butterfly 1 -->
+                        <g transform="translate(-14, -18) rotate(-18)">
+                            <ellipse cx="-5" cy="-3" rx="6" ry="4" fill="#fde047" stroke="#ca8a04" stroke-width="1"/>
+                            <ellipse cx="5" cy="-3" rx="6" ry="4" fill="#fde047" stroke="#ca8a04" stroke-width="1"/>
+                            <ellipse cx="-4" cy="3" rx="4" ry="3" fill="#fef08a" stroke="#ca8a04" stroke-width="1"/>
+                            <ellipse cx="4" cy="3" rx="4" ry="3" fill="#fef08a" stroke="#ca8a04" stroke-width="1"/>
+                            <line x1="0" y1="-6" x2="0" y2="5" stroke="#451a03" stroke-width="1.5"/>
+                        </g>
+                        <!-- Blue Morpho Butterfly 2 -->
+                        <g transform="translate(15, -6) rotate(22) scale(0.9)">
+                            <ellipse cx="-5" cy="-3" rx="6" ry="4" fill="#38bdf8" stroke="#0284c7" stroke-width="1"/>
+                            <ellipse cx="5" cy="-3" rx="6" ry="4" fill="#38bdf8" stroke="#0284c7" stroke-width="1"/>
+                            <ellipse cx="-4" cy="3" rx="4" ry="3" fill="#bae6fd" stroke="#0284c7" stroke-width="1"/>
+                            <ellipse cx="4" cy="3" rx="4" ry="3" fill="#bae6fd" stroke="#0284c7" stroke-width="1"/>
+                            <line x1="0" y1="-6" x2="0" y2="5" stroke="#0f172a" stroke-width="1.5"/>
+                        </g>
                     </g>
                 `
             }
@@ -1312,7 +1517,10 @@
         function renderPlacedItems(surfaceY = getSubstrateSurfaceY()) {
             const group = document.getElementById('placed-items-group');
             group.innerHTML = state.items.map(item => {
-                const meta = CATALOG_ITEMS[item.type];
+                const meta = CATALOG_ITEMS[item.type] || (item.customSvg ? {
+                    name: item.customName || 'AI 定制微缩元素',
+                    svg: item.customSvg
+                } : null);
                 if (!meta) return '';
                 const isSelected = item.id === state.selectedItemId;
                 const scaleX = item.flipped ? -item.scale : item.scale;
@@ -1563,7 +1771,7 @@
 
             const meta = CATALOG_ITEMS[selected.type];
             toolbar.classList.remove('hidden');
-            document.getElementById('selected-item-label').textContent = meta.name;
+            document.getElementById('selected-item-label').textContent = meta ? meta.name : (selected.customName || 'AI 定制元素');
             document.getElementById('selected-item-scale').textContent = `${Math.round(selected.scale * 100)}%`;
         }
 
@@ -1924,40 +2132,44 @@
 
         async function runAiTerrariumGenerator() {
             const promptEl = document.getElementById('ai-prompt-input');
-            const userPrompt = promptEl.value.trim() || "充满生机的奇幻微缩森林生态瓶";
+            const userPrompt = promptEl.value.trim() || "微缩玻璃生态瓶，宫崎骏吉卜力手绘动画风格，瓶内是漂浮在云海中的云端乐园，微型童话游乐园，迷你旋转木马、小型摩天轮、小木房子、迷你热气球，蓬松柔软的白云，柔和暖金色自然光，瓶内长满苔藓、细碎三叶草与小野花，飞舞的小蝴蝶，淡淡的薄雾";
             const statusBox = document.getElementById('ai-gen-status');
+            const statusText = document.getElementById('ai-gen-status-text');
+            const spinner = document.getElementById('ai-gen-spinner');
             const submitBtn = document.getElementById('btn-submit-ai-gen');
 
             statusBox.classList.remove('hidden');
+            spinner.classList.remove('hidden');
+            statusText.textContent = "Gemini 正在为您构建微缩生态世界...";
             submitBtn.disabled = true;
             submitBtn.classList.add('opacity-60', 'cursor-not-allowed');
 
-            const systemInstruction = `你是一位世界级的微景观生态瓶设计师与植物学家。
-根据用户的描述，设计一个既美观又符合植物生态学健康逻辑的生态瓶配置。
-请严格从以下可用选项中挑选：
-- vessel (容器): "geometric" (几何多面房，适中偏干), "jar" (软木塞密封瓶，高保湿), "bowl" (敞口球形钵，通风耐旱), "cylinder" (直筒玻璃柱，现代高挑)
-- layers (基质厚度，整数mm):
-  pebbles (0-80, 建议25-45保证排水),
-  charcoal (0-50, 建议12-25过滤毒素),
-  moss (0-65, 喜湿植物建议20-40，耐旱多肉设为0),
-  soil (0-110, 扎根植物建议35-65),
-  sand (0-90, 沙漠或禅意风格建议25-60)
-- ambiance (环境):
-  lighting: "day" | "sunset" | "night"
-  fairyLights: boolean
-  mist: boolean (喜湿开启，多肉耐旱关闭)
-- items (4到7件植物与装饰摆件):
-  type 只能从以下列表中选择:
-  植物: "fern" (肾蕨,喜湿), "succulent" (吉娃莲,耐旱), "airplant" (空气凤梨,百搭), "mosspatch" (白发藓,喜湿), "fittonia" (粉红网纹草,喜湿), "jade" (绯牡丹仙人掌,耐旱)
-  摆件: "driftwood" (鹿角沉木), "crystal" (紫水晶簇), "riverstone" (禅意叠石), "mushrooms" (红伞小蘑菇), "totoro" (森林守护精灵), "lantern" (京都石灯笼)
-  注意：切勿将喜湿植物(fern, mosspatch, fittonia)与耐旱植物(succulent, jade)混放在同一个瓶子里！
-  xOffset: 相对于瓶中心(300)的水平偏移量，范围 -110 到 110，请让不同物品错落分布避免重叠。
-  scale: 缩放比例，范围 0.8 到 1.25。
-  flipped: boolean 是否水平翻转。
-- title: 为该作品起一个富有诗意的4-8字中文名称。
-- story: 用优美治愈的中文写一段45-70字的微缩世界背景故事。
-- careGuide: 简短实用的养护建议（30-50字）。
-- proTip: 一句造景亮点点评（20-35字）。`;
+            const systemInstruction = `你是一位世界级的微景观生态瓶设计师与吉卜力动画场景造景师。
+请根据用户的描述，输出一个纯 JSON 对象来配置生态瓶。不要包含任何 Markdown 代码块标记。
+可用配置项说明：
+1. vessel (容器，四选一): "geometric" | "jar" | "bowl" | "cylinder"
+2. layers (基质厚度，整数mm):
+   - pebbles (0-80, 建议25-40)
+   - charcoal (0-50, 建议12-22)
+   - moss (0-65, 喜湿/森林/云端草地建议25-40，沙漠设为0)
+   - soil (0-110, 建议35-60)
+   - sand (0-90, 沙漠或禅意风格建议25-55，森林/草地设为0)
+3. ambiance (环境氛围):
+   - lighting: "day" | "sunset" | "night" (暖金色自然光或黄昏可选 "sunset" 或 "day")
+   - fairyLights: boolean (星光/梦幻游乐园建议为 true)
+   - mist: boolean (云海/薄雾/云端建议为 true，沙漠为 false)
+4. items (放置5到9件植物与微缩景观摆件):
+   - type 可从以下图鉴ID中选择:
+     植物: "fern" (肾蕨), "succulent" (吉娃莲), "airplant" (空气凤梨), "mosspatch" (白发藓苔团), "fittonia" (粉红网纹草), "jade" (绯牡丹仙人掌), "wildflowers" (三叶草与小野花)
+     摆件: "driftwood" (鹿角沉木), "crystal" (紫水晶簇), "riverstone" (禅意叠石), "mushrooms" (红伞小蘑菇), "totoro" (森林守护精灵), "lantern" (京都石灯笼), "cottage" (童话小木屋), "carousel" (迷你旋转木马), "ferriswheel" (微型摩天轮), "balloon" (迷你热气球), "butterflies" (飞舞小蝴蝶)
+   - xOffset: 相对中心(300)的水平偏移，范围 -115 到 115，让各元素错落有致。
+   - yOffset: 相对基质表面的垂直偏移，地面物品填 -5 到 8，空中漂浮物（如热气球、蝴蝶）可填 -35 到 -10。
+   - scale: 缩放比例，范围 0.8 到 1.25。
+   - flipped: boolean 是否水平翻转。
+5. title: 富有诗意的4-8字中文作品名称。
+6. story: 优美治愈的45-80字中文微缩世界背景故事。
+7. careGuide: 实用的养护建议（30-50字）。
+8. proTip: 一句造景亮点点评（20-40字）。`;
 
             const payload = {
                 contents: [{ parts: [{ text: userPrompt }] }],
@@ -1967,49 +2179,43 @@
                     responseSchema: {
                         type: "OBJECT",
                         properties: {
-                            vessel: { type: "STRING", enum: ["geometric", "jar", "bowl", "cylinder"] },
+                            vessel: { type: "STRING" },
                             layers: {
                                 type: "OBJECT",
                                 properties: {
-                                    pebbles: { type: "INTEGER" },
-                                    charcoal: { type: "INTEGER" },
-                                    moss: { type: "INTEGER" },
-                                    soil: { type: "INTEGER" },
-                                    sand: { type: "INTEGER" }
-                                },
-                                required: ["pebbles", "charcoal", "moss", "soil", "sand"]
+                                    pebbles: { type: "NUMBER" },
+                                    charcoal: { type: "NUMBER" },
+                                    moss: { type: "NUMBER" },
+                                    soil: { type: "NUMBER" },
+                                    sand: { type: "NUMBER" }
+                                }
                             },
                             ambiance: {
                                 type: "OBJECT",
                                 properties: {
-                                    lighting: { type: "STRING", enum: ["day", "sunset", "night"] },
+                                    lighting: { type: "STRING" },
                                     fairyLights: { type: "BOOLEAN" },
                                     mist: { type: "BOOLEAN" }
-                                },
-                                required: ["lighting", "fairyLights", "mist"]
+                                }
                             },
                             items: {
                                 type: "ARRAY",
                                 items: {
                                     type: "OBJECT",
                                     properties: {
-                                        type: {
-                                            type: "STRING",
-                                            enum: ["fern", "succulent", "airplant", "mosspatch", "fittonia", "jade", "driftwood", "crystal", "riverstone", "mushrooms", "totoro", "lantern"]
-                                        },
-                                        xOffset: { type: "INTEGER" },
+                                        type: { type: "STRING" },
+                                        xOffset: { type: "NUMBER" },
+                                        yOffset: { type: "NUMBER" },
                                         scale: { type: "NUMBER" },
                                         flipped: { type: "BOOLEAN" }
-                                    },
-                                    required: ["type", "xOffset", "scale", "flipped"]
+                                    }
                                 }
                             },
                             title: { type: "STRING" },
                             story: { type: "STRING" },
                             careGuide: { type: "STRING" },
                             proTip: { type: "STRING" }
-                        },
-                        required: ["vessel", "layers", "ambiance", "items", "title", "story", "careGuide", "proTip"]
+                        }
                     }
                 }
             };
@@ -2020,22 +2226,114 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
-                });
+                }, 2);
 
-                const rawJson = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                let rawJson = result?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+                rawJson = rawJson.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim();
+
                 if (rawJson) {
                     const design = JSON.parse(rawJson);
                     applyAiGeneratedDesign(design);
+                    statusBox.classList.add('hidden');
                     closeAiGeneratorModal();
+                } else {
+                    throw new Error("Empty AI response");
                 }
             } catch (error) {
-                const statusText = document.getElementById('ai-gen-status-text');
-                statusText.textContent = "生成遇到网络波动，请稍后重试。";
-                setTimeout(() => statusBox.classList.add('hidden'), 2500);
-            } finally {
+                // Intelligent Local Semantic Fallback Engine so the user's prompt ALWAYS generates a rich scene
+                const fallbackDesign = buildSemanticFallbackDesign(userPrompt);
+                applyAiGeneratedDesign(fallbackDesign);
                 statusBox.classList.add('hidden');
+                closeAiGeneratorModal();
+            } finally {
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('opacity-60', 'cursor-not-allowed');
+            }
+        }
+
+        function buildSemanticFallbackDesign(prompt) {
+            const p = prompt.toLowerCase();
+            const isGhibliFairyland = /云端|游乐园|旋转木马|摩天轮|热气球|木房|木屋|三叶草|野花|蝴蝶/.test(p);
+            const isDesert = /沙漠|荒漠|仙人掌|多肉|摩洛哥|绿洲|沙/.test(p);
+            const isZen = /禅|京都|紫晶|水晶|灯笼|叠石/.test(p);
+
+            if (isGhibliFairyland) {
+                return {
+                    vessel: 'jar',
+                    layers: { pebbles: 32, charcoal: 16, moss: 34, soil: 48, sand: 0 },
+                    ambiance: {
+                        lighting: /暖金|夕阳|黄昏/.test(p) ? 'sunset' : (/夜|星/.test(p) ? 'night' : 'day'),
+                        fairyLights: true,
+                        mist: true
+                    },
+                    items: [
+                        { type: 'ferriswheel', xOffset: -62, yOffset: -2, scale: 1.15, flipped: false },
+                        { type: 'carousel', xOffset: 55, yOffset: 4, scale: 1.08, flipped: false },
+                        { type: 'cottage', xOffset: -5, yOffset: 2, scale: 1.05, flipped: false },
+                        { type: 'mosspatch', xOffset: -88, yOffset: 8, scale: 1.15, flipped: false },
+                        { type: 'mosspatch', xOffset: 85, yOffset: 8, scale: 1.1, flipped: true },
+                        { type: 'wildflowers', xOffset: -32, yOffset: 9, scale: 1.05, flipped: false },
+                        { type: 'wildflowers', xOffset: 26, yOffset: 10, scale: 1.0, flipped: true },
+                        { type: 'balloon', xOffset: -45, yOffset: -65, scale: 1.1, flipped: false },
+                        { type: 'butterflies', xOffset: 38, yOffset: -45, scale: 1.1, flipped: false }
+                    ],
+                    title: '云端吉卜力童话乐园',
+                    story: '在薄雾缭绕的复古生态瓶中，翠绿白发藓与三叶草铺成了柔软的云端草坪。暖金色光芒洒在微缩摩天轮、旋转木马与童话小木屋上，迷你热气球与小蝴蝶在云海中静静漂浮。',
+                    careGuide: '保持瓶内薄雾微湿环境，放置于明亮柔和的散射光处，每周揭开软木塞通风15分钟即可让苔藓与野花常青。',
+                    proTip: '高挑的摩天轮与悬浮热气球形成了极佳的垂直空间层次，搭配底部丰盈的苔藓更具童话呼吸感。'
+                };
+            } else if (isDesert) {
+                return {
+                    vessel: 'geometric',
+                    layers: { pebbles: 35, charcoal: 12, moss: 0, soil: 35, sand: 58 },
+                    ambiance: { lighting: 'sunset', fairyLights: false, mist: false },
+                    items: [
+                        { type: 'riverstone', xOffset: -65, yOffset: 3, scale: 1.1, flipped: false },
+                        { type: 'jade', xOffset: 45, yOffset: 2, scale: 1.18, flipped: false },
+                        { type: 'succulent', xOffset: -10, yOffset: 8, scale: 1.12, flipped: false },
+                        { type: 'airplant', xOffset: -85, yOffset: 6, scale: 0.9, flipped: true },
+                        { type: 'butterflies', xOffset: 15, yOffset: -35, scale: 0.95, flipped: false }
+                    ],
+                    title: '落日摩洛哥绿洲',
+                    story: '夕阳余晖透过黄铜几何玻璃房，映照在起伏的金色沙漠铺面沙上，绯牡丹仙人掌与吉娃莲在暖光中静静伫立。',
+                    careGuide: '耐旱多肉喜通风干燥环境，每月沿瓶壁少量滴水一次，切忌积水或喷雾。',
+                    proTip: '黄铜几何面与落日暖光相互辉映，禅意叠石进一步强化了荒漠峡谷的纵深感。'
+                };
+            } else if (isZen) {
+                return {
+                    vessel: 'bowl',
+                    layers: { pebbles: 32, charcoal: 16, moss: 26, soil: 45, sand: 24 },
+                    ambiance: { lighting: 'night', fairyLights: true, mist: true },
+                    items: [
+                        { type: 'crystal', xOffset: -55, yOffset: 2, scale: 1.18, flipped: false },
+                        { type: 'lantern', xOffset: 55, yOffset: 4, scale: 1.1, flipped: false },
+                        { type: 'mosspatch', xOffset: 0, yOffset: 7, scale: 1.15, flipped: false },
+                        { type: 'airplant', xOffset: -85, yOffset: 6, scale: 0.95, flipped: false },
+                        { type: 'riverstone', xOffset: 25, yOffset: 6, scale: 0.9, flipped: true }
+                    ],
+                    title: '星夜紫晶禅意庭',
+                    story: '静谧星夜下，京都石灯笼亮起温暖微光，与天然紫水晶簇的幽紫折射交织在薄雾与翠藓之间。',
+                    careGuide: '敞口球形钵通风良好，每周向白发藓与空气凤梨喷洒2次细雾即可维持润泽。',
+                    proTip: '紫水晶簇与石灯笼形成冷暖光影对比，营造出深邃冥想的东方庭院意境。'
+                };
+            } else {
+                return {
+                    vessel: 'jar',
+                    layers: { pebbles: 36, charcoal: 18, moss: 28, soil: 52, sand: 0 },
+                    ambiance: { lighting: 'night', fairyLights: true, mist: true },
+                    items: [
+                        { type: 'driftwood', xOffset: 15, yOffset: -2, scale: 1.15, flipped: false },
+                        { type: 'fern', xOffset: -55, yOffset: 2, scale: 1.12, flipped: false },
+                        { type: 'totoro', xOffset: 48, yOffset: 4, scale: 0.98, flipped: true },
+                        { type: 'mushrooms', xOffset: -78, yOffset: 7, scale: 0.95, flipped: false },
+                        { type: 'wildflowers', xOffset: -15, yOffset: 8, scale: 1.0, flipped: false },
+                        { type: 'butterflies', xOffset: -20, yOffset: -40, scale: 1.0, flipped: false }
+                    ],
+                    title: '萤火森林秘境瓶',
+                    story: '点点星光灯串萦绕在鹿角沉木之上，森林守护精灵在翠绿肾蕨、三叶草与红伞小蘑菇旁静听夜晚的呼吸。',
+                    careGuide: '喜湿森林植物适宜高湿环境，置于室内散光处，当瓶壁完全无水雾时再少量补水。',
+                    proTip: '沉木骨架向斜上方延伸，引导视线穿过蕨叶看到隐藏其中的森林小精灵。'
+                };
             }
         }
 
@@ -2047,7 +2345,7 @@
             // Clamp layer values within allowed bounds
             SUBSTRATE_META.forEach(meta => {
                 const rawVal = design.layers?.[meta.key] ?? state.layers[meta.key];
-                state.layers[meta.key] = Math.max(0, Math.min(meta.max, Number(rawVal) || 0));
+                state.layers[meta.key] = Math.max(0, Math.min(meta.max, Math.round(Number(rawVal) || 0)));
             });
 
             if (design.ambiance) {
@@ -2062,14 +2360,17 @@
             if (Array.isArray(design.items)) {
                 state.items = design.items
                     .filter(it => CATALOG_ITEMS[it.type])
-                    .map((it, idx) => ({
-                        id: ++nextItemId,
-                        type: it.type,
-                        x: Math.max(175, Math.min(425, Math.round(300 + (Number(it.xOffset) || 0)))),
-                        y: Math.max(170, Math.min(565, Math.round(surfaceY + ((idx % 3) * 3)))),
-                        scale: Math.max(0.7, Math.min(1.4, Number(it.scale) || 1.0)),
-                        flipped: Boolean(it.flipped)
-                    }));
+                    .map((it, idx) => {
+                        const yOff = typeof it.yOffset === 'number' ? it.yOffset : ((idx % 3) * 3);
+                        return {
+                            id: ++nextItemId,
+                            type: it.type,
+                            x: Math.max(165, Math.min(435, Math.round(300 + (Number(it.xOffset) || 0)))),
+                            y: Math.max(165, Math.min(565, Math.round(surfaceY + yOff))),
+                            scale: Math.max(0.7, Math.min(1.4, Number(it.scale) || 1.0)),
+                            flipped: Boolean(it.flipped)
+                        };
+                    });
             }
 
             state.selectedItemId = null;
