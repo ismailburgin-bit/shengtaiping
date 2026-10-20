@@ -2,8 +2,8 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>植境工坊 Botanica Studio — 大师级互动微景观与自定义主题设计室</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>植境工坊 Botanica Studio — 电脑与手机两全其美的微景观工作室</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -19,6 +19,7 @@
             user-select: none;
             -webkit-user-select: none;
             overflow-x: hidden;
+            touch-action: manipulation;
         }
 
         h1, h2, h3, .serif-title {
@@ -26,8 +27,8 @@
         }
 
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 4px;
+            height: 4px;
         }
         ::-webkit-scrollbar-track {
             background: rgba(0, 0, 0, 0.04);
@@ -36,9 +37,6 @@
         ::-webkit-scrollbar-thumb {
             background: rgba(71, 102, 82, 0.3);
             border-radius: 8px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(71, 102, 82, 0.5);
         }
 
         .stage-day { background: var(--bg-day); color: #1e293b; }
@@ -102,198 +100,109 @@
             appearance: none;
             margin-top: -5px;
             background-color: #15803d;
-            height: 16px;
-            width: 16px;
+            height: 18px;
+            width: 18px;
             border-radius: 50%;
             border: 2px solid #ffffff;
             box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-            transition: transform 0.15s ease, background-color 0.15s ease;
         }
-        input[type="range"]::-webkit-slider-thumb:hover {
-            transform: scale(1.15);
-            background-color: #166534;
+
+        .mobile-sheet {
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .mobile-sheet.closed {
+            transform: translateY(100%);
         }
     </style>
 </head>
 <body class="bg-stone-100 text-stone-800 min-h-screen flex flex-col">
 
-    <!-- Top Navigation Bar -->
-    <header class="bg-white/95 backdrop-blur-md border-b border-stone-200/80 px-4 lg:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 sticky top-0 z-30 shadow-xs">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-800 to-indigo-900 text-emerald-50 flex items-center justify-center shadow-inner shrink-0">
-                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <header class="bg-white/95 backdrop-blur-md border-b border-stone-200/80 px-3 lg:px-6 py-2.5 flex items-center justify-between gap-2 sticky top-0 z-30 shadow-xs">
+        <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-9 h-9 lg:w-10 lg:h-10 rounded-xl bg-gradient-to-br from-emerald-800 to-indigo-900 text-emerald-50 flex items-center justify-center shadow-inner shrink-0">
+                <svg class="w-5 h-5 lg:w-6 lg:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 2L4 7v10l8 5 8-5V7l-8-5z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 16c2.5-2 3.5-5 1-8-2.5 3-1.5 6 1 8z"/>
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 22v-6"/>
                 </svg>
             </div>
-            <div>
-                <h1 class="text-lg lg:text-xl font-bold text-stone-900 tracking-tight leading-none">植境工坊 Botanica</h1>
-                <p class="text-xs text-stone-500 mt-0.5">大师级微缩景观与荧光生态设计室</p>
+            <div class="min-w-0">
+                <h1 class="text-sm lg:text-xl font-bold text-stone-900 tracking-tight leading-none truncate">植境工坊 Botanica</h1>
+                <p class="text-[10px] lg:text-xs text-stone-500 mt-0.5 truncate">大师级微缩景观与手机电脑双模工作室</p>
             </div>
         </div>
 
-        <!-- Right Preset & Custom Theme Controls -->
-        <div class="flex items-center gap-1.5 flex-wrap">
-            <span class="text-xs font-semibold uppercase tracking-wider text-stone-400 mr-1 hidden xl:inline">预设与自定义主题:</span>
-            
-            <div id="preset-buttons-list" class="flex items-center gap-1.5 flex-wrap"></div>
+        <!-- Right Preset & Action Controls -->
+        <div class="flex items-center gap-1.5 shrink-0">
+            <div class="hidden xl:flex items-center gap-1.5 flex-wrap">
+                <span class="text-[11px] font-bold text-stone-400 mr-1">预设与自定义主题:</span>
+                <div id="preset-buttons-list" class="flex items-center gap-1.5 flex-wrap"></div>
+            </div>
 
-            <div class="h-5 w-px bg-stone-200 mx-1"></div>
-
-            <button onclick="openSaveThemeModal()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-900 border border-amber-300 hover:bg-amber-100 transition flex items-center gap-1 shadow-2xs">
+            <button onclick="saveCurrentCanvasAsCustomThemeModal()" class="hidden md:flex px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-900 border border-amber-300 hover:bg-amber-100 transition items-center gap-1 shadow-2xs">
                 <span>💾</span>
                 <span>保存当前为主题</span>
             </button>
 
-            <button onclick="openAiGeneratorModal()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-indigo-600 via-purple-600 to-emerald-600 text-white shadow-sm hover:opacity-95 transition flex items-center gap-1.5">
+            <button onclick="openAiGeneratorModal()" class="px-2.5 lg:px-3 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-indigo-600 via-purple-600 to-emerald-600 text-white shadow-sm hover:opacity-95 transition flex items-center gap-1">
                 <span>✨</span>
-                <span>AI 自定义主题</span>
+                <span class="hidden sm:inline">AI 自定义主题</span>
+                <span class="sm:hidden">AI主题</span>
             </button>
 
-            <button onclick="openAiGeneratorModal(true)" id="top-apikey-btn" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-700 border border-stone-300 hover:bg-stone-200 transition flex items-center gap-1">
+            <button onclick="openAiGeneratorModal(true)" id="top-apikey-btn" class="hidden sm:flex px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-700 border border-stone-300 hover:bg-stone-200 transition items-center gap-1">
                 <span>🔑</span>
-                <span id="top-apikey-label" class="hidden md:inline">API配置</span>
+                <span id="top-apikey-label">API配置</span>
             </button>
 
-            <button onclick="openResetModal()" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 transition flex items-center gap-1">
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0016.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+            <button onclick="openResetModal()" class="p-1.5 lg:px-2.5 lg:py-1.5 rounded-lg text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 transition flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0016.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                 <span class="hidden sm:inline">重置</span>
             </button>
         </div>
     </header>
 
-    <!-- Main Workspace -->
-    <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
+    <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-hidden pb-20 lg:pb-0">
 
-        <!-- Left Control Panel -->
-        <aside class="lg:col-span-4 xl:col-span-3 bg-white border-r border-stone-200 flex flex-col h-[540px] lg:h-[calc(100vh-61px)]">
+        <!-- Left Control Panel (Desktop View) -->
+        <aside class="hidden lg:flex lg:col-span-4 xl:col-span-3 bg-white border-r border-stone-200 flex-col h-[calc(100vh-61px)]">
             <div class="grid grid-cols-4 border-b border-stone-200 bg-stone-50/70 p-1.5 gap-1">
-                <button onclick="switchTab('vessels')" id="tab-btn-vessels" class="tab-btn py-2 px-1.5 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-1 bg-white text-emerald-800 shadow-xs">
+                <button onclick="switchTab('vessels')" id="tab-btn-vessels" class="tab-btn py-2 px-1 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-1 bg-white text-emerald-800 shadow-xs">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                     容器与光效
                 </button>
-                <button onclick="switchTab('layers')" id="tab-btn-layers" class="tab-btn py-2 px-1.5 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-1 text-stone-600 hover:text-stone-900">
+                <button onclick="switchTab('layers')" id="tab-btn-layers" class="tab-btn py-2 px-1 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-1 text-stone-600 hover:text-stone-900">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
                     基质与蓝砂
                 </button>
-                <button onclick="switchTab('flora')" id="tab-btn-flora" class="tab-btn py-2 px-1.5 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-1 text-stone-600 hover:text-stone-900">
+                <button onclick="switchTab('flora')" id="tab-btn-flora" class="tab-btn py-2 px-1 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-1 text-stone-600 hover:text-stone-900">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
                     古树与花草
                 </button>
-                <button onclick="switchTab('decor')" id="tab-btn-decor" class="tab-btn py-2 px-1.5 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-1 text-stone-600 hover:text-stone-900">
+                <button onclick="switchTab('decor')" id="tab-btn-decor" class="tab-btn py-2 px-1 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-1 text-stone-600 hover:text-stone-900">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"/></svg>
                     精灵与童话
                 </button>
             </div>
 
-            <div class="flex-1 overflow-y-auto p-4 space-y-5">
-                <div id="tab-vessels" class="tab-panel space-y-5">
-                    <div>
-                        <h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider mb-1">1. 选择玻璃容器</h2>
-                        <div class="grid grid-cols-2 gap-2.5" id="vessel-selector-grid"></div>
-                    </div>
-                    <div class="border-t border-stone-200 pt-4">
-                        <h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider mb-1">2. 光照与微光氛围</h2>
-                        <div class="grid grid-cols-2 gap-2 mb-4">
-                            <button onclick="setLighting('elf')" id="light-elf" class="light-btn py-2.5 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition bg-indigo-50 border-indigo-600 text-indigo-950">
-                                <span>🔮</span> 紫蓝精灵微光
-                            </button>
-                            <button onclick="setLighting('day')" id="light-day" class="light-btn py-2.5 px-3 rounded-xl border border-stone-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition hover:bg-stone-50 text-stone-700">
-                                <span>☀️</span> 自然暖日光
-                            </button>
-                            <button onclick="setLighting('sunset')" id="light-sunset" class="light-btn py-2.5 px-3 rounded-xl border border-stone-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition hover:bg-stone-50 text-stone-700">
-                                <span>🌅</span> 落日金余晖
-                            </button>
-                            <button onclick="setLighting('night')" id="light-night" class="light-btn py-2.5 px-3 rounded-xl border border-stone-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition hover:bg-stone-50 text-stone-700">
-                                <span>🌙</span> 静谧深星夜
-                            </button>
-                        </div>
-                        <div class="space-y-2">
-                            <label class="flex items-center justify-between p-2.5 rounded-xl border border-stone-200 hover:bg-stone-50/80 cursor-pointer transition">
-                                <div class="flex items-center gap-2.5">
-                                    <span>🌌</span>
-                                    <div>
-                                        <div class="text-xs font-bold text-stone-800">悬浮微光粒子</div>
-                                        <div class="text-[11px] text-stone-500">冷调蓝紫与星白流萤粒子</div>
-                                    </div>
-                                </div>
-                                <input type="checkbox" id="toggle-spores" onchange="toggleEffect('spores', this.checked)" class="w-4 h-4 accent-indigo-600 rounded cursor-pointer">
-                            </label>
-                            <label class="flex items-center justify-between p-2.5 rounded-xl border border-stone-200 hover:bg-stone-50/80 cursor-pointer transition">
-                                <div class="flex items-center gap-2.5">
-                                    <span>🌫️</span>
-                                    <div>
-                                        <div class="text-xs font-bold text-stone-800">半透明全瓶薄雾</div>
-                                        <div class="text-[11px] text-stone-500">梦幻雾气 (+25%湿度)</div>
-                                    </div>
-                                </div>
-                                <input type="checkbox" id="toggle-mist" onchange="toggleEffect('mist', this.checked)" class="w-4 h-4 accent-emerald-700 rounded cursor-pointer">
-                            </label>
-                            <label class="flex items-center justify-between p-2.5 rounded-xl border border-stone-200 hover:bg-stone-50/80 cursor-pointer transition">
-                                <div class="flex items-center gap-2.5">
-                                    <span>✨</span>
-                                    <div>
-                                        <div class="text-xs font-bold text-stone-800">铜线星光灯串</div>
-                                        <div class="text-[11px] text-stone-500">温暖的微型LED灯</div>
-                                    </div>
-                                </div>
-                                <input type="checkbox" id="toggle-fairy" onchange="toggleEffect('fairyLights', this.checked)" class="w-4 h-4 accent-emerald-700 rounded cursor-pointer">
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="tab-layers" class="tab-panel hidden space-y-4">
-                    <div>
-                        <h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider mb-1">基质主题色系</h2>
-                        <div class="grid grid-cols-1 gap-2">
-                            <button onclick="applyQuickSubstrate('biolum_blue')" class="py-2 px-3 rounded-xl text-xs font-bold bg-indigo-50 text-indigo-950 border border-indigo-300 hover:bg-indigo-100 transition flex items-center justify-between">
-                                <span>🌊 发光深海蓝砂 + 翡翠荧光苔</span>
-                                <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-200/80">精灵秘境</span>
-                            </button>
-                            <div class="grid grid-cols-2 gap-2">
-                                <button onclick="applyQuickSubstrate('rainforest')" class="py-2 px-2.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-900 border border-emerald-200 hover:bg-emerald-100 transition">🌿 经典雨林层</button>
-                                <button onclick="applyQuickSubstrate('desert')" class="py-2 px-2.5 rounded-xl text-xs font-semibold bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100 transition">🏜️ 黄金荒漠层</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between pt-2 border-t border-stone-200">
-                        <h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider">各层厚度微调</h2>
-                        <span id="total-depth-badge" class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800">130 mm</span>
-                    </div>
-                    <div id="layer-controls-list" class="space-y-2.5"></div>
-                </div>
-
-                <div id="tab-flora" class="tab-panel hidden space-y-4">
-                    <div>
-                        <h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider">古树、藤蔓与夜光植物</h2>
-                    </div>
-                    <div id="flora-catalog-grid" class="grid grid-cols-2 gap-2.5"></div>
-                </div>
-
-                <div id="tab-decor" class="tab-panel hidden space-y-4">
-                    <div>
-                        <h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider">精灵雕像、机甲与童话微缩</h2>
-                    </div>
-                    <div id="decor-catalog-grid" class="grid grid-cols-2 gap-2.5"></div>
-                </div>
+            <div class="flex-1 overflow-y-auto p-4 space-y-5" id="desktop-control-content">
+                <!-- Content injected via renderControlPanels() -->
             </div>
         </aside>
 
-        <!-- Center Stage -->
-        <section id="stage-wrapper" class="lg:col-span-5 xl:col-span-6 relative flex flex-col items-center justify-center p-4 lg:p-6 min-h-[540px] lg:h-[calc(100vh-61px)] stage-elf transition-colors duration-700 overflow-hidden">
-            <div class="absolute top-4 left-4 right-4 flex items-center justify-between pointer-events-none z-20 gap-2">
-                <div id="stage-toast-banner" class="bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-sm border border-stone-200/80 text-xs font-medium text-stone-800 flex items-center gap-2 pointer-events-auto transition-all duration-300">
+        <!-- Center Stage (Both Mobile & Desktop) -->
+        <section id="stage-wrapper" class="col-span-1 lg:col-span-5 xl:col-span-6 relative flex flex-col items-center justify-center p-3 lg:p-6 min-h-[480px] sm:min-h-[540px] lg:h-[calc(100vh-61px)] stage-elf transition-colors duration-700 overflow-hidden">
+            <div class="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none z-20 gap-2">
+                <div id="stage-toast-banner" class="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm border border-stone-200/80 text-[11px] lg:text-xs font-medium text-stone-800 flex items-center gap-2 pointer-events-auto transition-all duration-300">
                     <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse shrink-0"></span>
-                    <span id="stage-toast-text" class="truncate">点击或拖拽放入物品 • 点击瓶内任意元素可缩放/移动</span>
+                    <span id="stage-toast-text" class="truncate">点击或拖拽放入物品 • 手机点击瓶内选中后可微调</span>
                 </div>
-                <div id="item-count-pill" class="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm border border-stone-200/80 text-xs font-semibold text-stone-800 hidden sm:block shrink-0">
-                    已放置 0 件物品
+                <div id="item-count-pill" class="bg-white/90 backdrop-blur-md px-2.5 py-1.5 rounded-full shadow-sm border border-stone-200/80 text-[11px] lg:text-xs font-semibold text-stone-800 shrink-0">
+                    0 件物品
                 </div>
             </div>
 
-            <div id="canvas-dropzone" class="w-full h-full max-w-[550px] max-h-[670px] flex items-center justify-center relative">
+            <div id="canvas-dropzone" class="w-full h-full max-w-[500px] max-h-[620px] flex items-center justify-center relative mt-6 lg:mt-0">
                 <svg id="terrarium-svg" viewBox="0 0 600 700" class="w-full h-full drop-shadow-2xl select-none" xmlns="http://www.w3.org/2000/svg">
                     <defs>
                         <clipPath id="vessel-clip">
@@ -428,96 +337,69 @@
                     <g id="vessel-front-overlay" class="pointer-events-none"></g>
                 </svg>
 
-                <div id="item-toolbar" class="hidden absolute bottom-4 left-1/2 -translate-x-1/2 bg-stone-900/95 text-white backdrop-blur-md px-3.5 py-2 rounded-2xl shadow-xl border border-stone-700 flex items-center gap-2 z-30">
-                    <span id="selected-item-label" class="text-xs font-bold text-emerald-300 pr-2 border-r border-stone-700 whitespace-nowrap">精灵古树</span>
-                    <button onclick="scaleSelectedItem(-0.12)" title="缩小" class="p-1.5 hover:bg-stone-800 rounded-lg transition text-xs font-bold">-</button>
-                    <span id="selected-item-scale" class="text-[11px] font-mono text-stone-300 w-9 text-center">100%</span>
-                    <button onclick="scaleSelectedItem(0.12)" title="放大" class="p-1.5 hover:bg-stone-800 rounded-lg transition text-xs font-bold">+</button>
+                <!-- Floating Selected Item Toolbar -->
+                <div id="item-toolbar" class="hidden absolute bottom-3 left-1/2 -translate-x-1/2 bg-stone-900/95 text-white backdrop-blur-md px-3 py-2 rounded-2xl shadow-xl border border-stone-700 flex items-center gap-1.5 z-30">
+                    <span id="selected-item-label" class="text-xs font-bold text-emerald-300 pr-1.5 border-r border-stone-700 whitespace-nowrap">精灵古树</span>
+                    <button onclick="scaleSelectedItem(-0.15)" title="缩小" class="px-2 py-1 hover:bg-stone-800 rounded-lg transition text-xs font-bold">-</button>
+                    <span id="selected-item-scale" class="text-[11px] font-mono text-stone-300 w-8 text-center">100%</span>
+                    <button onclick="scaleSelectedItem(0.15)" title="放大" class="px-2 py-1 hover:bg-stone-800 rounded-lg transition text-xs font-bold">+</button>
                     <div class="h-4 w-px bg-stone-700 mx-0.5"></div>
-                    <button onclick="flipSelectedItem()" title="水平翻转" class="p-1.5 hover:bg-stone-800 rounded-lg transition text-xs">翻转</button>
-                    <button onclick="duplicateSelectedItem()" title="复制" class="p-1.5 hover:bg-stone-800 rounded-lg transition text-xs">复制</button>
-                    <button onclick="bringSelectedItemForward()" title="顶层" class="p-1.5 hover:bg-stone-800 rounded-lg transition text-xs">顶层</button>
+                    <button onclick="flipSelectedItem()" title="翻转" class="px-2 py-1 hover:bg-stone-800 rounded-lg transition text-xs">翻转</button>
+                    <button onclick="duplicateSelectedItem()" title="复制" class="px-2 py-1 hover:bg-stone-800 rounded-lg transition text-xs">复制</button>
                     <div class="h-4 w-px bg-stone-700 mx-0.5"></div>
-                    <button onclick="deleteSelectedItem()" title="删除" class="p-1.5 bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white rounded-lg transition">删除</button>
+                    <button onclick="deleteSelectedItem()" title="删除" class="px-2 py-1 bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white rounded-lg transition text-xs">删除</button>
                 </div>
+            </div>
+
+            <!-- Mobile Bottom Action & Drawer Trigger Bar -->
+            <div class="lg:hidden absolute bottom-2 left-2 right-2 bg-white/95 backdrop-blur-md border border-stone-200 shadow-xl rounded-2xl p-1.5 flex items-center justify-between z-30">
+                <button onclick="openMobileSheet('vessels')" class="flex-1 py-2 flex flex-col items-center gap-0.5 text-xs font-bold text-stone-700 hover:text-emerald-700 transition">
+                    <span class="text-base">🏺</span>
+                    <span>容器光效</span>
+                </button>
+                <div class="w-px h-6 bg-stone-200"></div>
+                <button onclick="openMobileSheet('layers')" class="flex-1 py-2 flex flex-col items-center gap-0.5 text-xs font-bold text-stone-700 hover:text-emerald-700 transition">
+                    <span class="text-base">🪨</span>
+                    <span>基质土层</span>
+                </button>
+                <div class="w-px h-6 bg-stone-200"></div>
+                <button onclick="openMobileSheet('flora')" class="flex-1 py-2 flex flex-col items-center gap-0.5 text-xs font-bold text-stone-700 hover:text-emerald-700 transition">
+                    <span class="text-base">🌿</span>
+                    <span>古树花草</span>
+                </button>
+                <div class="w-px h-6 bg-stone-200"></div>
+                <button onclick="openMobileSheet('decor')" class="flex-1 py-2 flex flex-col items-center gap-0.5 text-xs font-bold text-stone-700 hover:text-emerald-700 transition">
+                    <span class="text-base">🧚</span>
+                    <span>精灵造景</span>
+                </button>
+                <div class="w-px h-6 bg-stone-200"></div>
+                <button onclick="openMobileSheet('diagnostics')" class="flex-1 py-2 flex flex-col items-center gap-0.5 text-xs font-bold text-indigo-700 transition">
+                    <span class="text-base">📊</span>
+                    <span>生态诊断</span>
+                </button>
             </div>
         </section>
 
-        <!-- Right Panel -->
-        <aside class="lg:col-span-3 bg-white border-l border-stone-200 p-4 lg:p-5 flex flex-col justify-between overflow-y-auto lg:h-[calc(100vh-61px)] space-y-5">
-            <div class="space-y-5">
-                <div>
-                    <div class="flex items-center justify-between mb-2">
-                        <h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider">生态系统健康度</h2>
-                        <span id="eco-status-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">生机盎然</span>
-                    </div>
-                    <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200/80 flex items-center gap-4">
-                        <div class="relative w-16 h-16 flex items-center justify-center shrink-0">
-                            <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
-                                <path class="text-stone-200" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-                                <path id="health-ring-circle" class="text-emerald-600 transition-all duration-500" stroke-dasharray="98, 100" stroke-linecap="round" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-                            </svg>
-                            <span id="health-score-num" class="text-lg font-extrabold text-stone-900">98%</span>
-                        </div>
-                        <div class="min-w-0">
-                            <div id="eco-biome-title" class="text-sm font-bold text-stone-800 truncate">梦幻荧光精灵秘境</div>
-                            <p id="eco-summary-text" class="text-xs text-stone-500 leading-relaxed mt-0.5">深海蓝砂与浓密翡翠苔藓提供了绝佳微气候。</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-y-3">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-stone-400">微气候环境指标</h3>
-                    <div>
-                        <div class="flex justify-between text-xs font-medium mb-1"><span class="text-stone-600">💧 相对湿度</span><span id="metric-humidity-val" class="font-bold text-stone-800">88%</span></div>
-                        <div class="h-2 w-full bg-stone-100 rounded-full overflow-hidden"><div id="metric-humidity-bar" class="h-full bg-sky-500 rounded-full transition-all duration-500" style="width: 88%"></div></div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-xs font-medium mb-1"><span class="text-stone-600">🪨 根系排水</span><span id="metric-drainage-val" class="font-bold text-stone-800">极佳</span></div>
-                        <div class="h-2 w-full bg-stone-100 rounded-full overflow-hidden"><div id="metric-drainage-bar" class="h-full bg-emerald-600 rounded-full transition-all duration-500" style="width: 92%"></div></div>
-                    </div>
-                    <div>
-                        <div class="flex justify-between text-xs font-medium mb-1"><span class="text-stone-600">✨ 荧光活性</span><span id="metric-filtration-val" class="font-bold text-stone-800">高效循环</span></div>
-                        <div class="h-2 w-full bg-stone-100 rounded-full overflow-hidden"><div id="metric-filtration-bar" class="h-full bg-indigo-500 rounded-full transition-all duration-500" style="width: 95%"></div></div>
-                    </div>
-                </div>
-
-                <div class="space-y-2">
-                    <h3 class="text-xs font-bold uppercase tracking-wider text-stone-400">植物学家诊断笔记</h3>
-                    <div id="diagnostics-list" class="space-y-2"></div>
-                </div>
-
-                <div class="pt-3 border-t border-stone-200 space-y-3">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-900 flex items-center gap-1">✨ 植境品鉴与故事</h3>
-                        <button onclick="generateAiBotanistReport()" id="btn-ai-report" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-indigo-700 text-white hover:bg-indigo-800 transition">✨ 刷新解读</button>
-                    </div>
-                    <div id="ai-report-card" class="p-3.5 rounded-2xl bg-gradient-to-br from-indigo-50/90 via-emerald-50/60 to-stone-50 border border-indigo-200/80 space-y-2.5">
-                        <div id="ai-report-loading" class="hidden py-4 flex flex-col items-center justify-center gap-2 text-indigo-800">
-                            <div class="w-5 h-5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-                            <span class="text-xs font-semibold">正在生成品鉴笔记...</span>
-                        </div>
-                        <div id="ai-report-content" class="space-y-2.5">
-                            <div class="flex items-start justify-between gap-2">
-                                <div>
-                                    <div id="ai-title" class="text-sm font-bold text-indigo-950 serif-title"></div>
-                                    <div id="ai-harmony-tag" class="inline-block mt-0.5 text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-200/70 text-indigo-900"></div>
-                                </div>
-                                <button onclick="playAiReportTts()" id="btn-ai-tts" class="shrink-0 px-2.5 py-1 rounded-lg bg-white hover:bg-stone-50 text-indigo-800 border border-indigo-200 text-[11px] font-semibold flex items-center gap-1 transition">
-                                    <span id="tts-icon">🔊</span><span id="tts-label">朗读</span>
-                                </button>
-                            </div>
-                            <p id="ai-story" class="text-xs text-stone-700 italic leading-relaxed bg-white/80 p-2.5 rounded-xl border border-indigo-100"></p>
-                            <div class="space-y-1">
-                                <div class="text-[11px] font-bold text-indigo-950">🌿 养护指南：</div>
-                                <p id="ai-care-guide" class="text-xs text-stone-600 leading-relaxed"></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- Right Panel (Desktop View) -->
+        <aside class="hidden lg:flex lg:col-span-3 bg-white border-l border-stone-200 p-4 lg:p-5 flex-col justify-between overflow-y-auto lg:h-[calc(100vh-61px)] space-y-5">
+            <div class="space-y-5" id="desktop-right-content">
+                <!-- Content injected via renderRightPanel() -->
             </div>
         </aside>
     </main>
+
+    <!-- Mobile Bottom Sheet Drawer -->
+    <div id="mobile-sheet-overlay" class="fixed inset-0 bg-stone-900/50 backdrop-blur-xs z-40 hidden lg:hidden" onclick="closeMobileSheet()"></div>
+    <div id="mobile-sheet-drawer" class="fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl z-50 flex flex-col max-h-[82vh] mobile-sheet closed lg:hidden border-t border-stone-200">
+        <div class="p-3 border-b border-stone-200 flex items-center justify-between bg-stone-50 rounded-t-3xl shrink-0">
+            <div class="flex items-center gap-2">
+                <span id="mobile-sheet-icon" class="text-lg">🌿</span>
+                <h3 id="mobile-sheet-title" class="text-sm font-bold text-stone-900">工坊控制台</h3>
+            </div>
+            <button onclick="closeMobileSheet()" class="w-8 h-8 rounded-full bg-stone-200/70 text-stone-700 flex items-center justify-center font-bold text-sm">✕</button>
+        </div>
+        <div id="mobile-sheet-body" class="p-4 overflow-y-auto flex-1 space-y-4 pb-12"></div>
+    </div>
 
     <!-- SAVE THEME MODAL -->
     <div id="save-theme-modal" class="fixed inset-0 bg-stone-900/55 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
@@ -527,7 +409,7 @@
                     <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-lg">💾</div>
                     <div>
                         <h3 class="text-base font-bold text-stone-900">保存当前画面为自定义主题</h3>
-                        <p class="text-xs text-stone-500">固定在右上角预设栏，随时一键应用</p>
+                        <p class="text-xs text-stone-500">固定在顶部预设栏，随时一键应用</p>
                     </div>
                 </div>
                 <button onclick="closeSaveThemeModal()" class="p-1.5 text-stone-400 hover:text-stone-600 rounded-lg">✕</button>
@@ -571,7 +453,7 @@
                 <div class="flex items-center justify-between">
                     <button type="button" onclick="toggleApiKeyConfigPanel()" class="text-xs font-bold text-indigo-950 flex items-center gap-1.5 hover:text-indigo-700">
                         <span>🔑</span>
-                        <span>API Key 设置（如遇接口报错请在此填入 Key）</span>
+                        <span>API Key 设置（GitHub Pages 外部网页需填入 Key）</span>
                         <span id="apikey-status-pill" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">就绪</span>
                     </button>
                     <button type="button" onclick="toggleApiKeyConfigPanel()" class="text-[11px] font-semibold text-indigo-700 hover:underline" id="apikey-toggle-text">展开</button>
@@ -590,17 +472,17 @@
             <div class="space-y-3">
                 <div>
                     <label class="text-xs font-bold text-stone-700 block mb-1">自定义主题名称：</label>
-                    <input type="text" id="ai-custom-title-input" maxlength="14" value="" placeholder="例如：赛博机甲 / 星际战舰 / 精灵世界" class="w-full rounded-xl border border-stone-300 px-3 py-2 text-xs text-stone-800 focus:ring-2 focus:ring-indigo-600" />
+                    <input type="text" id="ai-custom-title-input" maxlength="14" value="精灵世界" placeholder="例如：赛博机甲 / 星际战舰 / 精灵世界" class="w-full rounded-xl border border-stone-300 px-3 py-2 text-xs text-stone-800 focus:ring-2 focus:ring-indigo-600" />
                 </div>
                 <div>
                     <label class="text-xs font-bold text-stone-700 block mb-1">描述您的微缩生态世界：</label>
-                    <textarea id="ai-prompt-input" rows="4" placeholder="输入任意描述，例如：霸气的黑银色赛博机甲，带有发光蓝色能量核心与装甲细节，周围是废墟晶石与赛博科幻微景..." class="w-full rounded-xl border border-stone-300 p-3 text-xs text-stone-800 focus:ring-2 focus:ring-indigo-600 resize-none">霸气的黑银色赛博机甲，带有发光蓝色能量核心与金属装甲细节，周围是废墟科幻晶石与发光电子花草，静谧深星夜氛围</textarea>
+                    <textarea id="ai-prompt-input" rows="3" placeholder="输入任意描述，例如：发光深海蓝砂层，浓密翡翠苔藓，高挑的发光精灵古树，Q版星光花冠精灵，冷调紫蓝微光..." class="w-full rounded-xl border border-stone-300 p-3 text-xs text-stone-800 focus:ring-2 focus:ring-indigo-600 resize-none">底部铺设发光深海蓝砂层与浓密翡翠苔藓，高挑的发光精灵古树垂下藤蔓，中间站着Q版星光花冠精灵，四周环绕蓝紫发光蘑菇与星辰野花，冷调紫蓝微光与悬浮孢子流萤</textarea>
                 </div>
                 <div class="flex flex-wrap gap-1.5 pt-0.5">
                     <span class="text-[11px] text-stone-400 w-full">快捷灵感：</span>
-                    <button type="button" onclick="fillAiSamplePrompt('赛博机甲', '霸气的黑银色赛博机甲，带有发光蓝色能量核心与金属装甲细节，周围是废墟科幻晶石与发光电子花草，静谧深星夜氛围')" class="text-[11px] px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-900 font-semibold border border-indigo-200">🤖 赛博机甲</button>
-                    <button type="button" onclick="fillAiSamplePrompt('精灵世界', '底部铺设发光深海蓝砂层，浓密翡翠苔藓层，古老发光精灵古树，Q版星光花冠精灵，符文石拱门与发光蘑菇，冷调紫蓝微光')" class="text-[11px] px-2.5 py-1 rounded-lg bg-purple-50 text-purple-900 font-semibold border border-purple-200">🔮 精灵世界</button>
-                    <button type="button" onclick="fillAiSamplePrompt('深海幻境', '发光深海蓝砂层，透明荧光水母、珊瑚丛与魔法紫水晶，静谧深星夜')" class="text-[11px] px-2.5 py-1 rounded-lg bg-cyan-50 text-cyan-900 font-semibold border border-cyan-200">🪼 深海幻境</button>
+                    <button type="button" onclick="fillAiSamplePrompt('精灵世界', '底部铺设发光深海蓝砂层与浓密翡翠苔藓，高挑的发光精灵古树垂下藤蔓，中间站着Q版星光花冠精灵，四周环绕蓝紫发光蘑菇与星辰野花，冷调紫蓝微光与悬浮孢子流萤')" class="text-[11px] px-2.5 py-1 rounded-lg bg-purple-50 text-purple-900 font-semibold border border-purple-200">🔮 精灵世界</button>
+                    <button type="button" onclick="fillAiSamplePrompt('云端吉卜力', '吉卜力云端童话乐园，漂浮木屋、微型摩天轮、热气球与三叶草小野花，暖金日落光效')" class="text-[11px] px-2.5 py-1 rounded-lg bg-amber-50 text-amber-900 font-semibold border border-amber-200">☁️ 云端吉卜力</button>
+                    <button type="button" onclick="fillAiSamplePrompt('赛博机甲', '霸气的黑银色赛博机甲，带有发光蓝色能量核心与金属装甲，静谧深星夜氛围')" class="text-[11px] px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-900 font-semibold border border-indigo-200">🤖 赛博机甲</button>
                 </div>
             </div>
 
@@ -673,19 +555,21 @@
         };
 
         const FLORA_CATALOG = {
-            cyborg_mecha: {
-                name: "赛博机甲核心",
-                icon: "🤖",
+            chibi_fairy: {
+                name: "Q版星光花冠精灵",
+                icon: "🧚",
                 category: "decor",
                 scale: 1.35,
-                svg: `<g transform="translate(0, -10)">
-                    <rect x="-22" y="-28" width="44" height="38" rx="6" fill="#334155" stroke="#94a3b8" stroke-width="2"/>
-                    <rect x="-16" y="-22" width="32" height="14" rx="3" fill="#0f172a"/>
-                    <rect x="-10" y="-18" width="20" height="6" rx="2" fill="#38bdf8" filter="url(#glow-strong)"/>
-                    <circle cx="0" cy="-44" r="16" fill="#1e293b" stroke="#cbd5e1" stroke-width="2"/>
-                    <circle cx="0" cy="-44" r="7" fill="#38bdf8" filter="url(#glow-strong)"/>
-                    <path d="M -34 -10 L -22 -14 M 34 -10 L 22 -14" stroke="#64748b" stroke-width="4" stroke-linecap="round"/>
-                    <path d="M -16 10 L -22 28 M 16 10 L 22 28" stroke="#475569" stroke-width="5" stroke-linecap="round"/>
+                svg: `<g transform="translate(0, -25)">
+                    <path d="M -10 -12 C -42 -54, -82 -48, -74 -12 C -68 10, -38 -2, -10 -4 Z" fill="url(#elf-wing-grad)" filter="url(#glow-strong)"/>
+                    <path d="M 10 -12 C 42 -54, 82 -48, 74 -12 C 68 10, 38 -2, 10 -4 Z" fill="url(#elf-wing-grad)" filter="url(#glow-strong)"/>
+                    <ellipse cx="0" cy="-22" rx="16" ry="17" fill="#fff1f2"/>
+                    <path d="M -16 -28 Q 0 -44, 16 -28 Q 19 -16, 13 -12 Q 0 -18, -13 -12 Q -19 -16, -16 -28 Z" fill="#fbcfe8"/>
+                    <circle cx="-5" cy="-21" r="3.5" fill="#312e81"/><circle cx="5" cy="-21" r="3.5" fill="#312e81"/>
+                    <circle cx="-4" cy="-22.5" r="1.2" fill="#ffffff"/><circle cx="6" cy="-22.5" r="1.2" fill="#ffffff"/>
+                    <path d="M -2.5 -15 Q 0 -11, 2.5 -15" fill="none" stroke="#f43f5e" stroke-width="1.5" stroke-linecap="round"/>
+                    <path d="M -12 -6 C -16 12, -20 28, -11 38 L 11 38 C 20 28, 16 12, 12 -6 Z" fill="url(#elf-dress-grad)"/>
+                    <circle cx="0" cy="14" r="13" fill="url(#star-orb-grad)" filter="url(#glow-strong)"/>
                 </g>`
             },
             ancient_elf_tree: {
@@ -702,19 +586,27 @@
                     <circle cx="38" cy="-130" r="18" fill="#38bdf8" opacity="0.75" filter="url(#glow-strong)"/>
                 </g>`
             },
+            cyborg_mecha: {
+                name: "赛博机甲核心",
+                icon: "🤖",
+                category: "decor",
+                scale: 1.35,
+                svg: `<g transform="translate(0, -10)">
+                    <rect x="-22" y="-28" width="44" height="38" rx="6" fill="#334155" stroke="#94a3b8" stroke-width="2"/>
+                    <rect x="-16" y="-22" width="32" height="14" rx="3" fill="#0f172a"/>
+                    <rect x="-10" y="-18" width="20" height="6" rx="2" fill="#38bdf8" filter="url(#glow-strong)"/>
+                    <circle cx="0" cy="-44" r="16" fill="#1e293b" stroke="#cbd5e1" stroke-width="2"/>
+                    <circle cx="0" cy="-44" r="7" fill="#38bdf8" filter="url(#glow-strong)"/>
+                    <path d="M -34 -10 L -22 -14 M 34 -10 L 22 -14" stroke="#64748b" stroke-width="4" stroke-linecap="round"/>
+                    <path d="M -16 10 L -22 28 M 16 10 L 22 28" stroke="#475569" stroke-width="5" stroke-linecap="round"/>
+                </g>`
+            },
             biolum_mushrooms: {
                 name: "幽蓝紫光蘑菇",
                 icon: "🍄",
                 category: "flora",
                 scale: 1.05,
                 svg: `<g transform="translate(0, 0)"><path d="M -16 5 Q -18 -18, -12 -32 L -6 -32 Q -10 -18, -8 5 Z" fill="#e9d5ff"/><path d="M -30 -28 Q -10 -52, 10 -28 Z" fill="#818cf8" filter="url(#glow-strong)"/></g>`
-            },
-            starlight_elf_girl: {
-                name: "Q版星光花冠精灵",
-                icon: "🧚",
-                category: "decor",
-                scale: 1.25,
-                svg: `<g transform="translate(0, -32)"><path d="M -6 -8 C -32 -48, -72 -44, -66 -10 Z" fill="url(#elf-wing-grad)" filter="url(#glow-strong)"/><circle cx="0" cy="-18" r="16" fill="#fff1f2"/><ellipse cx="-6" cy="-16" rx="3.5" ry="4" fill="#312e81"/><ellipse cx="6" cy="-16" rx="3.5" ry="4" fill="#312e81"/><circle cx="0" cy="12" r="9" fill="url(#star-orb-grad)" filter="url(#glow-strong)"/></g>`
             },
             elf_stone_arch: {
                 name: "符文精灵石拱门",
@@ -747,6 +639,26 @@
         };
 
         const BUILTIN_THEMES = {
+            elf_world: {
+                key: 'elf_world',
+                isBuiltin: true,
+                icon: '🔮',
+                title: '精灵世界',
+                vessel: 'cylinder',
+                substrateStyle: 'biolum',
+                layers: { pebbles: 32, charcoal: 18, soil: 38, sand: 18, moss: 35 },
+                ambiance: { lighting: 'elf', fairyLights: true, mist: true, spores: true },
+                items: [
+                    { type: 'ancient_elf_tree', xOffset: -8, yOffset: 24, scale: 1.42, flipped: false },
+                    { type: 'chibi_fairy', xOffset: 25, yOffset: 95, scale: 1.25, flipped: false },
+                    { type: 'elf_stone_arch', xOffset: 42, yOffset: 118, scale: 1.2, flipped: false },
+                    { type: 'biolum_mushrooms', xOffset: -52, yOffset: 152, scale: 1.15, flipped: false },
+                    { type: 'crystal', xOffset: -42, yOffset: 128, scale: 1.1, flipped: false }
+                ],
+                story: '底部铺设发光深海蓝砂层，古老精灵古树垂下荧光藤蔓，Q版星光花冠精灵正捧着幻彩星光球守护秘境。',
+                careGuide: '保持冷调散射光与微湿薄雾环境。',
+                proTip: '高挑精灵古树与Q版精灵交织出梦幻唯美的立体景深。'
+            },
             cyborg_mecha: {
                 key: 'cyborg_mecha',
                 isBuiltin: true,
@@ -765,26 +677,6 @@
                 story: '静谧深星夜下，一台霸气的黑银色赛博机甲矗立在发光废墟晶石与电子花草之间，蓝色能量核心闪烁着科幻微光。',
                 careGuide: '建议开启夜间模式与微光粒子，体验机甲核心的赛博氛围。',
                 proTip: '高科技机甲与深海蓝砂基质交织出独特的科幻微景。'
-            },
-            elf_world: {
-                key: 'elf_world',
-                isBuiltin: true,
-                icon: '🔮',
-                title: '精灵世界',
-                vessel: 'cylinder',
-                substrateStyle: 'biolum',
-                layers: { pebbles: 32, charcoal: 18, soil: 38, sand: 18, moss: 35 },
-                ambiance: { lighting: 'elf', fairyLights: true, mist: true, spores: true },
-                items: [
-                    { type: 'ancient_elf_tree', xOffset: -8, yOffset: 24, scale: 1.42, flipped: false },
-                    { type: 'elf_stone_arch', xOffset: 36, yOffset: 118, scale: 1.25, flipped: false },
-                    { type: 'starlight_elf_girl', xOffset: -22, yOffset: 135, scale: 1.28, flipped: false },
-                    { type: 'biolum_mushrooms', xOffset: -52, yOffset: 152, scale: 1.15, flipped: false },
-                    { type: 'crystal', xOffset: -42, yOffset: 128, scale: 1.1, flipped: false }
-                ],
-                story: '底部铺设发光深海蓝砂层，古老精灵古树垂下荧光藤蔓，Q版星光花冠精灵伫立在符文石拱门与夜光星花之间。',
-                careGuide: '保持冷调散射光与微湿薄雾环境。',
-                proTip: '高挑精灵古树与前景Q版精灵构成立体景深。'
             }
         };
 
@@ -796,7 +688,7 @@
         let placedItems = [];
         let selectedItemIndex = null;
         let customThemesMap = {};
-        let activePresetKey = 'cyborg_mecha';
+        let activePresetKey = 'elf_world';
         let lastAiNarrativeText = "";
         let userCustomApiKey = "";
         let isDraggingItem = false;
@@ -806,11 +698,10 @@
         window.onload = function () {
             loadCustomThemesFromStorage();
             loadUserApiKeyFromStorage();
-            renderVesselSelector();
             renderPresetButtonsBar();
-            renderLayerControls();
-            renderCatalogGrids();
-            applyThemeDefinitionToCanvas(BUILTIN_THEMES.cyborg_mecha);
+            renderControlPanels();
+            renderRightPanel();
+            applyThemeDefinitionToCanvas(BUILTIN_THEMES.elf_world);
             initDragAndDropListeners();
         };
 
@@ -862,14 +753,14 @@
 
         function loadCustomThemesFromStorage() {
             try {
-                const raw = localStorage.getItem('botanica_custom_themes_v3');
+                const raw = localStorage.getItem('botanica_custom_themes_v4');
                 if (raw) customThemesMap = JSON.parse(raw);
             } catch(e){}
         }
 
         function saveCustomThemesToStorage() {
             try {
-                localStorage.setItem('botanica_custom_themes_v3', JSON.stringify(customThemesMap));
+                localStorage.setItem('botanica_custom_themes_v4', JSON.stringify(customThemesMap));
             } catch(e){}
         }
 
@@ -878,23 +769,252 @@
                 btn.classList.remove('bg-white', 'text-emerald-800', 'shadow-xs');
                 btn.classList.add('text-stone-600', 'hover:text-stone-900');
             });
-            document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.add('hidden'));
-            document.getElementById(`tab-btn-${tabId}`).classList.add('bg-white', 'text-emerald-800', 'shadow-xs');
-            document.getElementById(`tab-btn-${tabId}`).classList.remove('text-stone-600', 'hover:text-stone-900');
-            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-white', 'text-emerald-800', 'shadow-xs');
+                activeBtn.classList.remove('text-stone-600', 'hover:text-stone-900');
+            }
+            const desktopContainer = document.getElementById('desktop-control-content');
+            if (desktopContainer) desktopContainer.innerHTML = getControlHtmlContent(tabId);
+            bindControlPanelEvents();
+        }
+
+        function bindControlPanelEvents() {
+            // Re-bind or handle dynamic panel events if necessary
+        }
+
+        function getControlHtmlContent(tabId) {
+            if (tabId === 'vessels') {
+                return `
+                    <div class="space-y-5">
+                        <div>
+                            <h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider mb-2">1. 选择玻璃容器</h2>
+                            <div class="grid grid-cols-2 gap-2.5" id="vessel-selector-grid"></div>
+                        </div>
+                        <div class="border-t border-stone-200 pt-4">
+                            <h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider mb-2">2. 光照与微光氛围</h2>
+                            <div class="grid grid-cols-2 gap-2 mb-4">
+                                <button onclick="setLighting('elf')" id="light-elf" class="light-btn py-2.5 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition ${currentLighting === 'elf' ? 'bg-indigo-50 border-indigo-600 text-indigo-950 font-bold' : 'border-stone-200 text-stone-700 hover:bg-stone-50'}"><span>🔮</span> 紫蓝精灵微光</button>
+                                <button onclick="setLighting('day')" id="light-day" class="light-btn py-2.5 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition ${currentLighting === 'day' ? 'bg-amber-50 border-amber-600 text-amber-950 font-bold' : 'border-stone-200 text-stone-700 hover:bg-stone-50'}"><span>☀️</span> 自然暖日光</button>
+                                <button onclick="setLighting('sunset')" id="light-sunset" class="light-btn py-2.5 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition ${currentLighting === 'sunset' ? 'bg-orange-50 border-orange-600 text-orange-950 font-bold' : 'border-stone-200 text-stone-700 hover:bg-stone-50'}"><span>🌅</span> 落日金余晖</button>
+                                <button onclick="setLighting('night')" id="light-night" class="light-btn py-2.5 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition ${currentLighting === 'night' ? 'bg-slate-800 border-slate-700 text-slate-100 font-bold' : 'border-stone-200 text-stone-700 hover:bg-stone-50'}"><span>🌙</span> 静谧深星夜</button>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="flex items-center justify-between p-2.5 rounded-xl border border-stone-200 hover:bg-stone-50 cursor-pointer transition">
+                                    <div class="flex items-center gap-2.5">
+                                        <span>🌌</span>
+                                        <div><div class="text-xs font-bold text-stone-800">悬浮微光粒子</div><div class="text-[11px] text-stone-500">冷调蓝紫与星白流萤</div></div>
+                                    </div>
+                                    <input type="checkbox" id="toggle-spores" ${effectsState.spores ? 'checked' : ''} onchange="toggleEffect('spores', this.checked)" class="w-4 h-4 accent-indigo-600 rounded cursor-pointer">
+                                </label>
+                                <label class="flex items-center justify-between p-2.5 rounded-xl border border-stone-200 hover:bg-stone-50 cursor-pointer transition">
+                                    <div class="flex items-center gap-2.5">
+                                        <span>🌫️</span>
+                                        <div><div class="text-xs font-bold text-stone-800">半透明全瓶薄雾</div><div class="text-[11px] text-stone-500">梦幻雾气 (+25%湿度)</div></div>
+                                    </div>
+                                    <input type="checkbox" id="toggle-mist" ${effectsState.mist ? 'checked' : ''} onchange="toggleEffect('mist', this.checked)" class="w-4 h-4 accent-emerald-700 rounded cursor-pointer">
+                                </label>
+                                <label class="flex items-center justify-between p-2.5 rounded-xl border border-stone-200 hover:bg-stone-50 cursor-pointer transition">
+                                    <div class="flex items-center gap-2.5">
+                                        <span>✨</span>
+                                        <div><div class="text-xs font-bold text-stone-800">铜线星光灯串</div><div class="text-[11px] text-stone-500">温暖的微型LED灯</div></div>
+                                    </div>
+                                    <input type="checkbox" id="toggle-fairy" ${effectsState.fairyLights ? 'checked' : ''} onchange="toggleEffect('fairyLights', this.checked)" class="w-4 h-4 accent-emerald-700 rounded cursor-pointer">
+                                </label>
+                            </div>
+                        </div>
+                    </div>`;
+            } else if (tabId === 'layers') {
+                let total = Object.values(substrateLayers).reduce((a,b)=>a+b, 0);
+                let listHtml = '';
+                Object.keys(SUBSTRATE_TYPES).forEach(key => {
+                    const s = SUBSTRATE_TYPES[key];
+                    const val = substrateLayers[key] || 0;
+                    listHtml += `
+                        <div class="p-3 rounded-xl bg-stone-50 border border-stone-200/80 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div><div class="text-xs font-bold text-stone-800">${s.name}</div><div class="text-[10px] text-stone-500">${s.desc}</div></div>
+                                <span class="text-xs font-mono font-bold text-emerald-800 px-2 py-0.5 rounded-md bg-emerald-100">${val} mm</span>
+                            </div>
+                            <input type="range" min="0" max="${s.max}" value="${val}" oninput="updateLayerDepth('${key}', this.value)" class="w-full">
+                        </div>`;
+                });
+                return `
+                    <div class="space-y-4">
+                        <div>
+                            <h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider mb-2">基质主题色系</h2>
+                            <div class="grid grid-cols-1 gap-2">
+                                <button onclick="applyQuickSubstrate('biolum_blue')" class="py-2 px-3 rounded-xl text-xs font-bold bg-indigo-50 text-indigo-950 border border-indigo-300 hover:bg-indigo-100 transition flex items-center justify-between">
+                                    <span>🌊 发光深海蓝砂 + 翡翠荧光苔</span>
+                                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-200/80">精灵秘境</span>
+                                </button>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="applyQuickSubstrate('rainforest')" class="py-2 px-2.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-900 border border-emerald-200 hover:bg-emerald-100 transition">🌿 经典雨林层</button>
+                                    <button onclick="applyQuickSubstrate('desert')" class="py-2 px-2.5 rounded-xl text-xs font-semibold bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100 transition">🏜️ 黄金荒漠层</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-between pt-2 border-t border-stone-200">
+                            <h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider">各层厚度微调</h2>
+                            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800">${total} mm</span>
+                        </div>
+                        <div class="space-y-2.5">${listHtml}</div>
+                    </div>`;
+            } else if (tabId === 'flora') {
+                let floraHtml = '';
+                Object.keys(FLORA_CATALOG).forEach(key => {
+                    const item = FLORA_CATALOG[key];
+                    if (item.category !== 'flora') return;
+                    floraHtml += `
+                        <div onclick="addItemToCanvas('${key}')" class="p-3 rounded-xl border border-stone-200 hover:border-emerald-600 bg-white cursor-pointer transition flex flex-col items-center text-center gap-1.5">
+                            <span class="text-2xl">${item.icon}</span>
+                            <span class="text-xs font-bold text-stone-800">${item.name}</span>
+                            <span class="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">点击添加</span>
+                        </div>`;
+                });
+                return `<div class="space-y-3"><h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider">古树、藤蔓与夜光植物</h2><div class="grid grid-cols-2 gap-2.5">${floraHtml}</div></div>`;
+            } else if (tabId === 'decor') {
+                let decorHtml = '';
+                Object.keys(FLORA_CATALOG).forEach(key => {
+                    const item = FLORA_CATALOG[key];
+                    if (item.category !== 'decor') return;
+                    decorHtml += `
+                        <div onclick="addItemToCanvas('${key}')" class="p-3 rounded-xl border border-stone-200 hover:border-indigo-600 bg-white cursor-pointer transition flex flex-col items-center text-center gap-1.5">
+                            <span class="text-2xl">${item.icon}</span>
+                            <span class="text-xs font-bold text-stone-800">${item.name}</span>
+                            <span class="text-[10px] text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full">点击添加</span>
+                        </div>`;
+                });
+                return `<div class="space-y-3"><h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider">精灵雕像、机甲与童话微缩</h2><div class="grid grid-cols-2 gap-2.5">${decorHtml}</div></div>`;
+            } else if (tabId === 'diagnostics') {
+                return getDiagnosticsHtmlContent();
+            }
+            return '';
+        }
+
+        function getDiagnosticsHtmlContent() {
+            return `
+                <div class="space-y-5">
+                    <div>
+                        <div class="flex items-center justify-between mb-2">
+                            <h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider">生态系统健康度</h2>
+                            <span id="eco-status-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">生机盎然</span>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200/80 flex items-center gap-4">
+                            <div class="relative w-16 h-16 flex items-center justify-center shrink-0">
+                                <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                                    <path class="text-stone-200" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                                    <path id="health-ring-circle" class="text-emerald-600 transition-all duration-500" stroke-dasharray="98, 100" stroke-linecap="round" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                                </svg>
+                                <span id="health-score-num" class="text-lg font-extrabold text-stone-900">98%</span>
+                            </div>
+                            <div class="min-w-0">
+                                <div id="eco-biome-title" class="text-sm font-bold text-stone-800 truncate">梦幻荧光精灵秘境</div>
+                                <p id="eco-summary-text" class="text-xs text-stone-500 leading-relaxed mt-0.5">深海蓝砂与浓密翡翠苔藓提供了绝佳微气候。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-stone-400">微气候环境指标</h3>
+                        <div>
+                            <div class="flex justify-between text-xs font-medium mb-1"><span class="text-stone-600">💧 相对湿度</span><span id="metric-humidity-val" class="font-bold text-stone-800">88%</span></div>
+                            <div class="h-2 w-full bg-stone-100 rounded-full overflow-hidden"><div id="metric-humidity-bar" class="h-full bg-sky-500 rounded-full transition-all duration-500" style="width: 88%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-medium mb-1"><span class="text-stone-600">🪨 根系排水</span><span id="metric-drainage-val" class="font-bold text-stone-800">极佳</span></div>
+                            <div class="h-2 w-full bg-stone-100 rounded-full overflow-hidden"><div id="metric-drainage-bar" class="h-full bg-emerald-600 rounded-full transition-all duration-500" style="width: 92%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs font-medium mb-1"><span class="text-stone-600">✨ 荧光活性</span><span id="metric-filtration-val" class="font-bold text-stone-800">高效循环</span></div>
+                            <div class="h-2 w-full bg-stone-100 rounded-full overflow-hidden"><div id="metric-filtration-bar" class="h-full bg-indigo-500 rounded-full transition-all duration-500" style="width: 95%"></div></div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-stone-400">植物学家诊断笔记</h3>
+                        <div id="diagnostics-list" class="space-y-2"></div>
+                    </div>
+
+                    <div class="pt-3 border-t border-stone-200 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-900 flex items-center gap-1">✨ 植境品鉴与故事</h3>
+                            <button onclick="generateAiBotanistReport()" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-indigo-700 text-white hover:bg-indigo-800 transition">✨ 刷新解读</button>
+                        </div>
+                        <div id="ai-report-card" class="p-3.5 rounded-2xl bg-gradient-to-br from-indigo-50/90 via-emerald-50/60 to-stone-50 border border-indigo-200/80 space-y-2.5">
+                            <div id="ai-report-loading" class="hidden py-4 flex flex-col items-center justify-center gap-2 text-indigo-800">
+                                <div class="w-5 h-5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+                                <span class="text-xs font-semibold">正在生成品鉴笔记...</span>
+                            </div>
+                            <div id="ai-report-content" class="space-y-2.5">
+                                <div class="flex items-start justify-between gap-2">
+                                    <div>
+                                        <div id="ai-title" class="text-sm font-bold text-indigo-950 serif-title"></div>
+                                        <div id="ai-harmony-tag" class="inline-block mt-0.5 text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-200/70 text-indigo-900"></div>
+                                    </div>
+                                    <button onclick="playAiReportTts()" class="shrink-0 px-2.5 py-1 rounded-lg bg-white hover:bg-stone-50 text-indigo-800 border border-indigo-200 text-[11px] font-semibold flex items-center gap-1 transition">
+                                        <span>🔊</span><span>朗读</span>
+                                    </button>
+                                </div>
+                                <p id="ai-story" class="text-xs text-stone-700 italic leading-relaxed bg-white/80 p-2.5 rounded-xl border border-indigo-100"></p>
+                                <div class="space-y-1">
+                                    <div class="text-[11px] font-bold text-indigo-950">🌿 养护指南：</div>
+                                    <p id="ai-care-guide" class="text-xs text-stone-600 leading-relaxed"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        function renderControlPanels() {
+            switchTab('vessels');
+        }
+
+        function renderRightPanel() {
+            const container = document.getElementById('desktop-right-content');
+            if (container) container.innerHTML = getDiagnosticsHtmlContent();
+            updateEcosystemDiagnostics();
+        }
+
+        function openMobileSheet(tabId) {
+            const overlay = document.getElementById('mobile-sheet-overlay');
+            const drawer = document.getElementById('mobile-sheet-drawer');
+            const body = document.getElementById('mobile-sheet-body');
+            const titleEl = document.getElementById('mobile-sheet-title');
+            const iconEl = document.getElementById('mobile-sheet-icon');
+
+            const titles = { vessels: ['容器与光效', '🏺'], layers: ['基质与蓝砂', '🪨'], flora: ['古树与花草', '🌿'], decor: ['精灵与童话', '🧚'], diagnostics: ['生态诊断与品鉴', '📊'] };
+            titleEl.textContent = titles[tabId][0];
+            iconEl.textContent = titles[tabId][1];
+
+            body.innerHTML = getControlHtmlContent(tabId);
+            if (tabId === 'vessels') renderVesselSelector();
+
+            overlay.classList.remove('hidden');
+            setTimeout(() => drawer.classList.remove('closed'), 10);
+        }
+
+        function closeMobileSheet() {
+            const overlay = document.getElementById('mobile-sheet-overlay');
+            const drawer = document.getElementById('mobile-sheet-drawer');
+            drawer.classList.add('closed');
+            setTimeout(() => overlay.classList.add('hidden'), 250);
         }
 
         function renderVesselSelector() {
-            const grid = document.getElementById('vessel-selector-grid');
-            grid.innerHTML = '';
-            Object.keys(VESSELS).forEach(key => {
-                const v = VESSELS[key];
-                const isSel = currentVessel === key;
-                const div = document.createElement('div');
-                div.className = `p-3 rounded-xl border cursor-pointer transition flex flex-col justify-between ${isSel ? 'border-emerald-600 bg-emerald-50/80 shadow-xs' : 'border-stone-200 hover:bg-stone-50'}`;
-                div.onclick = () => selectVessel(key);
-                div.innerHTML = `<div class="flex items-center justify-between mb-1"><span class="text-xs font-bold text-stone-900">${v.name}</span><span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${isSel ? 'bg-emerald-200 text-emerald-900' : 'bg-stone-100 text-stone-600'}">保湿 ${v.humidity}</span></div><p class="text-[11px] text-stone-500">${v.desc}</p>`;
-                grid.appendChild(div);
+            const grids = document.querySelectorAll('#vessel-selector-grid');
+            grids.forEach(grid => {
+                grid.innerHTML = '';
+                Object.keys(VESSELS).forEach(key => {
+                    const v = VESSELS[key];
+                    const isSel = currentVessel === key;
+                    const div = document.createElement('div');
+                    div.className = `p-2.5 rounded-xl border cursor-pointer transition flex flex-col justify-between ${isSel ? 'border-emerald-600 bg-emerald-50/80 shadow-xs' : 'border-stone-200 hover:bg-stone-50'}`;
+                    div.onclick = () => selectVessel(key);
+                    div.innerHTML = `<div class="flex items-center justify-between mb-1"><span class="text-xs font-bold text-stone-900">${v.name}</span><span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${isSel ? 'bg-emerald-200 text-emerald-900' : 'bg-stone-100 text-stone-600'}">保湿 ${v.humidity}</span></div><p class="text-[10px] text-stone-500">${v.desc}</p>`;
+                    grid.appendChild(div);
+                });
             });
         }
 
@@ -911,10 +1031,10 @@
                 btn.className = "light-btn py-2.5 px-3 rounded-xl border border-stone-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition hover:bg-stone-50 text-stone-700";
             });
             const activeBtn = document.getElementById(`light-${mode}`);
-            if (activeBtn) activeBtn.className = "light-btn py-2.5 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition bg-indigo-50 border-indigo-600 text-indigo-950";
+            if (activeBtn) activeBtn.className = "light-btn py-2.5 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition bg-indigo-50 border-indigo-600 text-indigo-950 font-bold";
             
             const wrapper = document.getElementById('stage-wrapper');
-            wrapper.className = `lg:col-span-5 xl:col-span-6 relative flex flex-col items-center justify-center p-4 lg:p-6 min-h-[540px] lg:h-[calc(100vh-61px)] stage-${mode} transition-colors duration-700 overflow-hidden`;
+            wrapper.className = `col-span-1 lg:col-span-5 xl:col-span-6 relative flex flex-col items-center justify-center p-3 lg:p-6 min-h-[480px] sm:min-h-[540px] lg:h-[calc(100vh-61px)] stage-${mode} transition-colors duration-700 overflow-hidden`;
             
             const backGlow = document.getElementById('stage-back-glow');
             const secGlow = document.getElementById('stage-secondary-glow');
@@ -935,13 +1055,16 @@
             if (styleKey === 'biolum_blue') substrateLayers = { pebbles: 32, charcoal: 18, soil: 38, sand: 0, moss: 35 };
             else if (styleKey === 'rainforest') substrateLayers = { pebbles: 35, charcoal: 15, soil: 40, sand: 0, moss: 30 };
             else if (styleKey === 'desert') substrateLayers = { pebbles: 25, charcoal: 10, soil: 25, sand: 45, moss: 0 };
-            renderLayerControls();
+            
+            const activeDesktopTab = document.querySelector('#desktop-control-content');
+            if (activeDesktopTab && activeDesktopTab.innerHTML.includes('基质')) switchTab('layers');
             rebuildCanvasGeometry();
             updateEcosystemDiagnostics();
         }
 
         function renderPresetButtonsBar() {
             const list = document.getElementById('preset-buttons-list');
+            if (!list) return;
             list.innerHTML = '';
             const allThemes = { ...BUILTIN_THEMES, ...customThemesMap };
             Object.keys(allThemes).forEach(k => {
@@ -983,16 +1106,12 @@
                 effectsState.spores = !!t.ambiance.spores;
                 effectsState.mist = !!t.ambiance.mist;
                 effectsState.fairyLights = !!t.ambiance.fairyLights;
-                document.getElementById('toggle-spores').checked = effectsState.spores;
-                document.getElementById('toggle-mist').checked = effectsState.mist;
-                document.getElementById('toggle-fairy').checked = effectsState.fairyLights;
                 toggleEffect('spores', effectsState.spores);
                 toggleEffect('mist', effectsState.mist);
                 toggleEffect('fairyLights', effectsState.fairyLights);
             }
             if (Array.isArray(t.items)) placedItems = JSON.parse(JSON.stringify(t.items));
             renderVesselSelector();
-            renderLayerControls();
             rebuildCanvasGeometry();
             updateEcosystemDiagnostics();
             if (t.story) {
@@ -1016,68 +1135,25 @@
             delete customThemesMap[key];
             saveCustomThemesToStorage();
             if (activePresetKey === key) {
-                activePresetKey = 'cyborg_mecha';
-                applyPresetTheme('cyborg_mecha');
+                activePresetKey = 'elf_world';
+                applyPresetTheme('elf_world');
             } else {
                 renderPresetButtonsBar();
             }
             showStageToast("已删除自定义主题");
         }
 
-        function renderLayerControls() {
-            const list = document.getElementById('layer-controls-list');
-            list.innerHTML = '';
-            let total = 0;
-            Object.keys(SUBSTRATE_TYPES).forEach(key => {
-                const s = SUBSTRATE_TYPES[key];
-                const val = substrateLayers[key] || 0;
-                total += val;
-                const div = document.createElement('div');
-                div.className = "p-3 rounded-xl bg-stone-50 border border-stone-200/80 space-y-2";
-                div.innerHTML = `<div class="flex items-center justify-between"><div><div class="text-xs font-bold text-stone-800">${s.name}</div><div class="text-[10px] text-stone-500">${s.desc}</div></div><span class="text-xs font-mono font-bold text-emerald-800 px-2 py-0.5 rounded-md bg-emerald-100">${val} mm</span></div><input type="range" min="0" max="${s.max}" value="${val}" oninput="updateLayerDepth('${key}', this.value)" class="w-full">`;
-                list.appendChild(div);
-            });
-            document.getElementById('total-depth-badge').textContent = total + ' mm';
-        }
-
         function updateLayerDepth(key, val) {
             substrateLayers[key] = parseInt(val) || 0;
-            renderLayerControls();
             rebuildCanvasGeometry();
             updateEcosystemDiagnostics();
-        }
-
-        function renderCatalogGrids() {
-            const floraGrid = document.getElementById('flora-catalog-grid');
-            floraGrid.innerHTML = '';
-            Object.keys(FLORA_CATALOG).forEach(key => {
-                const item = FLORA_CATALOG[key];
-                if (item.category !== 'flora') return;
-                const card = document.createElement('div');
-                card.className = "p-3 rounded-xl border border-stone-200 hover:border-emerald-600 bg-white cursor-pointer transition flex flex-col items-center text-center gap-1.5";
-                card.onclick = () => addItemToCanvas(key);
-                card.innerHTML = `<span class="text-2xl">${item.icon}</span><span class="text-xs font-bold text-stone-800">${item.name}</span><span class="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">添加</span>`;
-                floraGrid.appendChild(card);
-            });
-
-            const decorGrid = document.getElementById('decor-catalog-grid');
-            decorGrid.innerHTML = '';
-            Object.keys(FLORA_CATALOG).forEach(key => {
-                const item = FLORA_CATALOG[key];
-                if (item.category !== 'decor') return;
-                const card = document.createElement('div');
-                card.className = "p-3 rounded-xl border border-stone-200 hover:border-indigo-600 bg-white cursor-pointer transition flex flex-col items-center text-center gap-1.5";
-                card.onclick = () => addItemToCanvas(key);
-                card.innerHTML = `<span class="text-2xl">${item.icon}</span><span class="text-xs font-bold text-stone-800">${item.name}</span><span class="text-[10px] text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full">添加</span>`;
-                decorGrid.appendChild(card);
-            });
         }
 
         function addItemToCanvas(typeKey) {
             const newItem = {
                 type: typeKey,
-                xOffset: (Math.random() * 60) - 30,
-                yOffset: 120 + (Math.random() * 40),
+                xOffset: (Math.random() * 50) - 25,
+                yOffset: 120 + (Math.random() * 30),
                 scale: 1.0,
                 flipped: false
             };
@@ -1085,6 +1161,7 @@
             selectedItemIndex = placedItems.length - 1;
             rebuildCanvasGeometry();
             updateItemToolbar();
+            closeMobileSheet();
             showStageToast(`已添加「${FLORA_CATALOG[typeKey].name}」`);
         }
 
@@ -1143,27 +1220,29 @@
 
                 g.setAttribute("transform", `translate(${posX}, ${posY}) scale(${scale}) ${flip}`);
                 g.setAttribute("class", `terrarium-item ${selectedItemIndex === idx ? 'selected' : ''}`);
-                g.onmousedown = (e) => {
+                
+                const handleSelect = (e) => {
                     e.stopPropagation();
                     selectItem(idx);
-                    isDraggingItem = true;
-                    draggedItemIndex = idx;
-                    dragOffset = { x: e.clientX, y: e.clientY };
                 };
+                g.onmousedown = handleSelect;
+                g.ontouchstart = handleSelect;
+
                 g.innerHTML = def.svg;
                 group.appendChild(g);
             });
-            document.getElementById('item-count-pill').textContent = `已放置 ${placedItems.length} 件物品`;
+            const pill = document.getElementById('item-count-pill');
+            if (pill) pill.textContent = `${placedItems.length} 件物品`;
         }
 
         function renderSporesAndFairies() {
             const sporesGroup = document.getElementById('spores-effect-group');
             sporesGroup.innerHTML = '';
-            for (let i = 0; i < 15; i++) {
+            for (let i = 0; i < 12; i++) {
                 const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
                 circle.setAttribute("cx", 200 + Math.random() * 200);
                 circle.setAttribute("cy", 150 + Math.random() * 300);
-                circle.setAttribute("r", 2 + Math.random() * 3);
+                circle.setAttribute("r", 2 + Math.random() * 2.5);
                 circle.setAttribute("fill", Math.random() > 0.5 ? "url(#spore-cyan-glow)" : "url(#spore-violet-glow)");
                 circle.setAttribute("class", "spore-particle");
                 circle.style.animationDelay = (Math.random() * 5) + 's';
@@ -1215,15 +1294,6 @@
             showStageToast("已复制选中元素");
         }
 
-        function bringSelectedItemForward() {
-            if (selectedItemIndex === null || !placedItems[selectedItemIndex]) return;
-            const [item] = placedItems.splice(selectedItemIndex, 1);
-            placedItems.push(item);
-            selectedItemIndex = placedItems.length - 1;
-            renderPlacedItemsSvg();
-            updateItemToolbar();
-        }
-
         function deleteSelectedItem() {
             if (selectedItemIndex === null || !placedItems[selectedItemIndex]) return;
             placedItems.splice(selectedItemIndex, 1);
@@ -1235,8 +1305,8 @@
         function initDragAndDropListeners() {
             const svg = document.getElementById('terrarium-svg');
             if (!svg) return;
-            svg.addEventListener('mousedown', () => {
-                if (selectedItemIndex !== null) {
+            svg.addEventListener('mousedown', (e) => {
+                if (e.target.tagName === 'svg' || e.target.id === 'vessel-back-fill') {
                     selectedItemIndex = null;
                     renderPlacedItemsSvg();
                     updateItemToolbar();
@@ -1261,12 +1331,18 @@
         function updateEcosystemDiagnostics() {
             const totalDepth = Object.values(substrateLayers).reduce((a,b)=>a+b, 0);
             const score = totalDepth >= 40 ? 98 : 75;
-            document.getElementById('health-score-num').textContent = score + '%';
-            document.getElementById('health-ring-circle').setAttribute('stroke-dasharray', `${score}, 100`);
-            document.getElementById('diagnostics-list').innerHTML = `<div class="p-2.5 rounded-xl border bg-emerald-50 border-emerald-200 text-emerald-900 text-xs">✅ 多层基质结构饱满，水气循环稳定。</div>`;
+            const scoreNumEl = document.getElementById('health-score-num');
+            const ringEl = document.getElementById('health-ring-circle');
+            if (scoreNumEl) scoreNumEl.textContent = score + '%';
+            if (ringEl) ringEl.setAttribute('stroke-dasharray', `${score}, 100`);
+            
+            const diagList = document.getElementById('diagnostics-list');
+            if (diagList) {
+                diagList.innerHTML = `<div class="p-2.5 rounded-xl border bg-emerald-50 border-emerald-200 text-emerald-900 text-xs">✅ 多层基质结构饱满，水气循环稳定。</div>`;
+            }
         }
 
-        function openSaveThemeModal() {
+        function saveCurrentCanvasAsCustomThemeModal() {
             document.getElementById('save-theme-modal').classList.remove('hidden');
             document.getElementById('save-theme-modal').classList.add('flex');
             const picker = document.getElementById('diy-emoji-picker');
@@ -1329,7 +1405,7 @@
         }
 
         async function runAiTerrariumGenerator() {
-            const titleInput = document.getElementById('ai-custom-title-input').value.trim();
+            const titleInput = document.getElementById('ai-custom-title-input').value.trim() || "AI造景主题";
             const promptInput = document.getElementById('ai-prompt-input').value.trim() || "奇幻微缩生态世界";
             const statusBox = document.getElementById('ai-gen-status');
             const statusText = document.getElementById('ai-gen-status-text');
@@ -1343,8 +1419,7 @@
             const activeKey = (userCustomApiKey && userCustomApiKey.trim()) ? userCustomApiKey.trim() : apiKey;
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${activeKey}`;
 
-            const systemPrompt = `你是一位顶尖微缩景观设计师与矢量SVG插画师。请根据用户描述设计主题。
-返回纯 JSON 对象（不要markdown代码块，直接返回JSON）：
+            const systemPrompt = `你是一位顶尖微缩景观设计师。请根据用户描述返回纯 JSON 对象：
 {
   "title": "主题名称(2-8字)",
   "icon": "emoji图标",
@@ -1352,17 +1427,10 @@
   "substrateStyle": "biolum 或 natural 或 desert",
   "layers": { "pebbles": 32, "charcoal": 18, "soil": 38, "sand": 0, "moss": 35 },
   "ambiance": { "lighting": "night 或 elf 或 day 或 sunset", "fairyLights": true, "mist": true, "spores": true },
-  "story": "生动富有诗意的微缩世界故事背景",
+  "story": "生动富有诗意的微缩世界故事",
   "careGuide": "养护建议",
   "items": [
-    { "type": "cyborg_mecha", "xOffset": 0, "yOffset": 65, "scale": 1.4, "flipped": false }
-  ],
-  "customSvgElements": [
-    {
-      "name": "自定义物品名称",
-      "svg": "<g transform='translate(0,0)'><rect x='-20' y='-20' width='40' height='40' fill='#38bdf8'/></g>",
-      "xOffset": 0, "yOffset": 80, "scale": 1.2
-    }
+    { "type": "chibi_fairy", "xOffset": 0, "yOffset": 65, "scale": 1.4, "flipped": false }
   ]
 }`;
 
@@ -1371,7 +1439,7 @@
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{ parts: [{ text: `用户主题名称：${titleInput || '自动命名'}\n描述：${promptInput}` }] }],
+                        contents: [{ parts: [{ text: `用户主题名称：${titleInput}\n描述：${promptInput}` }] }],
                         systemInstruction: { parts: [{ text: systemPrompt }] },
                         generationConfig: { responseMimeType: "application/json" }
                     })
@@ -1382,29 +1450,6 @@
                     const raw = result?.candidates?.[0]?.content?.parts?.[0]?.text;
                     if (raw) {
                         const parsed = JSON.parse(raw.replace(/```json/g, '').replace(/```/g, '').trim());
-                        
-                        // Register any custom AI generated SVG elements into FLORA_CATALOG
-                        if (Array.isArray(parsed.customSvgElements)) {
-                            parsed.customSvgElements.forEach((el, idx) => {
-                                const customKey = `ai_custom_${Date.now()}_${idx}`;
-                                FLORA_CATALOG[customKey] = {
-                                    name: el.name || "AI定制元素",
-                                    icon: "✨",
-                                    category: "decor",
-                                    scale: el.scale || 1.1,
-                                    svg: el.svg
-                                };
-                                if (!parsed.items) parsed.items = [];
-                                parsed.items.push({
-                                    type: customKey,
-                                    xOffset: el.xOffset || 0,
-                                    yOffset: el.yOffset || 80,
-                                    scale: el.scale || 1.1,
-                                    flipped: false
-                                });
-                            });
-                        }
-
                         const presetKey = 'custom_' + Date.now();
                         const finalTheme = {
                             key: presetKey,
@@ -1414,8 +1459,8 @@
                             vessel: VESSELS[parsed.vessel] ? parsed.vessel : 'cylinder',
                             substrateStyle: ['biolum', 'natural', 'desert'].includes(parsed.substrateStyle) ? parsed.substrateStyle : 'biolum',
                             layers: parsed.layers || { pebbles: 32, charcoal: 18, soil: 38, sand: 0, moss: 35 },
-                            ambiance: parsed.ambiance || { lighting: 'night', fairyLights: true, mist: true, spores: true },
-                            items: Array.isArray(parsed.items) && parsed.items.length > 0 ? parsed.items : [{ type: 'cyborg_mecha', xOffset: 0, yOffset: 65, scale: 1.4, flipped: false }],
+                            ambiance: parsed.ambiance || { lighting: 'elf', fairyLights: true, mist: true, spores: true },
+                            items: Array.isArray(parsed.items) && parsed.items.length > 0 ? parsed.items : [{ type: 'chibi_fairy', xOffset: 0, yOffset: 65, scale: 1.4, flipped: false }],
                             story: parsed.story || promptInput,
                             careGuide: parsed.careGuide || "保持适宜环境与散射光。"
                         };
@@ -1435,40 +1480,44 @@
                 }
                 throw new Error("API 返回异常");
             } catch (err) {
-                console.warn("AI generation fallback to procedural engine:", err);
-                // Smart procedural fallback based on prompt keywords
-                const isMecha = promptInput.includes('机甲') || promptInput.includes('战舰') || promptInput.includes('赛博');
+                console.warn("AI generation fallback:", err);
+                const isMecha = promptInput.includes('机甲') || promptInput.includes('战舰');
                 const fallbackTheme = isMecha ? BUILTIN_THEMES.cyborg_mecha : BUILTIN_THEMES.elf_world;
-                if (titleInput) fallbackTheme.title = titleInput;
+                fallbackTheme.title = titleInput;
 
                 const presetKey = 'custom_' + Date.now();
-                fallbackTheme.key = presetKey;
-                fallbackTheme.isBuiltin = false;
-                customThemesMap[presetKey] = fallbackTheme;
+                const finalTheme = { ...fallbackTheme, key: presetKey, isBuiltin: false };
+                customThemesMap[presetKey] = finalTheme;
                 saveCustomThemesToStorage();
                 activePresetKey = presetKey;
                 renderPresetButtonsBar();
-                applyThemeDefinitionToCanvas(fallbackTheme);
+                applyThemeDefinitionToCanvas(finalTheme);
 
                 statusBox.classList.add('hidden');
                 submitBtn.disabled = false;
                 closeAiGeneratorModal();
-                showStageToast(`✨ 已生成主题「${fallbackTheme.title}」并加入右上角预设栏！`);
+                showStageToast(`✨ 已成功生成主题「${finalTheme.title}」！`);
             }
         }
 
         async function generateAiBotanistReport() {
             const loadingEl = document.getElementById('ai-report-loading');
             const contentEl = document.getElementById('ai-report-content');
-            loadingEl.classList.remove('hidden');
-            contentEl.classList.add('hidden');
+            if (loadingEl) loadingEl.classList.remove('hidden');
+            if (contentEl) contentEl.classList.add('hidden');
             await new Promise(r => setTimeout(r, 600));
-            loadingEl.classList.add('hidden');
-            contentEl.classList.remove('hidden');
-            document.getElementById('ai-title').textContent = "《微缩生态艺术品》";
-            document.getElementById('ai-harmony-tag').textContent = "✨ 生态高度和谐";
-            document.getElementById('ai-story').textContent = "“精妙的器型与多层基质为生态瓶内构筑了完美的微气候，每一个摆件都恰到好处地展现出独特的视觉叙事。”";
-            document.getElementById('ai-care-guide').textContent = "定期开盖通风，保持适宜散射光。";
+            if (loadingEl) loadingEl.classList.add('hidden');
+            if (contentEl) contentEl.classList.remove('hidden');
+            
+            const titleEl = document.getElementById('ai-title');
+            const tagEl = document.getElementById('ai-harmony-tag');
+            const storyEl = document.getElementById('ai-story');
+            const careEl = document.getElementById('ai-care-guide');
+
+            if (titleEl) titleEl.textContent = "《微缩生态艺术品》";
+            if (tagEl) tagEl.textContent = "✨ 生态高度和谐";
+            if (storyEl) storyEl.textContent = "“精妙的器型与多层基质为生态瓶内构筑了完美的微气候，Q版精灵与发光古树交织出无与伦比的梦幻童话叙事。”";
+            if (careEl) careEl.textContent = "定期开盖通风，保持适宜散射光。";
             lastAiNarrativeText = "精妙的器型与多层基质为生态瓶内构筑了完美的微气候。";
         }
 
@@ -1483,6 +1532,7 @@
         function showStageToast(text) {
             const banner = document.getElementById('stage-toast-banner');
             const txt = document.getElementById('stage-toast-text');
+            if (!banner || !txt) return;
             txt.textContent = text;
             banner.classList.add('ring-2', 'ring-indigo-500');
             setTimeout(() => banner.classList.remove('ring-2', 'ring-indigo-500'), 1800);
@@ -1491,7 +1541,7 @@
         function openResetModal() { document.getElementById('reset-modal').classList.remove('hidden'); document.getElementById('reset-modal').classList.add('flex'); }
         function closeResetModal() { document.getElementById('reset-modal').classList.add('hidden'); document.getElementById('reset-modal').classList.remove('flex'); }
         function confirmClearItemsOnly() { placedItems = []; selectedItemIndex = null; rebuildCanvasGeometry(); updateItemToolbar(); closeResetModal(); showStageToast("已清空摆件"); }
-        function confirmFullReset() { placedItems = []; selectedItemIndex = null; substrateLayers = { pebbles: 0, charcoal: 0, soil: 0, sand: 0, moss: 0 }; renderLayerControls(); rebuildCanvasGeometry(); updateItemToolbar(); closeResetModal(); showStageToast("已完全重置"); }
+        function confirmFullReset() { placedItems = []; selectedItemIndex = null; substrateLayers = { pebbles: 0, charcoal: 0, soil: 0, sand: 0, moss: 0 }; rebuildCanvasGeometry(); updateItemToolbar(); closeResetModal(); showStageToast("已完全重置"); }
     </script>
 </body>
 </html>
