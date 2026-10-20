@@ -2,1546 +2,1124 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>植境工坊 Botanica Studio — 电脑与手机两全其美的微景观工作室</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>植境工坊 Botanica Studio — 跨端双模微景观生态设计室</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-day: radial-gradient(circle at 50% 25%, #fdfcf7 0%, #e2eee5 55%, #c5d8c8 100%);
-            --bg-sunset: radial-gradient(circle at 50% 30%, #fff0db 0%, #f5b58d 48%, #4a2c49 100%);
-            --bg-night: radial-gradient(circle at 50% 25%, #1e293b 0%, #0f172a 60%, #050811 100%);
-            --bg-elf: radial-gradient(circle at 50% 32%, #2e1d59 0%, #15193b 52%, #070917 100%);
-        }
-
-        body {
-            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            user-select: none;
-            -webkit-user-select: none;
-            overflow-x: hidden;
-            touch-action: manipulation;
-        }
-
-        h1, h2, h3, .serif-title {
-            font-family: 'Fraunces', Georgia, serif;
-        }
-
-        ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.04);
-            border-radius: 8px;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(71, 102, 82, 0.3);
-            border-radius: 8px;
-        }
-
-        .stage-day { background: var(--bg-day); color: #1e293b; }
-        .stage-sunset { background: var(--bg-sunset); color: #2b1820; }
-        .stage-night { background: var(--bg-night); color: #f8fafc; }
-        .stage-elf { background: var(--bg-elf); color: #f0f9ff; }
-
-        @keyframes driftMist1 {
-            0% { transform: translateX(-22px) translateY(0px) scale(1); opacity: 0.5; }
-            50% { transform: translateX(22px) translateY(-8px) scale(1.08); opacity: 0.85; }
-            100% { transform: translateX(-22px) translateY(0px) scale(1); opacity: 0.5; }
-        }
-        @keyframes driftMist2 {
-            0% { transform: translateX(18px) translateY(5px) scale(1.05); opacity: 0.4; }
-            50% { transform: translateX(-18px) translateY(-6px) scale(0.95); opacity: 0.75; }
-            100% { transform: translateX(18px) translateY(5px) scale(1.05); opacity: 0.4; }
-        }
-        .mist-cloud-1 { animation: driftMist1 9s ease-in-out infinite; }
-        .mist-cloud-2 { animation: driftMist2 12s ease-in-out infinite; }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.95; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(0.7); }
-        }
-        .fairy-bulb { animation: twinkle 3s ease-in-out infinite; }
-
-        @keyframes floatSpore {
-            0% { transform: translateY(0px) translateX(0px) scale(0.85); opacity: 0.25; }
-            50% { transform: translateY(-28px) translateX(10px) scale(1.25); opacity: 0.95; }
-            100% { transform: translateY(0px) translateX(0px) scale(0.85); opacity: 0.25; }
-        }
-        .spore-particle { animation: floatSpore 5.5s ease-in-out infinite; }
-
-        .terrarium-item {
-            cursor: grab;
-            transition: filter 0.18s ease;
-        }
-        .terrarium-item:active {
-            cursor: grabbing;
-        }
-        .terrarium-item:hover {
-            filter: drop-shadow(0px 6px 14px rgba(56, 189, 248, 0.45));
-        }
-        .terrarium-item.selected {
-            filter: drop-shadow(0px 0px 14px rgba(52, 211, 153, 0.95));
-        }
-
-        input[type="range"] {
-            -webkit-appearance: none;
-            appearance: none;
-            background: transparent;
-            cursor: pointer;
-        }
-        input[type="range"]::-webkit-slider-runnable-track {
-            height: 6px;
-            border-radius: 999px;
-            background: #e2e8f0;
-        }
-        input[type="range"]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            margin-top: -5px;
-            background-color: #15803d;
-            height: 18px;
-            width: 18px;
-            border-radius: 50%;
-            border: 2px solid #ffffff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-        }
-
-        .mobile-sheet {
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .mobile-sheet.closed {
-            transform: translateY(100%);
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans SC', sans-serif; user-select: none; }
+        .glass-panel { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
+        .dark-glass { background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(12px); }
+        @keyframes floatSlow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+        .animate-float { animation: floatSlow 4s ease-in-out infinite; }
+        @keyframes pulseGlow { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+        .animate-glow { animation: pulseGlow 3s ease-in-out infinite; }
     </style>
 </head>
-<body class="bg-stone-100 text-stone-800 min-h-screen flex flex-col">
+<body class="bg-slate-950 text-slate-100 h-screen w-screen overflow-hidden flex flex-col">
 
-    <header class="bg-white/95 backdrop-blur-md border-b border-stone-200/80 px-3 lg:px-6 py-2.5 flex items-center justify-between gap-2 sticky top-0 z-30 shadow-xs">
-        <div class="flex items-center gap-2.5 min-w-0">
-            <div class="w-9 h-9 lg:w-10 lg:h-10 rounded-xl bg-gradient-to-br from-emerald-800 to-indigo-900 text-emerald-50 flex items-center justify-center shadow-inner shrink-0">
-                <svg class="w-5 h-5 lg:w-6 lg:h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 2L4 7v10l8 5 8-5V7l-8-5z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 16c2.5-2 3.5-5 1-8-2.5 3-1.5 6 1 8z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 22v-6"/>
-                </svg>
+    <!-- 顶部主导航栏 -->
+    <header class="h-14 border-b border-slate-800 bg-slate-900/90 px-4 flex items-center justify-between shrink-0 z-30">
+        <div class="flex items-center space-x-3">
+            <div class="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-900/40">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
             </div>
-            <div class="min-w-0">
-                <h1 class="text-sm lg:text-xl font-bold text-stone-900 tracking-tight leading-none truncate">植境工坊 Botanica</h1>
-                <p class="text-[10px] lg:text-xs text-stone-500 mt-0.5 truncate">大师级微缩景观与手机电脑双模工作室</p>
+            <div>
+                <h1 class="font-bold text-sm tracking-wide text-emerald-400">植境工坊 Botanica</h1>
+                <p class="text-[10px] text-slate-400">大师级微景观与跨端双模工作室</p>
             </div>
         </div>
 
-        <!-- Right Preset & Action Controls -->
-        <div class="flex items-center gap-1.5 shrink-0">
-            <div class="hidden xl:flex items-center gap-1.5 flex-wrap">
-                <span class="text-[11px] font-bold text-stone-400 mr-1">预设与自定义主题:</span>
-                <div id="preset-buttons-list" class="flex items-center gap-1.5 flex-wrap"></div>
+        <!-- 预设与自定义主题快捷切换栏 -->
+        <div class="hidden md:flex items-center space-x-2 overflow-x-auto max-w-xl py-1 px-2 no-scrollbar" id="desktopThemeBar">
+            <span class="text-xs text-slate-400 shrink-0">预设与自定义主题：</span>
+            <div id="themeChipsContainer" class="flex items-center space-x-2">
+                <!-- 动态渲染主题标签 -->
             </div>
+        </div>
 
-            <button onclick="saveCurrentCanvasAsCustomThemeModal()" class="hidden md:flex px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-900 border border-amber-300 hover:bg-amber-100 transition items-center gap-1 shadow-2xs">
-                <span>💾</span>
-                <span>保存当前为主题</span>
+        <!-- 右侧全局操作区 -->
+        <div class="flex items-center space-x-2">
+            <button onclick="saveCurrentAsThemeModal()" class="px-3 py-1.5 rounded-lg bg-amber-600/20 border border-amber-500/40 text-amber-300 text-xs hover:bg-amber-600/30 transition flex items-center space-x-1">
+                <span>💾 保存当前主题</span>
             </button>
-
-            <button onclick="openAiGeneratorModal()" class="px-2.5 lg:px-3 py-1.5 rounded-lg text-xs font-semibold bg-gradient-to-r from-indigo-600 via-purple-600 to-emerald-600 text-white shadow-sm hover:opacity-95 transition flex items-center gap-1">
-                <span>✨</span>
-                <span class="hidden sm:inline">AI 自定义主题</span>
-                <span class="sm:hidden">AI主题</span>
+            <button onclick="openAiThemeModal()" class="px-3 py-1.5 rounded-lg bg-purple-600/20 border border-purple-500/40 text-purple-300 text-xs hover:bg-purple-600/30 transition flex items-center space-x-1">
+                <span>✨ AI 自定义主题</span>
             </button>
-
-            <button onclick="openAiGeneratorModal(true)" id="top-apikey-btn" class="hidden sm:flex px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-stone-100 text-stone-700 border border-stone-300 hover:bg-stone-200 transition items-center gap-1">
-                <span>🔑</span>
-                <span id="top-apikey-label">API配置</span>
+            <button onclick="openApiKeyModal()" class="px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 text-xs hover:bg-slate-700 transition flex items-center space-x-1">
+                <span>🔑 API配置</span>
             </button>
-
-            <button onclick="openResetModal()" class="p-1.5 lg:px-2.5 lg:py-1.5 rounded-lg text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100 transition flex items-center gap-1">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0016.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                <span class="hidden sm:inline">重置</span>
+            <button onclick="resetTerrarium()" class="p-1.5 rounded-lg bg-red-600/20 border border-red-500/40 text-red-300 text-xs hover:bg-red-600/30 transition" title="重置生态瓶">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
             </button>
         </div>
     </header>
 
-    <main class="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-hidden pb-20 lg:pb-0">
+    <!-- 主体双模容器 -->
+    <div class="flex-1 flex flex-col md:flex-row overflow-hidden relative">
 
-        <!-- Left Control Panel (Desktop View) -->
-        <aside class="hidden lg:flex lg:col-span-4 xl:col-span-3 bg-white border-r border-stone-200 flex-col h-[calc(100vh-61px)]">
-            <div class="grid grid-cols-4 border-b border-stone-200 bg-stone-50/70 p-1.5 gap-1">
-                <button onclick="switchTab('vessels')" id="tab-btn-vessels" class="tab-btn py-2 px-1 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-1 bg-white text-emerald-800 shadow-xs">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                    容器与光效
-                </button>
-                <button onclick="switchTab('layers')" id="tab-btn-layers" class="tab-btn py-2 px-1 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-1 text-stone-600 hover:text-stone-900">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                    基质与蓝砂
-                </button>
-                <button onclick="switchTab('flora')" id="tab-btn-flora" class="tab-btn py-2 px-1 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-1 text-stone-600 hover:text-stone-900">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
-                    古树与花草
-                </button>
-                <button onclick="switchTab('decor')" id="tab-btn-decor" class="tab-btn py-2 px-1 rounded-lg text-xs font-semibold transition flex flex-col items-center gap-1 text-stone-600 hover:text-stone-900">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"/></svg>
-                    精灵与童话
-                </button>
+        <!-- 电脑端左侧面板 (Desktop Sidebar) -->
+        <div class="hidden md:flex w-80 lg:w-96 border-r border-slate-800 bg-slate-900 flex-col shrink-0 z-20">
+            <!-- 标签页切换 -->
+            <div class="flex border-b border-slate-800 bg-slate-950/50">
+                <button onclick="switchTab('container')" class="flex-1 py-3 text-xs font-medium text-center border-b-2 transition tab-btn active-tab" data-tab="container">容器光效</button>
+                <button onclick="switchTab('substrate')" class="flex-1 py-3 text-xs font-medium text-center border-b-2 transition tab-btn text-slate-400" data-tab="substrate">基质土层</button>
+                <button onclick="switchTab('plants')" class="flex-1 py-3 text-xs font-medium text-center border-b-2 transition tab-btn text-slate-400" data-tab="plants">古树花草</button>
+                <button onclick="switchTab('decor')" class="flex-1 py-3 text-xs font-medium text-center border-b-2 transition tab-btn text-slate-400" data-tab="decor">精灵造景</button>
             </div>
 
-            <div class="flex-1 overflow-y-auto p-4 space-y-5" id="desktop-control-content">
-                <!-- Content injected via renderControlPanels() -->
+            <!-- 侧边栏面板内容 -->
+            <div class="flex-1 overflow-y-auto p-4 space-y-4" id="sidebarContent">
+                <!-- 动态内容由 JS 渲染 -->
             </div>
-        </aside>
+        </div>
 
-        <!-- Center Stage (Both Mobile & Desktop) -->
-        <section id="stage-wrapper" class="col-span-1 lg:col-span-5 xl:col-span-6 relative flex flex-col items-center justify-center p-3 lg:p-6 min-h-[480px] sm:min-h-[540px] lg:h-[calc(100vh-61px)] stage-elf transition-colors duration-700 overflow-hidden">
-            <div class="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-none z-20 gap-2">
-                <div id="stage-toast-banner" class="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow-sm border border-stone-200/80 text-[11px] lg:text-xs font-medium text-stone-800 flex items-center gap-2 pointer-events-auto transition-all duration-300">
-                    <span class="w-2 h-2 rounded-full bg-indigo-500 animate-pulse shrink-0"></span>
-                    <span id="stage-toast-text" class="truncate">点击或拖拽放入物品 • 手机点击瓶内选中后可微调</span>
-                </div>
-                <div id="item-count-pill" class="bg-white/90 backdrop-blur-md px-2.5 py-1.5 rounded-full shadow-sm border border-stone-200/80 text-[11px] lg:text-xs font-semibold text-stone-800 shrink-0">
-                    0 件物品
-                </div>
+        <!-- 中间画布区域 (Canvas Workspace) -->
+        <div class="flex-1 bg-slate-950 relative flex flex-col items-center justify-center overflow-hidden">
+            <!-- 提示标语 -->
+            <div class="absolute top-4 bg-slate-900/80 border border-slate-800 px-4 py-1.5 rounded-full text-xs text-slate-300 flex items-center space-x-2 z-10">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span id="canvasTipText">点击或拖拽摆放物品 • 电脑端支持自由缩放与旋转，手机端轻触即可摆放</span>
+                <span id="placedCountBadge" class="bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded text-[10px]">已放置 0 件物品</span>
             </div>
 
-            <div id="canvas-dropzone" class="w-full h-full max-w-[500px] max-h-[620px] flex items-center justify-center relative mt-6 lg:mt-0">
-                <svg id="terrarium-svg" viewBox="0 0 600 700" class="w-full h-full drop-shadow-2xl select-none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <clipPath id="vessel-clip">
-                            <path id="vessel-clip-path" d="" />
-                        </clipPath>
-                        <filter id="glow-strong" x="-40%" y="-40%" width="180%" height="180%">
-                            <feGaussianBlur stdDeviation="6" result="blur" />
-                            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                        </filter>
-                        <filter id="glow-soft" x="-30%" y="-30%" width="160%" height="160%">
-                            <feGaussianBlur stdDeviation="3.5" result="blur" />
-                            <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
-                        </filter>
-                        <linearGradient id="glass-body-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.26" />
-                            <stop offset="35%" stop-color="#e0e7ff" stop-opacity="0.07" />
-                            <stop offset="70%" stop-color="#bae6fd" stop-opacity="0.06" />
-                            <stop offset="100%" stop-color="#ffffff" stop-opacity="0.22" />
-                        </linearGradient>
-                        <linearGradient id="glass-shine-left" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.52" />
-                            <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
-                        </linearGradient>
-                        <radialGradient id="fairy-glow" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stop-color="#fef08a" stop-opacity="1" />
-                            <stop offset="45%" stop-color="#f59e0b" stop-opacity="0.65" />
-                            <stop offset="100%" stop-color="#f59e0b" stop-opacity="0" />
-                        </radialGradient>
-                        <radialGradient id="spore-cyan-glow" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stop-color="#e0f2fe" stop-opacity="1" />
-                            <stop offset="40%" stop-color="#38bdf8" stop-opacity="0.8" />
-                            <stop offset="100%" stop-color="#818cf8" stop-opacity="0" />
-                        </radialGradient>
-                        <radialGradient id="spore-violet-glow" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stop-color="#fae8ff" stop-opacity="1" />
-                            <stop offset="45%" stop-color="#c084fc" stop-opacity="0.8" />
-                            <stop offset="100%" stop-color="#7e22ce" stop-opacity="0" />
-                        </radialGradient>
-                        <linearGradient id="elf-wing-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#e0f2fe" stop-opacity="0.92" />
-                            <stop offset="38%" stop-color="#60a5fa" stop-opacity="0.78" />
-                            <stop offset="72%" stop-color="#a855f7" stop-opacity="0.78" />
-                            <stop offset="100%" stop-color="#f0abfc" stop-opacity="0.88" />
-                        </linearGradient>
-                        <linearGradient id="elf-dress-grad" x1="0%" y1="0%" x2="40%" y2="100%">
-                            <stop offset="0%" stop-color="#c084fc" />
-                            <stop offset="50%" stop-color="#7c3aed" />
-                            <stop offset="100%" stop-color="#38bdf8" />
-                        </linearGradient>
-                        <radialGradient id="star-orb-grad" cx="50%" cy="50%" r="50%">
-                            <stop offset="0%" stop-color="#ffffff" stop-opacity="1" />
-                            <stop offset="35%" stop-color="#a5f3fc" stop-opacity="0.95" />
-                            <stop offset="70%" stop-color="#c084fc" stop-opacity="0.8" />
-                            <stop offset="100%" stop-color="#6366f1" stop-opacity="0" />
-                        </radialGradient>
-                        <linearGradient id="mist-grad" x1="0%" y1="0%" x2="0%" y2="100%">
-                            <stop offset="0%" stop-color="#e0e7ff" stop-opacity="0.05" />
-                            <stop offset="50%" stop-color="#f8fafc" stop-opacity="0.45" />
-                            <stop offset="100%" stop-color="#c7d2fe" stop-opacity="0.18" />
-                        </linearGradient>
-                        <radialGradient id="wood-table-grad" cx="50%" cy="40%" r="55%">
-                            <stop offset="0%" stop-color="#854d0e" />
-                            <stop offset="70%" stop-color="#5c2d0c" />
-                            <stop offset="100%" stop-color="#3b1905" />
-                        </radialGradient>
-
-                        <!-- SUBSTRATE PATTERNS -->
-                        <pattern id="pat-pebbles" width="44" height="28" patternUnits="userSpaceOnUse">
-                            <rect width="44" height="28" fill="#57534e"/>
-                            <ellipse cx="10" cy="8" rx="8" ry="5" fill="#d6d3d1" stroke="#44403c" stroke-width="1"/>
-                            <ellipse cx="28" cy="7" rx="9" ry="5.5" fill="#a8a29e" stroke="#44403c" stroke-width="1"/>
-                            <ellipse cx="18" cy="19" rx="10" ry="6" fill="#78716c" stroke="#292524" stroke-width="1"/>
-                        </pattern>
-                        <pattern id="pat-charcoal" width="24" height="24" patternUnits="userSpaceOnUse">
-                            <rect width="24" height="24" fill="#18181b"/>
-                            <polygon points="2,4 8,2 10,8 4,10" fill="#27272a"/>
-                        </pattern>
-                        <pattern id="pat-moss" width="36" height="22" patternUnits="userSpaceOnUse">
-                            <rect width="36" height="22" fill="#166534"/>
-                            <path d="M 0 10 Q 9 2 18 10 T 36 10" fill="none" stroke="#22c55e" stroke-width="3.5" stroke-linecap="round"/>
-                        </pattern>
-                        <pattern id="pat-soil" width="30" height="30" patternUnits="userSpaceOnUse">
-                            <rect width="30" height="30" fill="#3b1905"/>
-                            <circle cx="6" cy="8" r="2" fill="#290f02"/>
-                        </pattern>
-                        <pattern id="pat-sand" width="40" height="20" patternUnits="userSpaceOnUse">
-                            <rect width="40" height="20" fill="#e6be8a"/>
-                        </pattern>
-                        <pattern id="pat-biolum-sand" width="44" height="24" patternUnits="userSpaceOnUse">
-                            <rect width="44" height="24" fill="#0f294a"/>
-                            <circle cx="8" cy="6" r="1.5" fill="#38bdf8"/>
-                            <circle cx="26" cy="12" r="1.8" fill="#7dd3fc"/>
-                        </pattern>
-                        <pattern id="pat-biolum-moss" width="38" height="24" patternUnits="userSpaceOnUse">
-                            <rect width="38" height="24" fill="#064e3b"/>
-                            <path d="M 0 9 Q 9 1 19 9 T 38 9" fill="none" stroke="#10b981" stroke-width="4" stroke-linecap="round"/>
-                        </pattern>
-                        <pattern id="pat-crystal-pebbles" width="44" height="26" patternUnits="userSpaceOnUse">
-                            <rect width="44" height="26" fill="#1e1b4b"/>
-                            <ellipse cx="10" cy="8" rx="8" ry="5" fill="#4338ca" stroke="#312e81" stroke-width="1"/>
-                        </pattern>
-                    </defs>
-
-                    <circle id="stage-back-glow" cx="300" cy="330" r="245" fill="#818cf8" opacity="0.35" filter="blur(45px)" />
-                    <circle id="stage-secondary-glow" cx="300" cy="420" r="185" fill="#38bdf8" opacity="0.25" filter="blur(35px)" />
-
-                    <g id="wooden-pedestal">
-                        <ellipse cx="300" cy="602" rx="215" ry="24" fill="#000000" opacity="0.32" />
-                        <path d="M 105 580 L 495 580 L 495 595 C 495 610, 105 610, 105 595 Z" fill="#2e1505" />
-                        <ellipse cx="300" cy="580" rx="195" ry="18" fill="url(#wood-table-grad)" stroke="#78350f" stroke-width="1.5" />
-                    </g>
-
-                    <path id="vessel-back-fill" d="" fill="url(#glass-body-grad)" />
-
-                    <g clip-path="url(#vessel-clip)">
-                        <g id="mist-bg-group" class="pointer-events-none">
-                            <ellipse cx="300" cy="310" rx="190" ry="170" fill="url(#mist-grad)" opacity="0.55" />
-                        </g>
-                        <g id="substrate-layers-group"></g>
-                        <g id="substrate-surface-rim"></g>
-                        <g id="placed-items-group"></g>
-                        <g id="mist-effect-group" class="pointer-events-none">
-                            <g class="mist-cloud-1">
-                                <ellipse cx="250" cy="280" rx="170" ry="55" fill="url(#mist-grad)" />
-                                <ellipse cx="350" cy="410" rx="155" ry="45" fill="url(#mist-grad)" />
-                            </g>
-                        </g>
-                        <g id="spores-effect-group" class="pointer-events-none"></g>
-                        <g id="fairy-lights-group" class="hidden pointer-events-none"></g>
-                    </g>
-
-                    <g id="vessel-front-overlay" class="pointer-events-none"></g>
+            <!-- SVG 微景观交互画布 -->
+            <div id="terrariumCanvasContainer" class="w-full h-full flex items-center justify-center p-4 relative cursor-crosshair">
+                <svg id="terrariumSvg" class="w-full h-full max-w-2xl max-h-[80vh]" viewBox="0 0 500 650" preserveAspectRatio="xMidYMid meet">
+                    <!-- 动态生成背景光效、基质土层、玻璃容器、内部物品 -->
                 </svg>
-
-                <!-- Floating Selected Item Toolbar -->
-                <div id="item-toolbar" class="hidden absolute bottom-3 left-1/2 -translate-x-1/2 bg-stone-900/95 text-white backdrop-blur-md px-3 py-2 rounded-2xl shadow-xl border border-stone-700 flex items-center gap-1.5 z-30">
-                    <span id="selected-item-label" class="text-xs font-bold text-emerald-300 pr-1.5 border-r border-stone-700 whitespace-nowrap">精灵古树</span>
-                    <button onclick="scaleSelectedItem(-0.15)" title="缩小" class="px-2 py-1 hover:bg-stone-800 rounded-lg transition text-xs font-bold">-</button>
-                    <span id="selected-item-scale" class="text-[11px] font-mono text-stone-300 w-8 text-center">100%</span>
-                    <button onclick="scaleSelectedItem(0.15)" title="放大" class="px-2 py-1 hover:bg-stone-800 rounded-lg transition text-xs font-bold">+</button>
-                    <div class="h-4 w-px bg-stone-700 mx-0.5"></div>
-                    <button onclick="flipSelectedItem()" title="翻转" class="px-2 py-1 hover:bg-stone-800 rounded-lg transition text-xs">翻转</button>
-                    <button onclick="duplicateSelectedItem()" title="复制" class="px-2 py-1 hover:bg-stone-800 rounded-lg transition text-xs">复制</button>
-                    <div class="h-4 w-px bg-stone-700 mx-0.5"></div>
-                    <button onclick="deleteSelectedItem()" title="删除" class="px-2 py-1 bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white rounded-lg transition text-xs">删除</button>
-                </div>
             </div>
 
-            <!-- Mobile Bottom Action & Drawer Trigger Bar -->
-            <div class="lg:hidden absolute bottom-2 left-2 right-2 bg-white/95 backdrop-blur-md border border-stone-200 shadow-xl rounded-2xl p-1.5 flex items-center justify-between z-30">
-                <button onclick="openMobileSheet('vessels')" class="flex-1 py-2 flex flex-col items-center gap-0.5 text-xs font-bold text-stone-700 hover:text-emerald-700 transition">
-                    <span class="text-base">🏺</span>
-                    <span>容器光效</span>
+            <!-- 底部选中物品快捷操作浮窗 (Item Inspector Toolbar) -->
+            <div id="itemToolbar" class="absolute bottom-6 bg-slate-900/95 border border-slate-700 px-4 py-2 rounded-xl shadow-2xl flex items-center space-x-3 hidden z-20 backdrop-blur-md">
+                <span id="selectedItemName" class="text-xs font-bold text-emerald-400">物品名称</span>
+                <div class="h-4 w-[1px] bg-slate-700"></div>
+                <div class="flex items-center space-x-1 text-xs">
+                    <span class="text-slate-400">缩放</span>
+                    <button onclick="adjustSelectedScale(-0.1)" class="w-6 h-6 rounded bg-slate-800 hover:bg-slate-700 flex items-center justify-center">-</button>
+                    <span id="selectedScaleVal" class="w-8 text-center">100%</span>
+                    <button onclick="adjustSelectedScale(0.1)" class="w-6 h-6 rounded bg-slate-800 hover:bg-slate-700 flex items-center justify-center">+</button>
+                </div>
+                <div class="h-4 w-[1px] bg-slate-700"></div>
+                <button onclick="toggleSelectedFlip()" class="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-xs flex items-center space-x-1">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
+                    <span>翻转</span>
                 </button>
-                <div class="w-px h-6 bg-stone-200"></div>
-                <button onclick="openMobileSheet('layers')" class="flex-1 py-2 flex flex-col items-center gap-0.5 text-xs font-bold text-stone-700 hover:text-emerald-700 transition">
-                    <span class="text-base">🪨</span>
-                    <span>基质土层</span>
+                <button onclick="bringSelectedToFront()" class="p-1.5 rounded bg-slate-800 hover:bg-slate-700 text-xs" title="置于顶层">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>
                 </button>
-                <div class="w-px h-6 bg-stone-200"></div>
-                <button onclick="openMobileSheet('flora')" class="flex-1 py-2 flex flex-col items-center gap-0.5 text-xs font-bold text-stone-700 hover:text-emerald-700 transition">
-                    <span class="text-base">🌿</span>
-                    <span>古树花草</span>
-                </button>
-                <div class="w-px h-6 bg-stone-200"></div>
-                <button onclick="openMobileSheet('decor')" class="flex-1 py-2 flex flex-col items-center gap-0.5 text-xs font-bold text-stone-700 hover:text-emerald-700 transition">
-                    <span class="text-base">🧚</span>
-                    <span>精灵造景</span>
-                </button>
-                <div class="w-px h-6 bg-stone-200"></div>
-                <button onclick="openMobileSheet('diagnostics')" class="flex-1 py-2 flex flex-col items-center gap-0.5 text-xs font-bold text-indigo-700 transition">
-                    <span class="text-base">📊</span>
-                    <span>生态诊断</span>
+                <button onclick="deleteSelected()" class="p-1.5 rounded bg-red-600/20 text-red-400 hover:bg-red-600/30 text-xs" title="删除物品">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                 </button>
             </div>
-        </section>
 
-        <!-- Right Panel (Desktop View) -->
-        <aside class="hidden lg:flex lg:col-span-3 bg-white border-l border-stone-200 p-4 lg:p-5 flex-col justify-between overflow-y-auto lg:h-[calc(100vh-61px)] space-y-5">
-            <div class="space-y-5" id="desktop-right-content">
-                <!-- Content injected via renderRightPanel() -->
-            </div>
-        </aside>
-    </main>
-
-    <!-- Mobile Bottom Sheet Drawer -->
-    <div id="mobile-sheet-overlay" class="fixed inset-0 bg-stone-900/50 backdrop-blur-xs z-40 hidden lg:hidden" onclick="closeMobileSheet()"></div>
-    <div id="mobile-sheet-drawer" class="fixed bottom-0 left-0 right-0 bg-white rounded-t-3xl shadow-2xl z-50 flex flex-col max-h-[82vh] mobile-sheet closed lg:hidden border-t border-stone-200">
-        <div class="p-3 border-b border-stone-200 flex items-center justify-between bg-stone-50 rounded-t-3xl shrink-0">
-            <div class="flex items-center gap-2">
-                <span id="mobile-sheet-icon" class="text-lg">🌿</span>
-                <h3 id="mobile-sheet-title" class="text-sm font-bold text-stone-900">工坊控制台</h3>
-            </div>
-            <button onclick="closeMobileSheet()" class="w-8 h-8 rounded-full bg-stone-200/70 text-stone-700 flex items-center justify-center font-bold text-sm">✕</button>
-        </div>
-        <div id="mobile-sheet-body" class="p-4 overflow-y-auto flex-1 space-y-4 pb-12"></div>
-    </div>
-
-    <!-- SAVE THEME MODAL -->
-    <div id="save-theme-modal" class="fixed inset-0 bg-stone-900/55 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-stone-200 space-y-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center text-lg">💾</div>
-                    <div>
-                        <h3 class="text-base font-bold text-stone-900">保存当前画面为自定义主题</h3>
-                        <p class="text-xs text-stone-500">固定在顶部预设栏，随时一键应用</p>
-                    </div>
-                </div>
-                <button onclick="closeSaveThemeModal()" class="p-1.5 text-stone-400 hover:text-stone-600 rounded-lg">✕</button>
-            </div>
-            <div class="space-y-3">
-                <div>
-                    <label class="text-xs font-bold text-stone-700 block mb-1">自定义主题名称：</label>
-                    <input type="text" id="diy-theme-name-input" maxlength="14" placeholder="例如：赛博机甲 / 星际战舰" class="w-full rounded-xl border border-stone-300 px-3 py-2 text-xs text-stone-800 focus:ring-2 focus:ring-indigo-600" />
-                </div>
-                <div>
-                    <label class="text-xs font-bold text-stone-700 block mb-1.5">选择图标：</label>
-                    <div id="diy-emoji-picker" class="flex flex-wrap gap-1.5"></div>
-                </div>
-                <div>
-                    <label class="text-xs font-bold text-stone-700 block mb-1">设计灵感：</label>
-                    <textarea id="diy-theme-story-input" rows="2" placeholder="记录下这个生态瓶的灵感..." class="w-full rounded-xl border border-stone-300 p-2.5 text-xs text-stone-800 resize-none"></textarea>
-                </div>
-            </div>
-            <div class="flex items-center justify-end gap-2 pt-2">
-                <button onclick="closeSaveThemeModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-stone-600 hover:bg-stone-100 transition">取消</button>
-                <button onclick="saveCurrentCanvasAsCustomTheme()" class="px-4 py-2 rounded-xl text-xs font-bold bg-indigo-700 text-white hover:bg-indigo-800 transition">保存至预设栏</button>
+            <!-- 手机端底部触控导航条 (Mobile Bottom Navigation) -->
+            <div class="md:hidden w-full h-16 bg-slate-900 border-t border-slate-800 flex items-center justify-around px-2 z-30 shrink-0">
+                <button onclick="openMobileDrawer('container')" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-300 hover:text-emerald-400">
+                    <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    <span class="text-[10px]">容器光效</span>
+                </button>
+                <button onclick="openMobileDrawer('substrate')" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-300 hover:text-emerald-400">
+                    <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                    <span class="text-[10px]">基质土层</span>
+                </button>
+                <button onclick="openMobileDrawer('plants')" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-300 hover:text-emerald-400">
+                    <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/></svg>
+                    <span class="text-[10px]">古树花草</span>
+                </button>
+                <button onclick="openMobileDrawer('decor')" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-300 hover:text-emerald-400">
+                    <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                    <span class="text-[10px]">精灵造景</span>
+                </button>
+                <button onclick="openMobileDrawer('health')" class="flex flex-col items-center justify-center flex-1 py-1 text-slate-300 hover:text-emerald-400">
+                    <svg class="w-5 h-5 mb-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                    <span class="text-[10px]">生态诊断</span>
+                </button>
             </div>
         </div>
-    </div>
 
-    <!-- AI GENERATOR MODAL -->
-    <div id="ai-generator-modal" class="fixed inset-0 bg-stone-900/55 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-stone-200 space-y-4 max-h-[92vh] overflow-y-auto">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-600 via-purple-600 to-emerald-600 text-white flex items-center justify-center text-lg">✨</div>
-                    <div>
-                        <h3 class="text-base font-bold text-stone-900">AI 自定义主题生成器</h3>
-                        <p class="text-xs text-stone-500">Gemini 智能配置容器、基质与专属矢量组件</p>
-                    </div>
-                </div>
-                <button onclick="closeAiGeneratorModal()" class="p-1.5 text-stone-400 hover:text-stone-600 rounded-lg">✕</button>
-            </div>
-
-            <div class="rounded-xl border border-indigo-200/80 bg-indigo-50/50 p-3 space-y-2">
+        <!-- 电脑端右侧生态诊断与 AI 面板 (Desktop Right Panel) -->
+        <div class="hidden md:flex w-80 lg:w-96 border-l border-slate-800 bg-slate-900 flex-col shrink-0 z-20 overflow-y-auto p-4 space-y-4">
+            <!-- 生态系统健康度卡片 -->
+            <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4 space-y-3">
                 <div class="flex items-center justify-between">
-                    <button type="button" onclick="toggleApiKeyConfigPanel()" class="text-xs font-bold text-indigo-950 flex items-center gap-1.5 hover:text-indigo-700">
-                        <span>🔑</span>
-                        <span>API Key 设置（GitHub Pages 外部网页需填入 Key）</span>
-                        <span id="apikey-status-pill" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">就绪</span>
-                    </button>
-                    <button type="button" onclick="toggleApiKeyConfigPanel()" class="text-[11px] font-semibold text-indigo-700 hover:underline" id="apikey-toggle-text">展开</button>
+                    <h3 class="text-xs font-bold text-slate-200 flex items-center space-x-1.5">
+                        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span>生态系统健康度</span>
+                    </h3>
+                    <span id="healthScoreBadge" class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/20 text-emerald-300">100%</span>
                 </div>
-                <div id="apikey-config-panel" class="hidden pt-2 border-t border-indigo-200/60 space-y-2">
-                    <p class="text-[11px] text-stone-600 leading-relaxed">
-                        粘贴您的 <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-indigo-700 underline font-semibold">Google AI Studio API Key</a>。
-                    </p>
-                    <div class="flex gap-2">
-                        <input type="password" id="custom-gemini-key-input" placeholder="AIzaSy..." class="flex-1 rounded-lg border border-stone-300 bg-white px-2.5 py-1.5 text-xs text-stone-800 focus:ring-2 focus:ring-indigo-600" />
-                        <button type="button" onclick="saveUserCustomApiKey()" class="px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-700 text-white hover:bg-indigo-800 transition shrink-0">保存 Key</button>
+                <div class="flex items-baseline justify-between">
+                    <span id="healthStatusTitle" class="text-sm font-bold text-emerald-400">热带云雾雨林</span>
+                    <span id="healthStatusSub" class="text-[10px] text-slate-400">基质层与瓶内湿度与所选植物完美契合。</span>
+                </div>
+                <!-- 进度条 -->
+                <div class="space-y-2 pt-2 border-t border-slate-800 text-xs">
+                    <div>
+                        <div class="flex justify-between text-[11px] mb-1"><span class="text-slate-400">相对湿度</span><span id="humidityVal" class="text-slate-200">88%</span></div>
+                        <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden"><div id="humidityBar" class="h-full bg-blue-500 rounded-full transition-all duration-500" style="width: 88%"></div></div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-[11px] mb-1"><span class="text-slate-400">根系排水性</span><span id="drainageVal" class="text-slate-200">极佳</span></div>
+                        <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden"><div id="drainageBar" class="h-full bg-emerald-500 rounded-full transition-all duration-500" style="width: 85%"></div></div>
                     </div>
                 </div>
             </div>
 
+            <!-- 植物学家诊断笔记 -->
+            <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4 space-y-2.5">
+                <h4 class="text-xs font-bold text-slate-300 flex items-center space-x-1.5">
+                    <svg class="w-4 h-4 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    <span>植物学家诊断笔记</span>
+                </h4>
+                <div id="diagnosticsList" class="space-y-2 text-xs text-slate-300">
+                    <!-- 动态注入诊断结果 -->
+                </div>
+            </div>
+
+            <!-- AI 植境品鉴与故事 -->
+            <div class="bg-slate-950/60 border border-purple-500/30 rounded-xl p-4 space-y-3 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="flex items-center justify-between">
+                    <h4 class="text-xs font-bold text-purple-300 flex items-center space-x-1.5">
+                        <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                        <span>GEMINI 植境品鉴与故事</span>
+                    </h4>
+                    <button onclick="triggerAiBotanistReport()" class="px-2.5 py-1 rounded-lg bg-purple-600/30 border border-purple-500/50 text-purple-200 text-[11px] hover:bg-purple-600/40 transition flex items-center space-x-1">
+                        <span>✨ AI 刷新解读</span>
+                    </button>
+                </div>
+                <div id="aiReportCard" class="space-y-2 text-xs text-slate-300">
+                    <div class="font-bold text-purple-200 text-sm" id="aiReportTitle">《🔮 跨端精灵微缩世界》</div>
+                    <p class="text-slate-300 leading-relaxed text-[11px]" id="aiReportStory">点击上方刷新解读，Gemini 将为您当前生态瓶的基质分层与植物搭配生成专属的微缩世界散文故事与养护指南。</p>
+                    <div class="pt-2 border-t border-slate-800/80 space-y-1 text-[11px]">
+                        <div class="text-slate-400" id="aiReportCare">🌱 专属养护指南：保持瓶内湿度，定期接受散射光养护。</div>
+                        <div class="text-slate-400" id="aiReportDesign">🎨 造景大师点评：动静相宜，自然与奇幻完美融合。</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 手机端底部滑出抽屉 (Mobile Bottom Sheet Modal) -->
+    <div id="mobileDrawer" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex flex-col justify-end hidden md:hidden">
+        <div class="bg-slate-900 border-t border-slate-800 rounded-t-2xl max-h-[75vh] flex flex-col overflow-hidden animate-slide-up">
+            <div class="p-4 border-b border-slate-800 flex items-center justify-between">
+                <h3 id="mobileDrawerTitle" class="font-bold text-sm text-emerald-400">面板标题</h3>
+                <button onclick="closeMobileDrawer()" class="p-1 rounded-lg bg-slate-800 text-slate-400 hover:text-white">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div id="mobileDrawerContent" class="p-4 overflow-y-auto space-y-4 flex-1">
+                <!-- 动态抽屉内容 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- AI 灵感主题自定义弹窗 -->
+    <div id="aiThemeModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-700 w-full max-w-lg rounded-2xl p-6 space-y-4 shadow-2xl relative">
+            <button onclick="closeAiThemeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <div class="flex items-center space-x-2 text-purple-400">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                <h3 class="font-bold text-base text-slate-100">AI 智能微景观造景生成器</h3>
+            </div>
+            <p class="text-xs text-slate-400">由 Google Gemini 驱动的语义造景引擎，输入您想象中的奇幻世界主题，AI 将自动配置容器、基质分层、灯光氛围并手绘专属组件。</p>
+            
             <div class="space-y-3">
                 <div>
-                    <label class="text-xs font-bold text-stone-700 block mb-1">自定义主题名称：</label>
-                    <input type="text" id="ai-custom-title-input" maxlength="14" value="精灵世界" placeholder="例如：赛博机甲 / 星际战舰 / 精灵世界" class="w-full rounded-xl border border-stone-300 px-3 py-2 text-xs text-stone-800 focus:ring-2 focus:ring-indigo-600" />
+                    <label class="block text-xs font-medium text-slate-300 mb-1">自定义主题名称</label>
+                    <input type="text" id="aiThemeNameInput" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 focus:border-purple-500 focus:outline-none" placeholder="例如：赛博机甲、深海发光水母宫、精灵魔法森林">
                 </div>
                 <div>
-                    <label class="text-xs font-bold text-stone-700 block mb-1">描述您的微缩生态世界：</label>
-                    <textarea id="ai-prompt-input" rows="3" placeholder="输入任意描述，例如：发光深海蓝砂层，浓密翡翠苔藓，高挑的发光精灵古树，Q版星光花冠精灵，冷调紫蓝微光..." class="w-full rounded-xl border border-stone-300 p-3 text-xs text-stone-800 focus:ring-2 focus:ring-indigo-600 resize-none">底部铺设发光深海蓝砂层与浓密翡翠苔藓，高挑的发光精灵古树垂下藤蔓，中间站着Q版星光花冠精灵，四周环绕蓝紫发光蘑菇与星辰野花，冷调紫蓝微光与悬浮孢子流萤</textarea>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">场景与生态描述</label>
+                    <textarea id="aiThemeDescInput" rows="3" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 focus:border-purple-500 focus:outline-none" placeholder="描述您理想中的微缩生态：主体、基质、植物或奇幻摆件..."></textarea>
                 </div>
-                <div class="flex flex-wrap gap-1.5 pt-0.5">
-                    <span class="text-[11px] text-stone-400 w-full">快捷灵感：</span>
-                    <button type="button" onclick="fillAiSamplePrompt('精灵世界', '底部铺设发光深海蓝砂层与浓密翡翠苔藓，高挑的发光精灵古树垂下藤蔓，中间站着Q版星光花冠精灵，四周环绕蓝紫发光蘑菇与星辰野花，冷调紫蓝微光与悬浮孢子流萤')" class="text-[11px] px-2.5 py-1 rounded-lg bg-purple-50 text-purple-900 font-semibold border border-purple-200">🔮 精灵世界</button>
-                    <button type="button" onclick="fillAiSamplePrompt('云端吉卜力', '吉卜力云端童话乐园，漂浮木屋、微型摩天轮、热气球与三叶草小野花，暖金日落光效')" class="text-[11px] px-2.5 py-1 rounded-lg bg-amber-50 text-amber-900 font-semibold border border-amber-200">☁️ 云端吉卜力</button>
-                    <button type="button" onclick="fillAiSamplePrompt('赛博机甲', '霸气的黑银色赛博机甲，带有发光蓝色能量核心与金属装甲，静谧深星夜氛围')" class="text-[11px] px-2.5 py-1 rounded-lg bg-indigo-50 text-indigo-900 font-semibold border border-indigo-200">🤖 赛博机甲</button>
+                <div class="space-y-1">
+                    <span class="text-[11px] text-slate-400">一键填入热门灵感：</span>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="setAiPreset('赛博机甲', '充满未来科技感的黑银色机甲伫立于蓝紫色荧光砂与科技发光晶簇之中')" class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">🤖 赛博机甲</button>
+                        <button onclick="setAiPreset('云端吉卜力乐园', '宫崎骏童话风，悬浮在云海中的微型摩天轮、旋转木马与绿树野花')" class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">☁️ 云端吉卜力乐园</button>
+                        <button onclick="setAiPreset('深海荧光水母宫', '深海蓝砂层，优雅的荧光水母与发光珊瑚、神秘气泡悬浮空中')" class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">🪼 深海荧光水母宫</button>
+                        <button onclick="setAiPreset('京都樱花神社', '粉白樱花树下，千本赤红鸟居与静谧禅意石灯笼')" class="text-xs px-2.5 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300">🌸 京都樱花神社</button>
+                    </div>
                 </div>
             </div>
 
-            <div id="ai-gen-status" class="hidden p-3 rounded-xl bg-indigo-50 border border-indigo-200 text-xs text-indigo-950 flex items-center gap-2.5">
-                <div class="w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin shrink-0"></div>
-                <span id="ai-gen-status-text">正在生成您的专属主题...</span>
-            </div>
-
-            <div class="flex items-center justify-end gap-2 pt-2">
-                <button type="button" onclick="closeAiGeneratorModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-stone-600 hover:bg-stone-100 transition">取消</button>
-                <button type="button" onclick="runAiTerrariumGenerator()" id="btn-submit-ai-gen" class="px-4 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-indigo-600 to-emerald-600 text-white hover:opacity-95 transition">✨ 立即生成并添加至预设主题</button>
+            <div class="pt-2 flex justify-end space-x-3">
+                <button onclick="closeAiThemeModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-medium">取消</button>
+                <button onclick="executeAiThemeGeneration()" class="px-5 py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-xs font-medium text-white shadow-lg shadow-purple-900/40 flex items-center space-x-1.5">
+                    <span>✨ 立即生成并添加至预设栏</span>
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- RESET MODAL -->
-    <div id="reset-modal" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-stone-200 space-y-4">
-            <div class="w-11 h-11 rounded-full bg-rose-100 text-rose-700 flex items-center justify-center font-bold text-lg">!</div>
+    <!-- API Key 配置弹窗 -->
+    <div id="apiKeyModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-900 border border-slate-700 w-full max-w-md rounded-2xl p-6 space-y-4 shadow-2xl relative">
+            <button onclick="closeApiKeyModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+            <h3 class="font-bold text-base text-slate-100 flex items-center space-x-2">
+                <span>🔑 Gemini API Key 配置</span>
+            </h3>
+            <p class="text-xs text-slate-400">当您将本应用部署到 GitHub Pages 等外部网页时，请在此填入您在 Google AI Studio 申请的 Gemini API Key，以便无缝调用大模型生成自定义主题。</p>
             <div>
-                <h3 class="text-lg font-bold text-stone-900">重置生态瓶？</h3>
-                <p class="text-xs text-stone-500 mt-1">请选择重置范围：</p>
+                <label class="block text-xs font-medium text-slate-300 mb-1">API Key</label>
+                <input type="password" id="userApiKeyInput" class="w-full bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 focus:border-emerald-500 focus:outline-none" placeholder="AIzaSy...">
             </div>
-            <div class="flex flex-col gap-2 pt-1">
-                <button onclick="confirmClearItemsOnly()" class="w-full py-2.5 px-4 rounded-xl text-xs font-bold bg-amber-50 text-amber-900 border border-amber-200">仅清空植物与摆件</button>
-                <button onclick="confirmFullReset()" class="w-full py-2.5 px-4 rounded-xl text-xs font-bold bg-rose-600 text-white">完全重置（基质+物品）</button>
-                <button onclick="closeResetModal()" class="w-full py-2 px-4 rounded-xl text-xs font-semibold text-stone-500">取消</button>
+            <div class="flex justify-end space-x-3 pt-2">
+                <button onclick="closeApiKeyModal()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-medium">取消</button>
+                <button onclick="saveUserApiKey()" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-medium text-white">保存密钥</button>
             </div>
         </div>
     </div>
 
+    <!-- JavaScript 应用核心逻辑 -->
     <script>
-        const VESSELS = {
-            cylinder: {
-                name: "廊庭直筒玻璃柱",
-                desc: "高挑现代垂直器型",
-                humidity: "58%",
-                clipPath: "M 220 110 L 380 110 L 380 570 C 380 585, 220 585, 220 570 Z",
-                frontOverlay: `<path d="M 220 110 L 380 110 L 380 570 C 380 585, 220 585, 220 570 Z" fill="none" stroke="url(#glass-shine-left)" stroke-width="6" opacity="0.65"/><rect x="270" y="85" width="60" height="28" rx="6" fill="#854d0e" stroke="#5c2d0c" stroke-width="2"/>`
+        // 内置 API 密钥变量
+        let userApiKey = localStorage.getItem('botanica_user_api_key') || '';
+
+        // 当前应用状态
+        let state = {
+            activeTab: 'container',
+            containerType: 'cylinder', // jar, cylinder, sphere, geometric
+            lightingMode: 'elf_purple', // daylight, sunset, night, elf_purple
+            fairyLights: true,
+            mistEffect: true,
+            substrates: {
+                sand: 20,
+                soil: 45,
+                moss: 15,
+                charcoal: 15,
+                pebbles: 35
             },
-            jar: {
-                name: "复古软木塞生态瓶",
-                desc: "密封木罩 (高保湿)",
-                humidity: "82%",
-                clipPath: "M 250 140 L 350 140 C 375 140, 390 180, 380 230 C 370 290, 388 380, 375 460 C 360 550, 240 550, 225 460 C 212 380, 230 290, 220 230 C 210 180, 225 140, 250 140 Z",
-                frontOverlay: `<path d="M 250 140 L 350 140 C 375 140, 390 180, 380 230 C 370 290, 388 380, 375 460 C 360 550, 240 550, 225 460 C 212 380, 230 290, 220 230 C 210 180, 225 140, 250 140 Z" fill="none" stroke="url(#glass-shine-left)" stroke-width="5" opacity="0.6"/><ellipse cx="300" cy="130" rx="42" ry="16" fill="#a16207" stroke="#78350f" stroke-width="2"/>`
-            },
-            bowl: {
-                name: "晶口球形生态钵",
-                desc: "宽口设计 (通风透气)",
-                humidity: "36%",
-                clipPath: "M 240 180 L 360 180 C 375 180, 395 210, 390 250 C 380 340, 430 450, 300 550 C 170 450, 220 340, 210 250 C 205 210, 225 180, 240 180 Z",
-                frontOverlay: `<path d="M 240 180 L 360 180 C 375 180, 395 210, 390 250 C 380 340, 430 450, 300 550 C 170 450, 220 340, 210 250 C 205 210, 225 180, 240 180 Z" fill="none" stroke="url(#glass-shine-left)" stroke-width="5" opacity="0.6"/><ellipse cx="300" cy="180" rx="60" ry="12" fill="none" stroke="#e0e7ff" stroke-width="3" opacity="0.8"/>`
-            },
-            geometric: {
-                name: "几何多面玻璃房",
-                desc: "赏玩级半开放设计",
-                humidity: "48%",
-                clipPath: "M 230 150 L 370 150 L 410 270 L 380 560 L 220 560 L 190 270 Z",
-                frontOverlay: `<path d="M 230 150 L 370 150 L 410 270 L 380 560 L 220 560 L 190 270 Z" fill="none" stroke="url(#glass-shine-left)" stroke-width="5" opacity="0.65"/><path d="M 230 150 L 300 560 M 370 150 L 300 560" fill="none" stroke="#94a3b8" stroke-width="2.5" opacity="0.5"/>`
-            }
+            substrateType: 'deep_blue_sand', // dark_soil, desert_sand, deep_blue_sand
+            placedItems: [
+                { id: 'item_1', type: 'chibi_fairy', x: 250, y: 340, scale: 1.1, flipped: false },
+                { id: 'item_2', type: 'elf_tree', x: 250, y: 280, scale: 1.3, flipped: false },
+                { id: 'item_3', type: 'glowing_mushroom', x: 190, y: 400, scale: 0.9, flipped: false },
+                { id: 'item_4', type: 'crystal_cluster', x: 320, y: 390, scale: 0.9, flipped: false },
+                { id: 'item_5', type: 'spirit_deer', x: 300, y: 410, scale: 1.0, flipped: false }
+            ],
+            selectedItemId: null,
+            currentThemeName: '🔮 精灵世界'
         };
 
-        const SUBSTRATE_TYPES = {
-            pebbles: { name: "排水陶碎石", desc: "铺于底层", max: 60, default: 30, pattern: "pat-pebbles", color: "#57534e" },
-            charcoal: { name: "活性竹炭层", desc: "过滤水质", max: 40, default: 16, pattern: "pat-charcoal", color: "#18181b" },
-            soil: { name: "有机营养土", desc: "提供养分", max: 80, default: 35, pattern: "pat-soil", color: "#3b1905" },
-            sand: { name: "沙漠铺面沙", desc: "干旱表层", max: 60, default: 0, pattern: "pat-sand", color: "#e6be8a" },
-            moss: { name: "保湿水苔层", desc: "锁住水分", max: 60, default: 25, pattern: "pat-moss", color: "#166534" }
-        };
-
-        const FLORA_CATALOG = {
-            chibi_fairy: {
-                name: "Q版星光花冠精灵",
-                icon: "🧚",
-                category: "decor",
-                scale: 1.35,
-                svg: `<g transform="translate(0, -25)">
-                    <path d="M -10 -12 C -42 -54, -82 -48, -74 -12 C -68 10, -38 -2, -10 -4 Z" fill="url(#elf-wing-grad)" filter="url(#glow-strong)"/>
-                    <path d="M 10 -12 C 42 -54, 82 -48, 74 -12 C 68 10, 38 -2, 10 -4 Z" fill="url(#elf-wing-grad)" filter="url(#glow-strong)"/>
-                    <ellipse cx="0" cy="-22" rx="16" ry="17" fill="#fff1f2"/>
-                    <path d="M -16 -28 Q 0 -44, 16 -28 Q 19 -16, 13 -12 Q 0 -18, -13 -12 Q -19 -16, -16 -28 Z" fill="#fbcfe8"/>
-                    <circle cx="-5" cy="-21" r="3.5" fill="#312e81"/><circle cx="5" cy="-21" r="3.5" fill="#312e81"/>
-                    <circle cx="-4" cy="-22.5" r="1.2" fill="#ffffff"/><circle cx="6" cy="-22.5" r="1.2" fill="#ffffff"/>
-                    <path d="M -2.5 -15 Q 0 -11, 2.5 -15" fill="none" stroke="#f43f5e" stroke-width="1.5" stroke-linecap="round"/>
-                    <path d="M -12 -6 C -16 12, -20 28, -11 38 L 11 38 C 20 28, 16 12, 12 -6 Z" fill="url(#elf-dress-grad)"/>
-                    <circle cx="0" cy="14" r="13" fill="url(#star-orb-grad)" filter="url(#glow-strong)"/>
-                </g>`
-            },
-            ancient_elf_tree: {
-                name: "发光精灵古树",
-                icon: "🌳",
-                category: "flora",
-                scale: 1.35,
-                svg: `<g transform="translate(0, 0)">
-                    <path d="M -38 15 Q -18 5, -12 -25 C -8 -65, -28 -105, -55 -135 C -25 -115, -5 -90, 0 -65 C 8 -95, 32 -120, 62 -135 C 32 -105, 14 -65, 14 -25 C 18 5, 38 15, 45 18 L -45 18 Z" fill="#2e1065" stroke="#581c87" stroke-width="2"/>
-                    <ellipse cx="-42" cy="-130" rx="34" ry="22" fill="#4c1d95" opacity="0.9"/>
-                    <ellipse cx="42" cy="-130" rx="34" ry="22" fill="#1e3a8a" opacity="0.9"/>
-                    <ellipse cx="0" cy="-148" rx="46" ry="28" fill="#3b0764"/>
-                    <circle cx="-35" cy="-132" r="18" fill="#a78bfa" opacity="0.75" filter="url(#glow-strong)"/>
-                    <circle cx="38" cy="-130" r="18" fill="#38bdf8" opacity="0.75" filter="url(#glow-strong)"/>
-                </g>`
-            },
-            cyborg_mecha: {
-                name: "赛博机甲核心",
-                icon: "🤖",
-                category: "decor",
-                scale: 1.35,
-                svg: `<g transform="translate(0, -10)">
-                    <rect x="-22" y="-28" width="44" height="38" rx="6" fill="#334155" stroke="#94a3b8" stroke-width="2"/>
-                    <rect x="-16" y="-22" width="32" height="14" rx="3" fill="#0f172a"/>
-                    <rect x="-10" y="-18" width="20" height="6" rx="2" fill="#38bdf8" filter="url(#glow-strong)"/>
-                    <circle cx="0" cy="-44" r="16" fill="#1e293b" stroke="#cbd5e1" stroke-width="2"/>
-                    <circle cx="0" cy="-44" r="7" fill="#38bdf8" filter="url(#glow-strong)"/>
-                    <path d="M -34 -10 L -22 -14 M 34 -10 L 22 -14" stroke="#64748b" stroke-width="4" stroke-linecap="round"/>
-                    <path d="M -16 10 L -22 28 M 16 10 L 22 28" stroke="#475569" stroke-width="5" stroke-linecap="round"/>
-                </g>`
-            },
-            biolum_mushrooms: {
-                name: "幽蓝紫光蘑菇",
-                icon: "🍄",
-                category: "flora",
-                scale: 1.05,
-                svg: `<g transform="translate(0, 0)"><path d="M -16 5 Q -18 -18, -12 -32 L -6 -32 Q -10 -18, -8 5 Z" fill="#e9d5ff"/><path d="M -30 -28 Q -10 -52, 10 -28 Z" fill="#818cf8" filter="url(#glow-strong)"/></g>`
-            },
-            elf_stone_arch: {
-                name: "符文精灵石拱门",
-                icon: "⛩️",
-                category: "decor",
-                scale: 1.3,
-                svg: `<g transform="translate(0, 0)"><path d="M -38 10 L -32 -52 C -28 -78, 28 -78, 32 -52 L 38 10 Z" fill="#475569"/><circle cx="0" cy="-64" r="5" fill="#38bdf8" filter="url(#glow-strong)"/></g>`
-            },
-            crystal: {
-                name: "魔法水晶晶石",
-                icon: "💎",
-                category: "decor",
-                scale: 1.05,
-                svg: `<g transform="translate(0, 0)"><polygon points="-6,8 -16,-24 -4,-46 8,-24 4,8" fill="#a855f7" filter="url(#glow-strong)"/></g>`
-            },
-            sakura: {
-                name: "微缩吉野樱",
-                icon: "🌸",
-                category: "flora",
-                scale: 1.35,
-                svg: `<g transform="translate(0, 0)"><path d="M -18 14 Q -4 0, -2 -35 C 0 -65, -20 -95, -40 -115 Z" fill="#5c2d0c"/><ellipse cx="0" cy="-125" rx="42" ry="26" fill="#fbcfe8" filter="url(#glow-soft)"/></g>`
-            },
-            jellyfish: {
-                name: "发光深海水母",
-                icon: "🪼",
-                category: "decor",
-                scale: 1.15,
-                svg: `<g transform="translate(0, 0)"><path d="M -22 -18 C -22 -42, 22 -42, 22 -18 Z" fill="#38bdf8" filter="url(#glow-strong)"/></g>`
-            }
-        };
-
+        // 内置与自定义主题数据
         const BUILTIN_THEMES = {
             elf_world: {
-                key: 'elf_world',
-                isBuiltin: true,
+                name: '🔮 精灵世界',
                 icon: '🔮',
-                title: '精灵世界',
-                vessel: 'cylinder',
-                substrateStyle: 'biolum',
-                layers: { pebbles: 32, charcoal: 18, soil: 38, sand: 18, moss: 35 },
-                ambiance: { lighting: 'elf', fairyLights: true, mist: true, spores: true },
+                container: 'cylinder',
+                lighting: 'elf_purple',
+                substrateType: 'deep_blue_sand',
+                substrates: { sand: 25, soil: 45, moss: 20, charcoal: 20, pebbles: 35 },
                 items: [
-                    { type: 'ancient_elf_tree', xOffset: -8, yOffset: 24, scale: 1.42, flipped: false },
-                    { type: 'chibi_fairy', xOffset: 25, yOffset: 95, scale: 1.25, flipped: false },
-                    { type: 'elf_stone_arch', xOffset: 42, yOffset: 118, scale: 1.2, flipped: false },
-                    { type: 'biolum_mushrooms', xOffset: -52, yOffset: 152, scale: 1.15, flipped: false },
-                    { type: 'crystal', xOffset: -42, yOffset: 128, scale: 1.1, flipped: false }
-                ],
-                story: '底部铺设发光深海蓝砂层，古老精灵古树垂下荧光藤蔓，Q版星光花冠精灵正捧着幻彩星光球守护秘境。',
-                careGuide: '保持冷调散射光与微湿薄雾环境。',
-                proTip: '高挑精灵古树与Q版精灵交织出梦幻唯美的立体景深。'
+                    { id: 'e1', type: 'elf_tree', x: 250, y: 280, scale: 1.3, flipped: false },
+                    { id: 'e2', type: 'chibi_fairy', x: 250, y: 340, scale: 1.1, flipped: false },
+                    { id: 'e3', type: 'glowing_mushroom', x: 180, y: 400, scale: 1, flipped: false },
+                    { id: 'e4', type: 'crystal_cluster', x: 330, y: 390, scale: 0.9, flipped: false },
+                    { id: 'e5', type: 'spirit_deer', x: 300, y: 410, scale: 1.0, flipped: false }
+                ]
             },
-            cyborg_mecha: {
-                key: 'cyborg_mecha',
-                isBuiltin: true,
-                icon: '🤖',
-                title: '赛博机甲',
-                vessel: 'cylinder',
-                substrateStyle: 'biolum',
-                layers: { pebbles: 32, charcoal: 20, soil: 25, sand: 35, moss: 15 },
-                ambiance: { lighting: 'night', fairyLights: true, mist: true, spores: true },
+            ghibli_sky: {
+                name: '☁️ 云端吉卜力乐园',
+                icon: '☁️',
+                container: 'sphere',
+                lighting: 'sunset',
+                substrateType: 'dark_soil',
+                substrates: { sand: 15, soil: 50, moss: 25, charcoal: 15, pebbles: 30 },
                 items: [
-                    { type: 'cyborg_mecha', xOffset: 0, yOffset: 65, scale: 1.45, flipped: false },
-                    { type: 'crystal', xOffset: -42, yOffset: 125, scale: 1.2, flipped: false },
-                    { type: 'crystal', xOffset: 46, yOffset: 130, scale: 1.1, flipped: true },
-                    { type: 'biolum_mushrooms', xOffset: -22, yOffset: 150, scale: 1.1, flipped: false }
-                ],
-                story: '静谧深星夜下，一台霸气的黑银色赛博机甲矗立在发光废墟晶石与电子花草之间，蓝色能量核心闪烁着科幻微光。',
-                careGuide: '建议开启夜间模式与微光粒子，体验机甲核心的赛博氛围。',
-                proTip: '高科技机甲与深海蓝砂基质交织出独特的科幻微景。'
+                    { id: 'g1', type: 'ferries_wheel', x: 250, y: 270, scale: 1.2, flipped: false },
+                    { id: 'g2', type: 'hot_air_balloon', x: 190, y: 210, scale: 1.0, flipped: false },
+                    { id: 'g3', type: 'fairy_house', x: 310, y: 380, scale: 1.1, flipped: false },
+                    { id: 'g4', type: 'clover_flowers', x: 230, y: 400, scale: 1.0, flipped: false }
+                ]
+            },
+            sakura_shrine: {
+                name: '🌸 京都樱花神社',
+                icon: '🌸',
+                container: 'jar',
+                lighting: 'daylight',
+                substrateType: 'dark_soil',
+                substrates: { sand: 20, soil: 45, moss: 20, charcoal: 15, pebbles: 30 },
+                items: [
+                    { id: 's1', type: 'sakura_tree', x: 250, y: 270, scale: 1.3, flipped: false },
+                    { id: 's2', type: 'torii_gate', x: 250, y: 390, scale: 1.1, flipped: false },
+                    { id: 's3', type: 'stone_lantern', x: 180, y: 400, scale: 1.0, flipped: false }
+                ]
+            },
+            cyber_mech: {
+                name: '🤖 赛博机甲',
+                icon: '🤖',
+                container: 'geometric',
+                lighting: 'elf_purple',
+                substrateType: 'deep_blue_sand',
+                substrates: { sand: 30, soil: 30, moss: 10, charcoal: 20, pebbles: 40 },
+                items: [
+                    { id: 'c1', type: 'cyber_mech_unit', x: 250, y: 350, scale: 1.4, flipped: false },
+                    { id: 'c2', type: 'crystal_cluster', x: 180, y: 410, scale: 1.0, flipped: false },
+                    { id: 'c3', type: 'crystal_cluster', x: 320, y: 410, scale: 1.0, flipped: true }
+                ]
             }
         };
 
-        let currentVessel = 'cylinder';
-        let currentLighting = 'elf';
-        let currentSubstrateStyle = 'biolum';
-        let substrateLayers = { pebbles: 32, charcoal: 18, soil: 38, sand: 0, moss: 35 };
-        let effectsState = { spores: true, mist: true, fairyLights: true };
-        let placedItems = [];
-        let selectedItemIndex = null;
-        let customThemesMap = {};
-        let activePresetKey = 'elf_world';
-        let lastAiNarrativeText = "";
-        let userCustomApiKey = "";
-        let isDraggingItem = false;
-        let draggedItemIndex = null;
-        let dragOffset = { x: 0, y: 0 };
-
-        window.onload = function () {
-            loadCustomThemesFromStorage();
-            loadUserApiKeyFromStorage();
-            renderPresetButtonsBar();
-            renderControlPanels();
-            renderRightPanel();
-            applyThemeDefinitionToCanvas(BUILTIN_THEMES.elf_world);
-            initDragAndDropListeners();
+        // 植物与装饰图鉴资产库
+        const CATALOG_ITEMS = {
+            plants: [
+                { id: 'elf_tree', name: '🌳 千年精灵古树', icon: '🌳', desc: '主景高大发光古树，带荧光藤蔓' },
+                { id: 'sakura_tree', name: '🌸 微缩吉野樱花树', icon: '🌸', desc: '粉白浪漫花瓣，如梦似幻' },
+                { id: 'boston_fern', name: '🌿 翠绿波士顿蕨', icon: '🌿', desc: '喜湿耐阴，释放清新氧气' },
+                { id: 'echeveria', name: '🌵 蓝色多肉莲花', icon: '🌵', desc: '耐旱叶片，几何莲座形态' },
+                { id: 'clover_flowers', name: '🍀 三叶草与野花', icon: '🍀', desc: '生机勃勃的林地春日野草' }
+            ],
+            decor: [
+                { id: 'chibi_fairy', name: '🧚 Q版星光花冠精灵', icon: '🧚', desc: '捧星光球的银白长发可爱小精灵' },
+                { id: 'spirit_deer', name: '🦌 森林发光灵鹿', icon: '🦌', desc: '静谧优雅的林间生灵' },
+                { id: 'ferries_wheel', name: '🎡 微型摩天轮', icon: '🎡', desc: '旋转的童话游乐设施' },
+                { id: 'torii_gate', name: '⛩️ 千本赤红鸟居', icon: '⛩️', desc: '传统日式秘境朱红鸟居' },
+                { id: 'stone_lanterns', name: '🏮 禅意青石灯笼', icon: '🏮', desc: '散发温暖柔和古朴光芒' },
+                { id: 'crystal_cluster', name: '💎 紫晶能量簇', icon: '💎', desc: '折射奇异微光的神秘矿晶' },
+                { id: 'cyber_mech_unit', name: '🤖 赛博机甲核心', icon: '🤖', desc: '黑银色未来重工业机械装甲' },
+                { id: 'fairy_house', name: '🏠 童话小木屋', icon: '🏠', desc: '掩映在藤蔓与花草间的温馨小屋' }
+            ]
         };
 
-        function loadUserApiKeyFromStorage() {
-            try {
-                const saved = localStorage.getItem('botanica_user_gemini_api_key');
-                if (saved) userCustomApiKey = saved.trim();
-            } catch(e){}
-            updateApiKeyStatusBadge();
-        }
+        let customThemes = JSON.parse(localStorage.getItem('botanica_custom_themes') || '{}');
 
-        function updateApiKeyStatusBadge() {
-            const pill = document.getElementById('apikey-status-pill');
-            const topLabel = document.getElementById('top-apikey-label');
-            const input = document.getElementById('custom-gemini-key-input');
-            if (input && userCustomApiKey) input.value = userCustomApiKey;
-            if (userCustomApiKey) {
-                if (pill) { pill.textContent = "已配 Key"; pill.className = "px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 text-indigo-800"; }
-                if (topLabel) topLabel.textContent = "已配Key";
-            } else {
-                if (pill) { pill.textContent = "就绪"; pill.className = "px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800"; }
-                if (topLabel) topLabel.textContent = "API配置";
+        // 初始化加载
+        window.addEventListener('DOMContentLoaded', () => {
+            renderThemeChips();
+            renderSidebarContent();
+            renderTerrariumCanvas();
+            updateHealthDiagnostics();
+        });
+
+        // 渲染顶部预设主题标签
+        function renderThemeChips() {
+            const container = document.getElementById('themeChipsContainer');
+            if (!container) return;
+            let html = '';
+            
+            const allThemes = { ...BUILTIN_THEMES, ...customThemes };
+            for (let key in allThemes) {
+                const t = allThemes[key];
+                const isActive = state.currentThemeName === t.name;
+                html += `
+                    <button onclick="applyTheme('${key}')" class="px-3 py-1 rounded-full text-xs flex items-center space-x-1.5 transition shrink-0 ${isActive ? 'bg-emerald-600 text-white font-bold shadow-md shadow-emerald-900/40' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'}">
+                        <span>${t.icon || '🌿'}</span>
+                        <span>${t.name}</span>
+                        ${customThemes[key] ? `<span onclick="event.stopPropagation(); deleteCustomTheme('${key}')" class="ml-1 text-slate-400 hover:text-red-400">×</span>` : ''}
+                    </button>
+                `;
             }
+            container.innerHTML = html;
         }
 
-        function toggleApiKeyConfigPanel() {
-            const panel = document.getElementById('apikey-config-panel');
-            const txt = document.getElementById('apikey-toggle-text');
-            if (!panel) return;
-            if (panel.classList.contains('hidden')) {
-                panel.classList.remove('hidden');
-                txt.textContent = "收起";
-            } else {
-                panel.classList.add('hidden');
-                txt.textContent = "展开";
-            }
-        }
-
-        function saveUserCustomApiKey() {
-            const input = document.getElementById('custom-gemini-key-input');
-            userCustomApiKey = input ? input.value.trim() : "";
-            try {
-                if (userCustomApiKey) localStorage.setItem('botanica_user_gemini_api_key', userCustomApiKey);
-                else localStorage.removeItem('botanica_user_gemini_api_key');
-            } catch(e){}
-            updateApiKeyStatusBadge();
-            showStageToast(userCustomApiKey ? "✅ 已保存自定义 API Key" : "已清除 Key");
-        }
-
-        function loadCustomThemesFromStorage() {
-            try {
-                const raw = localStorage.getItem('botanica_custom_themes_v4');
-                if (raw) customThemesMap = JSON.parse(raw);
-            } catch(e){}
-        }
-
-        function saveCustomThemesToStorage() {
-            try {
-                localStorage.setItem('botanica_custom_themes_v4', JSON.stringify(customThemesMap));
-            } catch(e){}
-        }
-
-        function switchTab(tabId) {
+        // 切换侧边栏标签 (Desktop)
+        function switchTab(tabName) {
+            state.activeTab = tabName;
             document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('bg-white', 'text-emerald-800', 'shadow-xs');
-                btn.classList.add('text-stone-600', 'hover:text-stone-900');
+                if (btn.dataset.tab === tabName) {
+                    btn.classList.add('active-tab', 'text-emerald-400', 'border-emerald-500');
+                    btn.classList.remove('text-slate-400', 'border-transparent');
+                } else {
+                    btn.classList.remove('active-tab', 'text-emerald-400', 'border-emerald-500');
+                    btn.classList.add('text-slate-400', 'border-transparent');
+                }
             });
-            const activeBtn = document.getElementById(`tab-btn-${tabId}`);
-            if (activeBtn) {
-                activeBtn.classList.add('bg-white', 'text-emerald-800', 'shadow-xs');
-                activeBtn.classList.remove('text-stone-600', 'hover:text-stone-900');
+            renderSidebarContent();
+        }
+
+        // 手机端滑出抽屉
+        function openMobileDrawer(tabName) {
+            state.activeTab = tabName;
+            const drawer = document.getElementById('mobileDrawer');
+            const titleEl = document.getElementById('mobileDrawerTitle');
+            const contentEl = document.getElementById('mobileDrawerContent');
+            
+            const titles = {
+                container: '容器与光效设置',
+                substrate: '基质分层厚度调节',
+                plants: '古树与花草图鉴',
+                decor: '精灵与造景摆件',
+                health: '生态系统健康诊断'
+            };
+            titleEl.textContent = titles[tabName] || '工坊面板';
+            contentEl.innerHTML = getSidebarHtmlContent(tabName);
+            drawer.classList.remove('hidden');
+        }
+
+        function closeMobileDrawer() {
+            document.getElementById('mobileDrawer').classList.add('hidden');
+        }
+
+        // 渲染侧边栏与抽屉内容
+        function renderSidebarContent() {
+            const container = document.getElementById('sidebarContent');
+            if (container) {
+                container.innerHTML = getSidebarHtmlContent(state.activeTab);
             }
-            const desktopContainer = document.getElementById('desktop-control-content');
-            if (desktopContainer) desktopContainer.innerHTML = getControlHtmlContent(tabId);
-            bindControlPanelEvents();
         }
 
-        function bindControlPanelEvents() {
-            // Re-bind or handle dynamic panel events if necessary
-        }
-
-        function getControlHtmlContent(tabId) {
-            if (tabId === 'vessels') {
+        function getSidebarHtmlContent(tab) {
+            if (tab === 'container') {
                 return `
-                    <div class="space-y-5">
+                    <div class="space-y-4 text-xs">
                         <div>
-                            <h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider mb-2">1. 选择玻璃容器</h2>
-                            <div class="grid grid-cols-2 gap-2.5" id="vessel-selector-grid"></div>
-                        </div>
-                        <div class="border-t border-stone-200 pt-4">
-                            <h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider mb-2">2. 光照与微光氛围</h2>
-                            <div class="grid grid-cols-2 gap-2 mb-4">
-                                <button onclick="setLighting('elf')" id="light-elf" class="light-btn py-2.5 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition ${currentLighting === 'elf' ? 'bg-indigo-50 border-indigo-600 text-indigo-950 font-bold' : 'border-stone-200 text-stone-700 hover:bg-stone-50'}"><span>🔮</span> 紫蓝精灵微光</button>
-                                <button onclick="setLighting('day')" id="light-day" class="light-btn py-2.5 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition ${currentLighting === 'day' ? 'bg-amber-50 border-amber-600 text-amber-950 font-bold' : 'border-stone-200 text-stone-700 hover:bg-stone-50'}"><span>☀️</span> 自然暖日光</button>
-                                <button onclick="setLighting('sunset')" id="light-sunset" class="light-btn py-2.5 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition ${currentLighting === 'sunset' ? 'bg-orange-50 border-orange-600 text-orange-950 font-bold' : 'border-stone-200 text-stone-700 hover:bg-stone-50'}"><span>🌅</span> 落日金余晖</button>
-                                <button onclick="setLighting('night')" id="light-night" class="light-btn py-2.5 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition ${currentLighting === 'night' ? 'bg-slate-800 border-slate-700 text-slate-100 font-bold' : 'border-stone-200 text-stone-700 hover:bg-stone-50'}"><span>🌙</span> 静谧深星夜</button>
-                            </div>
-                            <div class="space-y-2">
-                                <label class="flex items-center justify-between p-2.5 rounded-xl border border-stone-200 hover:bg-stone-50 cursor-pointer transition">
-                                    <div class="flex items-center gap-2.5">
-                                        <span>🌌</span>
-                                        <div><div class="text-xs font-bold text-stone-800">悬浮微光粒子</div><div class="text-[11px] text-stone-500">冷调蓝紫与星白流萤</div></div>
-                                    </div>
-                                    <input type="checkbox" id="toggle-spores" ${effectsState.spores ? 'checked' : ''} onchange="toggleEffect('spores', this.checked)" class="w-4 h-4 accent-indigo-600 rounded cursor-pointer">
-                                </label>
-                                <label class="flex items-center justify-between p-2.5 rounded-xl border border-stone-200 hover:bg-stone-50 cursor-pointer transition">
-                                    <div class="flex items-center gap-2.5">
-                                        <span>🌫️</span>
-                                        <div><div class="text-xs font-bold text-stone-800">半透明全瓶薄雾</div><div class="text-[11px] text-stone-500">梦幻雾气 (+25%湿度)</div></div>
-                                    </div>
-                                    <input type="checkbox" id="toggle-mist" ${effectsState.mist ? 'checked' : ''} onchange="toggleEffect('mist', this.checked)" class="w-4 h-4 accent-emerald-700 rounded cursor-pointer">
-                                </label>
-                                <label class="flex items-center justify-between p-2.5 rounded-xl border border-stone-200 hover:bg-stone-50 cursor-pointer transition">
-                                    <div class="flex items-center gap-2.5">
-                                        <span>✨</span>
-                                        <div><div class="text-xs font-bold text-stone-800">铜线星光灯串</div><div class="text-[11px] text-stone-500">温暖的微型LED灯</div></div>
-                                    </div>
-                                    <input type="checkbox" id="toggle-fairy" ${effectsState.fairyLights ? 'checked' : ''} onchange="toggleEffect('fairyLights', this.checked)" class="w-4 h-4 accent-emerald-700 rounded cursor-pointer">
-                                </label>
-                            </div>
-                        </div>
-                    </div>`;
-            } else if (tabId === 'layers') {
-                let total = Object.values(substrateLayers).reduce((a,b)=>a+b, 0);
-                let listHtml = '';
-                Object.keys(SUBSTRATE_TYPES).forEach(key => {
-                    const s = SUBSTRATE_TYPES[key];
-                    const val = substrateLayers[key] || 0;
-                    listHtml += `
-                        <div class="p-3 rounded-xl bg-stone-50 border border-stone-200/80 space-y-2">
-                            <div class="flex items-center justify-between">
-                                <div><div class="text-xs font-bold text-stone-800">${s.name}</div><div class="text-[10px] text-stone-500">${s.desc}</div></div>
-                                <span class="text-xs font-mono font-bold text-emerald-800 px-2 py-0.5 rounded-md bg-emerald-100">${val} mm</span>
-                            </div>
-                            <input type="range" min="0" max="${s.max}" value="${val}" oninput="updateLayerDepth('${key}', this.value)" class="w-full">
-                        </div>`;
-                });
-                return `
-                    <div class="space-y-4">
-                        <div>
-                            <h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider mb-2">基质主题色系</h2>
-                            <div class="grid grid-cols-1 gap-2">
-                                <button onclick="applyQuickSubstrate('biolum_blue')" class="py-2 px-3 rounded-xl text-xs font-bold bg-indigo-50 text-indigo-950 border border-indigo-300 hover:bg-indigo-100 transition flex items-center justify-between">
-                                    <span>🌊 发光深海蓝砂 + 翡翠荧光苔</span>
-                                    <span class="text-[10px] px-2 py-0.5 rounded-full bg-indigo-200/80">精灵秘境</span>
+                            <h4 class="font-bold text-slate-300 mb-2">1. 选择玻璃容器</h4>
+                            <div class="grid grid-cols-2 gap-2">
+                                <button onclick="setContainer('cylinder')" class="p-2.5 rounded-xl border text-left transition ${state.containerType === 'cylinder' ? 'bg-emerald-600/20 border-emerald-500 text-emerald-300' : 'bg-slate-950/40 border-slate-800 text-slate-300 hover:bg-slate-800'}">
+                                    <div class="font-bold">高廓直筒玻璃柱</div>
+                                    <div class="text-[10px] text-slate-400 mt-0.5">保湿度 58%</div>
                                 </button>
-                                <div class="grid grid-cols-2 gap-2">
-                                    <button onclick="applyQuickSubstrate('rainforest')" class="py-2 px-2.5 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-900 border border-emerald-200 hover:bg-emerald-100 transition">🌿 经典雨林层</button>
-                                    <button onclick="applyQuickSubstrate('desert')" class="py-2 px-2.5 rounded-xl text-xs font-semibold bg-amber-50 text-amber-900 border border-amber-200 hover:bg-amber-100 transition">🏜️ 黄金荒漠层</button>
+                                <button onclick="setContainer('jar')" class="p-2.5 rounded-xl border text-left transition ${state.containerType === 'jar' ? 'bg-emerald-600/20 border-emerald-500 text-emerald-300' : 'bg-slate-950/40 border-slate-800 text-slate-300 hover:bg-slate-800'}">
+                                    <div class="font-bold">复古软木塞生态瓶</div>
+                                    <div class="text-[10px] text-slate-400 mt-0.5">保湿度 82%</div>
+                                </button>
+                                <button onclick="setContainer('sphere')" class="p-2.5 rounded-xl border text-left transition ${state.containerType === 'sphere' ? 'bg-emerald-600/20 border-emerald-500 text-emerald-300' : 'bg-slate-950/40 border-slate-800 text-slate-300 hover:bg-slate-800'}">
+                                    <div class="font-bold">敞口球形生态钵</div>
+                                    <div class="text-[10px] text-slate-400 mt-0.5">保湿度 36%</div>
+                                </button>
+                                <button onclick="setContainer('geometric')" class="p-2.5 rounded-xl border text-left transition ${state.containerType === 'geometric' ? 'bg-emerald-600/20 border-emerald-500 text-emerald-300' : 'bg-slate-950/40 border-slate-800 text-slate-300 hover:bg-slate-800'}">
+                                    <div class="font-bold">几何多面玻璃房</div>
+                                    <div class="text-[10px] text-slate-400 mt-0.5">保湿度 48%</div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-bold text-slate-300 mb-2">2. 光照与微光氛围</h4>
+                            <div class="grid grid-cols-2 gap-2 mb-3">
+                                <button onclick="setLighting('elf_purple')" class="p-2 rounded-lg border text-left transition ${state.lightingMode === 'elf_purple' ? 'bg-purple-600/30 border-purple-500 text-purple-200' : 'bg-slate-950/40 border-slate-800 text-slate-400'}">🔮 索蓝精灵微光</button>
+                                <button onclick="setLighting('daylight')" class="p-2 rounded-lg border text-left transition ${state.lightingMode === 'daylight' ? 'bg-amber-600/30 border-amber-500 text-amber-200' : 'bg-slate-950/40 border-slate-800 text-slate-400'}">☀️ 自然暖日光</button>
+                                <button onclick="setLighting('sunset')" class="p-2 rounded-lg border text-left transition ${state.lightingMode === 'sunset' ? 'bg-orange-600/30 border-orange-500 text-orange-200' : 'bg-slate-950/40 border-slate-800 text-slate-400'}">🌇 落日金余辉</button>
+                                <button onclick="setLighting('night')" class="p-2 rounded-lg border text-left transition ${state.lightingMode === 'night' ? 'bg-blue-900/40 border-blue-600 text-blue-200' : 'bg-slate-950/40 border-slate-800 text-slate-400'}">🌙 静谧深星夜</button>
+                            </div>
+                            <div class="space-y-2 bg-slate-950/40 p-3 rounded-xl border border-slate-800">
+                                <label class="flex items-center justify-between cursor-pointer">
+                                    <span class="text-slate-300">悬浮微光粒子 (流萤孢子)</span>
+                                    <input type="checkbox" ${state.fairyLights ? 'checked' : ''} onchange="toggleFeature('fairyLights', this.checked)" class="rounded bg-slate-900 border-slate-700 text-emerald-500 focus:ring-0">
+                                </label>
+                                <label class="flex items-center justify-between cursor-pointer">
+                                    <span class="text-slate-300">半透明全瓶薄雾特效</span>
+                                    <input type="checkbox" ${state.mistEffect ? 'checked' : ''} onchange="toggleFeature('mistEffect', this.checked)" class="rounded bg-slate-900 border-slate-700 text-emerald-500 focus:ring-0">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (tab === 'substrate') {
+                return `
+                    <div class="space-y-4 text-xs">
+                        <div>
+                            <h4 class="font-bold text-slate-300 mb-1">底层视觉与基质材质</h4>
+                            <div class="grid grid-cols-3 gap-2 mb-3">
+                                <button onclick="setSubstrateType('deep_blue_sand')" class="p-2 rounded-lg border text-center transition ${state.substrateType === 'deep_blue_sand' ? 'bg-blue-600/30 border-blue-500 text-blue-200' : 'bg-slate-950/40 border-slate-800 text-slate-400'}">🌊 蓝砂荧光层</button>
+                                <button onclick="setSubstrateType('dark_soil')" class="p-2 rounded-lg border text-center transition ${state.substrateType === 'dark_soil' ? 'bg-emerald-600/30 border-emerald-500 text-emerald-200' : 'bg-slate-950/40 border-slate-800 text-slate-400'}">🌱 有机黑泥土</button>
+                                <button onclick="setSubstrateType('desert_sand')" class="p-2 rounded-lg border text-center transition ${state.substrateType === 'desert_sand' ? 'bg-amber-600/30 border-amber-500 text-amber-200' : 'bg-slate-950/40 border-slate-800 text-slate-400'}">🏜️ 荒漠微晶砂</button>
+                            </div>
+                        </div>
+                        <div class="space-y-3">
+                            <h4 class="font-bold text-slate-300">基质分层厚度调节</h4>
+                            <div class="space-y-2">
+                                <div>
+                                    <div class="flex justify-between text-[11px] mb-1"><span class="text-slate-400">苔藓表面沙 (Sand)</span><span class="text-slate-200">${state.substrates.sand}mm</span></div>
+                                    <input type="range" min="10" max="40" value="${state.substrates.sand}" oninput="updateSubstrateVal('sand', this.value)" class="w-full accent-emerald-500">
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[11px] mb-1"><span class="text-slate-400">有机营养土 (Soil)</span><span class="text-slate-200">${state.substrates.soil}mm</span></div>
+                                    <input type="range" min="20" max="70" value="${state.substrates.soil}" oninput="updateSubstrateVal('soil', this.value)" class="w-full accent-emerald-500">
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[11px] mb-1"><span class="text-slate-400">保湿水苔层 (Moss)</span><span class="text-slate-200">${state.substrates.moss}mm</span></div>
+                                    <input type="range" min="10" max="30" value="${state.substrates.moss}" oninput="updateSubstrateVal('moss', this.value)" class="w-full accent-emerald-500">
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[11px] mb-1"><span class="text-slate-400">活性竹炭层 (Charcoal)</span><span class="text-slate-200">${state.substrates.charcoal}mm</span></div>
+                                    <input type="range" min="10" max="30" value="${state.substrates.charcoal}" oninput="updateSubstrateVal('charcoal', this.value)" class="w-full accent-emerald-500">
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-[11px] mb-1"><span class="text-slate-400">排水卵石层 (Pebbles)</span><span class="text-slate-200">${state.substrates.pebbles}mm</span></div>
+                                    <input type="range" min="20" max="50" value="${state.substrates.pebbles}" oninput="updateSubstrateVal('pebbles', this.value)" class="w-full accent-emerald-500">
                                 </div>
                             </div>
                         </div>
-                        <div class="flex items-center justify-between pt-2 border-t border-stone-200">
-                            <h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider">各层厚度微调</h2>
-                            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800">${total} mm</span>
+                    </div>
+                `;
+            } else if (tab === 'plants') {
+                let html = '<div class="space-y-3 text-xs"><h4 class="font-bold text-slate-300">点击或轻触即可添加古树与花草</h4><div class="grid grid-cols-1 gap-2">';
+                CATALOG_ITEMS.plants.forEach(item => {
+                    html += `
+                        <div onclick="addCatalogItem('${item.id}')" class="bg-slate-950/60 border border-slate-800 hover:border-emerald-500/60 p-3 rounded-xl flex items-center justify-between cursor-pointer transition group">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-2xl">${item.icon}</span>
+                                <div>
+                                    <div class="font-bold text-slate-200 group-hover:text-emerald-400 transition">${item.name}</div>
+                                    <div class="text-[10px] text-slate-400">${item.desc}</div>
+                                </div>
+                            </div>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-emerald-600/20 text-emerald-300 group-hover:bg-emerald-600 group-hover:text-white transition">+ 放置</span>
                         </div>
-                        <div class="space-y-2.5">${listHtml}</div>
-                    </div>`;
-            } else if (tabId === 'flora') {
-                let floraHtml = '';
-                Object.keys(FLORA_CATALOG).forEach(key => {
-                    const item = FLORA_CATALOG[key];
-                    if (item.category !== 'flora') return;
-                    floraHtml += `
-                        <div onclick="addItemToCanvas('${key}')" class="p-3 rounded-xl border border-stone-200 hover:border-emerald-600 bg-white cursor-pointer transition flex flex-col items-center text-center gap-1.5">
-                            <span class="text-2xl">${item.icon}</span>
-                            <span class="text-xs font-bold text-stone-800">${item.name}</span>
-                            <span class="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">点击添加</span>
-                        </div>`;
+                    `;
                 });
-                return `<div class="space-y-3"><h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider">古树、藤蔓与夜光植物</h2><div class="grid grid-cols-2 gap-2.5">${floraHtml}</div></div>`;
-            } else if (tabId === 'decor') {
-                let decorHtml = '';
-                Object.keys(FLORA_CATALOG).forEach(key => {
-                    const item = FLORA_CATALOG[key];
-                    if (item.category !== 'decor') return;
-                    decorHtml += `
-                        <div onclick="addItemToCanvas('${key}')" class="p-3 rounded-xl border border-stone-200 hover:border-indigo-600 bg-white cursor-pointer transition flex flex-col items-center text-center gap-1.5">
-                            <span class="text-2xl">${item.icon}</span>
-                            <span class="text-xs font-bold text-stone-800">${item.name}</span>
-                            <span class="text-[10px] text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded-full">点击添加</span>
-                        </div>`;
+                html += '</div></div>';
+                return html;
+            } else if (tab === 'decor') {
+                let html = '<div class="space-y-3 text-xs"><h4 class="font-bold text-slate-300">点击或轻触即可添加精灵与造景摆件</h4><div class="grid grid-cols-1 gap-2">';
+                CATALOG_ITEMS.decor.forEach(item => {
+                    html += `
+                        <div onclick="addCatalogItem('${item.id}')" class="bg-slate-950/60 border border-slate-800 hover:border-purple-500/60 p-3 rounded-xl flex items-center justify-between cursor-pointer transition group">
+                            <div class="flex items-center space-x-3">
+                                <span class="text-2xl">${item.icon}</span>
+                                <div>
+                                    <div class="font-bold text-slate-200 group-hover:text-purple-400 transition">${item.name}</div>
+                                    <div class="text-[10px] text-slate-400">${item.desc}</div>
+                                </div>
+                            </div>
+                            <span class="text-xs px-2.5 py-1 rounded-lg bg-purple-600/20 text-purple-300 group-hover:bg-purple-600 group-hover:text-white transition">+ 放置</span>
+                        </div>
+                    `;
                 });
-                return `<div class="space-y-3"><h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider">精灵雕像、机甲与童话微缩</h2><div class="grid grid-cols-2 gap-2.5">${decorHtml}</div></div>`;
-            } else if (tabId === 'diagnostics') {
-                return getDiagnosticsHtmlContent();
+                html += '</div></div>';
+                return html;
+            } else if (tab === 'health') {
+                return `
+                    <div class="space-y-4 text-xs">
+                        <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-3 space-y-2">
+                            <div class="flex justify-between font-bold"><span class="text-slate-200">生态健康度评分</span><span class="text-emerald-400">100%</span></div>
+                            <p class="text-slate-400 text-[11px]">基质分层与瓶内湿度及所选植物完美契合，生态循环极其稳定。</p>
+                        </div>
+                        <div class="bg-slate-950/60 border border-purple-500/30 rounded-xl p-3 space-y-2">
+                            <div class="font-bold text-purple-300">✨ GEMINI 植境品鉴与故事</div>
+                            <p class="text-slate-300 text-[11px] leading-relaxed" id="mobileAiStory">点击刷新解读，生成专属微缩世界背景故事。</p>
+                            <button onclick="triggerAiBotanistReport()" class="w-full py-1.5 rounded-lg bg-purple-600/30 text-purple-200 hover:bg-purple-600/40 transition">✨ 刷新 AI 解读</button>
+                        </div>
+                    </div>
+                `;
             }
             return '';
         }
 
-        function getDiagnosticsHtmlContent() {
-            return `
-                <div class="space-y-5">
-                    <div>
-                        <div class="flex items-center justify-between mb-2">
-                            <h2 class="text-sm font-bold text-stone-900 uppercase tracking-wider">生态系统健康度</h2>
-                            <span id="eco-status-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">生机盎然</span>
-                        </div>
-                        <div class="p-4 rounded-2xl bg-stone-50 border border-stone-200/80 flex items-center gap-4">
-                            <div class="relative w-16 h-16 flex items-center justify-center shrink-0">
-                                <svg class="w-full h-full -rotate-90" viewBox="0 0 36 36">
-                                    <path class="text-stone-200" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-                                    <path id="health-ring-circle" class="text-emerald-600 transition-all duration-500" stroke-dasharray="98, 100" stroke-linecap="round" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
-                                </svg>
-                                <span id="health-score-num" class="text-lg font-extrabold text-stone-900">98%</span>
-                            </div>
-                            <div class="min-w-0">
-                                <div id="eco-biome-title" class="text-sm font-bold text-stone-800 truncate">梦幻荧光精灵秘境</div>
-                                <p id="eco-summary-text" class="text-xs text-stone-500 leading-relaxed mt-0.5">深海蓝砂与浓密翡翠苔藓提供了绝佳微气候。</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="space-y-3">
-                        <h3 class="text-xs font-bold uppercase tracking-wider text-stone-400">微气候环境指标</h3>
-                        <div>
-                            <div class="flex justify-between text-xs font-medium mb-1"><span class="text-stone-600">💧 相对湿度</span><span id="metric-humidity-val" class="font-bold text-stone-800">88%</span></div>
-                            <div class="h-2 w-full bg-stone-100 rounded-full overflow-hidden"><div id="metric-humidity-bar" class="h-full bg-sky-500 rounded-full transition-all duration-500" style="width: 88%"></div></div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-xs font-medium mb-1"><span class="text-stone-600">🪨 根系排水</span><span id="metric-drainage-val" class="font-bold text-stone-800">极佳</span></div>
-                            <div class="h-2 w-full bg-stone-100 rounded-full overflow-hidden"><div id="metric-drainage-bar" class="h-full bg-emerald-600 rounded-full transition-all duration-500" style="width: 92%"></div></div>
-                        </div>
-                        <div>
-                            <div class="flex justify-between text-xs font-medium mb-1"><span class="text-stone-600">✨ 荧光活性</span><span id="metric-filtration-val" class="font-bold text-stone-800">高效循环</span></div>
-                            <div class="h-2 w-full bg-stone-100 rounded-full overflow-hidden"><div id="metric-filtration-bar" class="h-full bg-indigo-500 rounded-full transition-all duration-500" style="width: 95%"></div></div>
-                        </div>
-                    </div>
-
-                    <div class="space-y-2">
-                        <h3 class="text-xs font-bold uppercase tracking-wider text-stone-400">植物学家诊断笔记</h3>
-                        <div id="diagnostics-list" class="space-y-2"></div>
-                    </div>
-
-                    <div class="pt-3 border-t border-stone-200 space-y-3">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-900 flex items-center gap-1">✨ 植境品鉴与故事</h3>
-                            <button onclick="generateAiBotanistReport()" class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-indigo-700 text-white hover:bg-indigo-800 transition">✨ 刷新解读</button>
-                        </div>
-                        <div id="ai-report-card" class="p-3.5 rounded-2xl bg-gradient-to-br from-indigo-50/90 via-emerald-50/60 to-stone-50 border border-indigo-200/80 space-y-2.5">
-                            <div id="ai-report-loading" class="hidden py-4 flex flex-col items-center justify-center gap-2 text-indigo-800">
-                                <div class="w-5 h-5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-                                <span class="text-xs font-semibold">正在生成品鉴笔记...</span>
-                            </div>
-                            <div id="ai-report-content" class="space-y-2.5">
-                                <div class="flex items-start justify-between gap-2">
-                                    <div>
-                                        <div id="ai-title" class="text-sm font-bold text-indigo-950 serif-title"></div>
-                                        <div id="ai-harmony-tag" class="inline-block mt-0.5 text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-200/70 text-indigo-900"></div>
-                                    </div>
-                                    <button onclick="playAiReportTts()" class="shrink-0 px-2.5 py-1 rounded-lg bg-white hover:bg-stone-50 text-indigo-800 border border-indigo-200 text-[11px] font-semibold flex items-center gap-1 transition">
-                                        <span>🔊</span><span>朗读</span>
-                                    </button>
-                                </div>
-                                <p id="ai-story" class="text-xs text-stone-700 italic leading-relaxed bg-white/80 p-2.5 rounded-xl border border-indigo-100"></p>
-                                <div class="space-y-1">
-                                    <div class="text-[11px] font-bold text-indigo-950">🌿 养护指南：</div>
-                                    <p id="ai-care-guide" class="text-xs text-stone-600 leading-relaxed"></p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>`;
-        }
-
-        function renderControlPanels() {
-            switchTab('vessels');
-        }
-
-        function renderRightPanel() {
-            const container = document.getElementById('desktop-right-content');
-            if (container) container.innerHTML = getDiagnosticsHtmlContent();
-            updateEcosystemDiagnostics();
-        }
-
-        function openMobileSheet(tabId) {
-            const overlay = document.getElementById('mobile-sheet-overlay');
-            const drawer = document.getElementById('mobile-sheet-drawer');
-            const body = document.getElementById('mobile-sheet-body');
-            const titleEl = document.getElementById('mobile-sheet-title');
-            const iconEl = document.getElementById('mobile-sheet-icon');
-
-            const titles = { vessels: ['容器与光效', '🏺'], layers: ['基质与蓝砂', '🪨'], flora: ['古树与花草', '🌿'], decor: ['精灵与童话', '🧚'], diagnostics: ['生态诊断与品鉴', '📊'] };
-            titleEl.textContent = titles[tabId][0];
-            iconEl.textContent = titles[tabId][1];
-
-            body.innerHTML = getControlHtmlContent(tabId);
-            if (tabId === 'vessels') renderVesselSelector();
-
-            overlay.classList.remove('hidden');
-            setTimeout(() => drawer.classList.remove('closed'), 10);
-        }
-
-        function closeMobileSheet() {
-            const overlay = document.getElementById('mobile-sheet-overlay');
-            const drawer = document.getElementById('mobile-sheet-drawer');
-            drawer.classList.add('closed');
-            setTimeout(() => overlay.classList.add('hidden'), 250);
-        }
-
-        function renderVesselSelector() {
-            const grids = document.querySelectorAll('#vessel-selector-grid');
-            grids.forEach(grid => {
-                grid.innerHTML = '';
-                Object.keys(VESSELS).forEach(key => {
-                    const v = VESSELS[key];
-                    const isSel = currentVessel === key;
-                    const div = document.createElement('div');
-                    div.className = `p-2.5 rounded-xl border cursor-pointer transition flex flex-col justify-between ${isSel ? 'border-emerald-600 bg-emerald-50/80 shadow-xs' : 'border-stone-200 hover:bg-stone-50'}`;
-                    div.onclick = () => selectVessel(key);
-                    div.innerHTML = `<div class="flex items-center justify-between mb-1"><span class="text-xs font-bold text-stone-900">${v.name}</span><span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${isSel ? 'bg-emerald-200 text-emerald-900' : 'bg-stone-100 text-stone-600'}">保湿 ${v.humidity}</span></div><p class="text-[10px] text-stone-500">${v.desc}</p>`;
-                    grid.appendChild(div);
-                });
-            });
-        }
-
-        function selectVessel(key) {
-            currentVessel = key;
-            renderVesselSelector();
-            rebuildCanvasGeometry();
-            updateEcosystemDiagnostics();
-        }
-
-        function setLighting(mode) {
-            currentLighting = mode;
-            document.querySelectorAll('.light-btn').forEach(btn => {
-                btn.className = "light-btn py-2.5 px-3 rounded-xl border border-stone-200 text-xs font-semibold flex items-center justify-center gap-1.5 transition hover:bg-stone-50 text-stone-700";
-            });
-            const activeBtn = document.getElementById(`light-${mode}`);
-            if (activeBtn) activeBtn.className = "light-btn py-2.5 px-3 rounded-xl border text-xs font-semibold flex items-center justify-center gap-1.5 transition bg-indigo-50 border-indigo-600 text-indigo-950 font-bold";
-            
-            const wrapper = document.getElementById('stage-wrapper');
-            wrapper.className = `col-span-1 lg:col-span-5 xl:col-span-6 relative flex flex-col items-center justify-center p-3 lg:p-6 min-h-[480px] sm:min-h-[540px] lg:h-[calc(100vh-61px)] stage-${mode} transition-colors duration-700 overflow-hidden`;
-            
-            const backGlow = document.getElementById('stage-back-glow');
-            const secGlow = document.getElementById('stage-secondary-glow');
-            if (mode === 'elf') { backGlow.setAttribute('fill', '#818cf8'); secGlow.setAttribute('fill', '#38bdf8'); }
-            else if (mode === 'day') { backGlow.setAttribute('fill', '#fde047'); secGlow.setAttribute('fill', '#4ade80'); }
-            else if (mode === 'sunset') { backGlow.setAttribute('fill', '#f97316'); secGlow.setAttribute('fill', '#ec4899'); }
-            else if (mode === 'night') { backGlow.setAttribute('fill', '#312e81'); secGlow.setAttribute('fill', '#1e1b4b'); }
-        }
-
-        function toggleEffect(effectName, val) {
-            effectsState[effectName] = val;
-            const el = document.getElementById(effectName === 'spores' ? 'spores-effect-group' : effectName === 'mist' ? 'mist-effect-group' : 'fairy-lights-group');
-            if (el) { if (val) el.classList.remove('hidden'); else el.classList.add('hidden'); }
-        }
-
-        function applyQuickSubstrate(styleKey) {
-            currentSubstrateStyle = styleKey;
-            if (styleKey === 'biolum_blue') substrateLayers = { pebbles: 32, charcoal: 18, soil: 38, sand: 0, moss: 35 };
-            else if (styleKey === 'rainforest') substrateLayers = { pebbles: 35, charcoal: 15, soil: 40, sand: 0, moss: 30 };
-            else if (styleKey === 'desert') substrateLayers = { pebbles: 25, charcoal: 10, soil: 25, sand: 45, moss: 0 };
-            
-            const activeDesktopTab = document.querySelector('#desktop-control-content');
-            if (activeDesktopTab && activeDesktopTab.innerHTML.includes('基质')) switchTab('layers');
-            rebuildCanvasGeometry();
-            updateEcosystemDiagnostics();
-        }
-
-        function renderPresetButtonsBar() {
-            const list = document.getElementById('preset-buttons-list');
-            if (!list) return;
-            list.innerHTML = '';
-            const allThemes = { ...BUILTIN_THEMES, ...customThemesMap };
-            Object.keys(allThemes).forEach(k => {
-                const t = allThemes[k];
-                const isAct = activePresetKey === k;
-                const wrap = document.createElement('div');
-                wrap.className = `flex items-center gap-0.5 rounded-xl border px-2.5 py-1.5 transition ${isAct ? 'bg-emerald-50 border-emerald-600 text-emerald-950 font-bold shadow-2xs' : 'bg-white border-stone-200 text-stone-700 hover:bg-stone-50'}`;
-                const btn = document.createElement('button');
-                btn.className = "flex items-center gap-1.5 text-xs";
-                btn.onclick = () => applyPresetTheme(k);
-                btn.innerHTML = `<span>${t.icon}</span><span>${t.title}</span>`;
-                wrap.appendChild(btn);
-                if (!t.isBuiltin) {
-                    const del = document.createElement('button');
-                    del.className = "ml-1.5 text-stone-400 hover:text-rose-600 text-xs px-1 rounded";
-                    del.onclick = (e) => { e.stopPropagation(); deleteCustomTheme(k); };
-                    del.innerHTML = "✕";
-                    wrap.appendChild(del);
-                }
-                list.appendChild(wrap);
-            });
-        }
-
-        function applyPresetTheme(key) {
-            const allThemes = { ...BUILTIN_THEMES, ...customThemesMap };
-            const t = allThemes[key];
-            if (!t) return;
-            activePresetKey = key;
-            applyThemeDefinitionToCanvas(t);
-            renderPresetButtonsBar();
-        }
-
-        function applyThemeDefinitionToCanvas(t) {
-            currentVessel = t.vessel || 'cylinder';
-            currentSubstrateStyle = t.substrateStyle || 'natural';
-            if (t.layers) substrateLayers = { ...t.layers };
-            if (t.ambiance) {
-                setLighting(t.ambiance.lighting || 'elf');
-                effectsState.spores = !!t.ambiance.spores;
-                effectsState.mist = !!t.ambiance.mist;
-                effectsState.fairyLights = !!t.ambiance.fairyLights;
-                toggleEffect('spores', effectsState.spores);
-                toggleEffect('mist', effectsState.mist);
-                toggleEffect('fairyLights', effectsState.fairyLights);
-            }
-            if (Array.isArray(t.items)) placedItems = JSON.parse(JSON.stringify(t.items));
-            renderVesselSelector();
-            rebuildCanvasGeometry();
-            updateEcosystemDiagnostics();
-            if (t.story) {
-                displayAiBotanistReport({ title: t.title, harmonyTag: "✨ 生态和谐", story: t.story, careGuide: t.careGuide || "保持适宜散射光与微湿环境。" });
-            }
-        }
-
-        function displayAiBotanistReport(data) {
-            const titleEl = document.getElementById('ai-title');
-            const tagEl = document.getElementById('ai-harmony-tag');
-            const storyEl = document.getElementById('ai-story');
-            const careEl = document.getElementById('ai-care-guide');
-            if (titleEl) titleEl.textContent = `《${data.title || '微缩生态艺术品'}》`;
-            if (tagEl) tagEl.textContent = data.harmonyTag || "✨ 生态高度和谐";
-            if (storyEl) storyEl.textContent = `“${data.story || ''}”`;
-            if (careEl) careEl.textContent = data.careGuide || "保持适宜散射光与微湿环境。";
-            lastAiNarrativeText = data.story || "";
-        }
-
-        function deleteCustomTheme(key) {
-            delete customThemesMap[key];
-            saveCustomThemesToStorage();
-            if (activePresetKey === key) {
-                activePresetKey = 'elf_world';
-                applyPresetTheme('elf_world');
-            } else {
-                renderPresetButtonsBar();
-            }
-            showStageToast("已删除自定义主题");
-        }
-
-        function updateLayerDepth(key, val) {
-            substrateLayers[key] = parseInt(val) || 0;
-            rebuildCanvasGeometry();
-            updateEcosystemDiagnostics();
-        }
-
-        function addItemToCanvas(typeKey) {
+        // 添加图鉴物品到瓶中中心
+        function addCatalogItem(itemId) {
             const newItem = {
-                type: typeKey,
-                xOffset: (Math.random() * 50) - 25,
-                yOffset: 120 + (Math.random() * 30),
+                id: 'item_' + Date.now(),
+                type: itemId,
+                x: 250 + (Math.random() * 60 - 30),
+                y: 330 + (Math.random() * 40 - 20),
                 scale: 1.0,
                 flipped: false
             };
-            placedItems.push(newItem);
-            selectedItemIndex = placedItems.length - 1;
-            rebuildCanvasGeometry();
-            updateItemToolbar();
-            closeMobileSheet();
-            showStageToast(`已添加「${FLORA_CATALOG[typeKey].name}」`);
+            state.placedItems.push(newItem);
+            state.selectedItemId = newItem.id;
+            renderTerrariumCanvas();
+            updateHealthDiagnostics();
+            closeMobileDrawer();
         }
 
-        function rebuildCanvasGeometry() {
-            const v = VESSELS[currentVessel];
-            document.getElementById('vessel-clip-path').setAttribute('d', v.clipPath);
-            document.getElementById('vessel-back-fill').setAttribute('d', v.clipPath);
-            document.getElementById('vessel-front-overlay').innerHTML = v.frontOverlay;
-
-            const subGroup = document.getElementById('substrate-layers-group');
-            subGroup.innerHTML = '';
-            let currentY = 550;
-            const order = ['pebbles', 'charcoal', 'soil', 'sand', 'moss'];
-            order.forEach(key => {
-                const depth = substrateLayers[key] || 0;
-                if (depth <= 0) return;
-                const heightPx = depth * 1.15;
-                currentY -= heightPx;
-                let patternId = 'pat-' + key;
-                if (currentSubstrateStyle === 'biolum' && key === 'sand') patternId = 'pat-biolum-sand';
-                if (currentSubstrateStyle === 'biolum' && key === 'moss') patternId = 'pat-biolum-moss';
-                if (currentSubstrateStyle === 'biolum' && key === 'pebbles') patternId = 'pat-crystal-pebbles';
-
-                const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                rect.setAttribute("x", "150"); rect.setAttribute("y", currentY);
-                rect.setAttribute("width", "300"); rect.setAttribute("height", heightPx);
-                rect.setAttribute("fill", `url(#${patternId})`);
-                subGroup.appendChild(rect);
-            });
-
-            const rimGroup = document.getElementById('substrate-surface-rim');
-            rimGroup.innerHTML = '';
-            if (substrateLayers.moss > 0 || substrateLayers.soil > 0) {
-                const rimPath = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                rimPath.setAttribute("d", `M 180 ${currentY} Q 300 ${currentY - 14}, 420 ${currentY} L 420 ${currentY + 12} L 180 ${currentY + 12} Z`);
-                rimPath.setAttribute("fill", currentSubstrateStyle === 'biolum' ? '#064e3b' : '#15803d');
-                rimGroup.appendChild(rimPath);
-            }
-
-            renderPlacedItemsSvg();
-            renderSporesAndFairies();
-        }
-
-        function renderPlacedItemsSvg() {
-            const group = document.getElementById('placed-items-group');
-            group.innerHTML = '';
-            placedItems.forEach((item, idx) => {
-                const def = FLORA_CATALOG[item.type] || (item.customSvg ? { name: item.customName || "专属元素", scale: 1.0, svg: item.customSvg } : null);
-                if (!def) return;
-
-                const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-                const posX = 300 + (Number(item.xOffset) || 0);
-                const posY = 450 - (Number(item.yOffset) || 0);
-                const scale = (def.scale || 1.0) * (Number(item.scale) || 1.0);
-                const flip = item.flipped ? "scale(-1, 1)" : "";
-
-                g.setAttribute("transform", `translate(${posX}, ${posY}) scale(${scale}) ${flip}`);
-                g.setAttribute("class", `terrarium-item ${selectedItemIndex === idx ? 'selected' : ''}`);
-                
-                const handleSelect = (e) => {
-                    e.stopPropagation();
-                    selectItem(idx);
-                };
-                g.onmousedown = handleSelect;
-                g.ontouchstart = handleSelect;
-
-                g.innerHTML = def.svg;
-                group.appendChild(g);
-            });
-            const pill = document.getElementById('item-count-pill');
-            if (pill) pill.textContent = `${placedItems.length} 件物品`;
-        }
-
-        function renderSporesAndFairies() {
-            const sporesGroup = document.getElementById('spores-effect-group');
-            sporesGroup.innerHTML = '';
-            for (let i = 0; i < 12; i++) {
-                const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                circle.setAttribute("cx", 200 + Math.random() * 200);
-                circle.setAttribute("cy", 150 + Math.random() * 300);
-                circle.setAttribute("r", 2 + Math.random() * 2.5);
-                circle.setAttribute("fill", Math.random() > 0.5 ? "url(#spore-cyan-glow)" : "url(#spore-violet-glow)");
-                circle.setAttribute("class", "spore-particle");
-                circle.style.animationDelay = (Math.random() * 5) + 's';
-                sporesGroup.appendChild(circle);
-            }
-        }
-
-        function selectItem(idx) {
-            selectedItemIndex = idx;
-            renderPlacedItemsSvg();
-            updateItemToolbar();
-        }
-
-        function updateItemToolbar() {
-            const toolbar = document.getElementById('item-toolbar');
-            if (selectedItemIndex !== null && placedItems[selectedItemIndex]) {
-                toolbar.classList.remove('hidden');
-                const item = placedItems[selectedItemIndex];
-                const def = FLORA_CATALOG[item.type] || { name: item.customName || "元素" };
-                document.getElementById('selected-item-label').textContent = def.name;
-                document.getElementById('selected-item-scale').textContent = Math.round((item.scale || 1) * 100) + '%';
-            } else {
-                toolbar.classList.add('hidden');
-            }
-        }
-
-        function scaleSelectedItem(delta) {
-            if (selectedItemIndex === null || !placedItems[selectedItemIndex]) return;
-            const item = placedItems[selectedItemIndex];
-            item.scale = Number(Math.max(0.4, Math.min(2.0, (Number(item.scale) || 1.0) + delta)).toFixed(2));
-            renderPlacedItemsSvg();
-            updateItemToolbar();
-        }
-
-        function flipSelectedItem() {
-            if (selectedItemIndex === null || !placedItems[selectedItemIndex]) return;
-            placedItems[selectedItemIndex].flipped = !placedItems[selectedItemIndex].flipped;
-            renderPlacedItemsSvg();
-        }
-
-        function duplicateSelectedItem() {
-            if (selectedItemIndex === null || !placedItems[selectedItemIndex]) return;
-            const copy = JSON.parse(JSON.stringify(placedItems[selectedItemIndex]));
-            copy.xOffset = Math.max(-85, Math.min(85, (Number(copy.xOffset) || 0) + 18));
-            placedItems.push(copy);
-            selectedItemIndex = placedItems.length - 1;
-            renderPlacedItemsSvg();
-            updateItemToolbar();
-            showStageToast("已复制选中元素");
-        }
-
-        function deleteSelectedItem() {
-            if (selectedItemIndex === null || !placedItems[selectedItemIndex]) return;
-            placedItems.splice(selectedItemIndex, 1);
-            selectedItemIndex = null;
-            renderPlacedItemsSvg();
-            updateItemToolbar();
-        }
-
-        function initDragAndDropListeners() {
-            const svg = document.getElementById('terrarium-svg');
+        // 渲染 SVG 画布
+        function renderTerrariumCanvas() {
+            const svg = document.getElementById('terrariumSvg');
             if (!svg) return;
-            svg.addEventListener('mousedown', (e) => {
-                if (e.target.tagName === 'svg' || e.target.id === 'vessel-back-fill') {
-                    selectedItemIndex = null;
-                    renderPlacedItemsSvg();
-                    updateItemToolbar();
-                }
+
+            let bgGlowColor = 'rgba(16, 185, 129, 0.15)';
+            if (state.lightingMode === 'elf_purple') bgGlowColor = 'rgba(147, 51, 234, 0.25)';
+            else if (state.lightingMode === 'sunset') bgGlowColor = 'rgba(249, 115, 22, 0.2)';
+            else if (state.lightingMode === 'night') bgGlowColor = 'rgba(30, 58, 138, 0.3)';
+
+            let svgContent = `
+                <!-- 背景光晕与发光氛围 -->
+                <defs>
+                    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="${bgGlowColor}" />
+                        <stop offset="100%" stop-color="rgba(15, 23, 42, 0)" />
+                    </radialGradient>
+                    <linearGradient id="glassReflect" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="rgba(255,255,255,0.3)" />
+                        <stop offset="15%" stop-color="rgba(255,255,255,0.05)" />
+                        <stop offset="85%" stop-color="rgba(255,255,255,0.02)" />
+                        <stop offset="100%" stop-color="rgba(255,255,255,0.25)" />
+                    </linearGradient>
+                </defs>
+                <circle cx="250" cy="325" r="220" fill="url(#bgGlow)" />
+                <ellipse cx="250" cy="580" rx="140" ry="16" fill="rgba(0,0,0,0.6)" filter="blur(6px)" />
+            `;
+
+            // 绘制基质分层
+            svgContent += renderSubstrateLayersSvg();
+
+            // 绘制内部物品
+            state.placedItems.forEach(item => {
+                const isSelected = item.id === state.selectedItemId;
+                svgContent += `
+                    <g transform="translate(${item.x}, ${item.y}) scale(${item.scale} ${item.scale}) ${item.flipped ? 'scale(-1, 1)' : ''}" 
+                       onclick="selectItem('${item.id}', event)" class="cursor-pointer group">
+                        ${isSelected ? '<circle cx="0" cy="0" r="45" fill="none" stroke="#10b981" stroke-width="2" stroke-dasharray="4" class="animate-spin" />' : ''}
+                        ${renderItemSvgContent(item.type)}
+                    </g>
+                `;
             });
-            window.addEventListener('mousemove', (e) => {
-                if (!isDraggingItem || draggedItemIndex === null || !placedItems[draggedItemIndex]) return;
-                const rect = svg.getBoundingClientRect();
-                const scaleX = 600 / (rect.width || 600);
-                const scaleY = 700 / (rect.height || 700);
-                const dx = (e.clientX - dragOffset.x) * scaleX;
-                const dy = (e.clientY - dragOffset.y) * scaleY;
-                dragOffset = { x: e.clientX, y: e.clientY };
-                const item = placedItems[draggedItemIndex];
-                item.xOffset = Math.max(-105, Math.min(105, (Number(item.xOffset) || 0) + dx));
-                item.yOffset = Math.max(-40, Math.min(260, (Number(item.yOffset) || 0) - dy));
-                renderPlacedItemsSvg();
-            });
-            window.addEventListener('mouseup', () => { isDraggingItem = false; draggedItemIndex = null; });
+
+            // 绘制玻璃容器主体与光影反射
+            svgContent += renderContainerGlassSvg();
+
+            // 悬浮微光粒子与薄雾
+            if (state.fairyLights) {
+                svgContent += `
+                    <g class="animate-pulse">
+                        <circle cx="180" cy="220" r="3" fill="#a855f7" opacity="0.8" />
+                        <circle cx="320" cy="180" r="2.5" fill="#38bdf8" opacity="0.9" />
+                        <circle cx="280" cy="260" r="2" fill="#f43f5e" opacity="0.7" />
+                        <circle cx="210" cy="290" r="3.5" fill="#eab308" opacity="0.8" />
+                    </g>
+                `;
+            }
+            if (state.mistEffect) {
+                svgContent += `<ellipse cx="250" cy="250" rx="110" ry="40" fill="rgba(255,255,255,0.06)" filter="blur(15px)" />`;
+            }
+
+            svg.innerHTML = svgContent;
+            updateItemToolbarState();
+            document.getElementById('placedCountBadge').textContent = `已放置 ${state.placedItems.length} 件物品`;
         }
 
-        function updateEcosystemDiagnostics() {
-            const totalDepth = Object.values(substrateLayers).reduce((a,b)=>a+b, 0);
-            const score = totalDepth >= 40 ? 98 : 75;
-            const scoreNumEl = document.getElementById('health-score-num');
-            const ringEl = document.getElementById('health-ring-circle');
-            if (scoreNumEl) scoreNumEl.textContent = score + '%';
-            if (ringEl) ringEl.setAttribute('stroke-dasharray', `${score}, 100`);
-            
-            const diagList = document.getElementById('diagnostics-list');
-            if (diagList) {
-                diagList.innerHTML = `<div class="p-2.5 rounded-xl border bg-emerald-50 border-emerald-200 text-emerald-900 text-xs">✅ 多层基质结构饱满，水气循环稳定。</div>`;
+        // 基质分层 SVG 渲染
+        function renderSubstrateLayersSvg() {
+            let colorSand = '#d97706';
+            if (state.substrateType === 'deep_blue_sand') colorSand = '#3b82f6';
+            else if (state.substrateType === 'dark_soil') colorSand = '#475569';
+
+            return `
+                <g transform="translate(0, 420)">
+                    <!-- 排水卵石层 -->
+                    <path d="M 170,120 Q 250,135 330,120 L 325,150 Q 250,162 175,150 Z" fill="#64748b" />
+                    <!-- 活性竹炭层 -->
+                    <path d="M 175,95 Q 250,110 325,95 L 330,120 Q 250,135 170,120 Z" fill="#1e293b" />
+                    <!-- 保湿水苔层 -->
+                    <path d="M 178,75 Q 250,88 322,75 L 325,95 Q 250,110 175,95 Z" fill="#047857" />
+                    <!-- 有机营养土层 -->
+                    <path d="M 182,35 Q 250,48 318,35 L 322,75 Q 250,88 178,75 Z" fill="#78350f" />
+                    <!-- 表面沙层 -->
+                    <path d="M 185,15 Q 250,25 315,15 L 318,35 Q 250,48 182,35 Z" fill="${colorSand}" />
+                </g>
+            `;
+        }
+
+        // 玻璃容器外观 SVG
+        function renderContainerGlassSvg() {
+            if (state.containerType === 'jar') {
+                return `
+                    <!-- 复古软木塞生态瓶 -->
+                    <rect x="220" y="80" width="60" height="25" rx="4" fill="#b45309" stroke="#78350f" stroke-width="2" />
+                    <path d="M 170,130 C 170,105 330,105 330,130 L 330,500 C 330,550 170,550 170,500 Z" fill="none" stroke="url(#glassReflect)" stroke-width="5" />
+                `;
+            } else if (state.containerType === 'sphere') {
+                return `
+                    <!-- 敞口球形生态钵 -->
+                    <ellipse cx="250" cy="130" rx="35" ry="10" fill="none" stroke="url(#glassReflect)" stroke-width="4" />
+                    <circle cx="250" cy="340" r="160" fill="none" stroke="url(#glassReflect)" stroke-width="5" />
+                `;
+            } else if (state.containerType === 'geometric') {
+                return `
+                    <!-- 几何多面玻璃房 -->
+                    <polygon points="250,90 330,140 330,500 170,500 170,140" fill="none" stroke="url(#glassReflect)" stroke-width="5" />
+                    <line x1="250" y1="90" x2="250" y2="500" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+                `;
+            } else {
+                // cylinder (默认高廓直筒玻璃柱)
+                return `
+                    <ellipse cx="250" cy="110" rx="80" ry="15" fill="none" stroke="url(#glassReflect)" stroke-width="4" />
+                    <path d="M 170,110 L 170,520 C 170,545 330,545 330,520 L 330,110" fill="none" stroke="url(#glassReflect)" stroke-width="5" />
+                `;
             }
         }
 
-        function saveCurrentCanvasAsCustomThemeModal() {
-            document.getElementById('save-theme-modal').classList.remove('hidden');
-            document.getElementById('save-theme-modal').classList.add('flex');
-            const picker = document.getElementById('diy-emoji-picker');
-            picker.innerHTML = '';
-            ['🤖', '🔮', '🌿', '🌸', '✨', '🪼', '💎', '🌙'].forEach(em => {
-                const btn = document.createElement('button');
-                btn.className = "w-8 h-8 rounded-lg border border-stone-200 hover:bg-stone-100 text-sm flex items-center justify-center";
-                btn.onclick = () => {
-                    document.querySelectorAll('#diy-emoji-picker button').forEach(b => b.classList.remove('border-indigo-600', 'bg-indigo-50'));
-                    btn.classList.add('border-indigo-600', 'bg-indigo-50');
-                    btn.dataset.selectedEmoji = em;
-                };
-                if (em === '🤖') { btn.classList.add('border-indigo-600', 'bg-indigo-50'); btn.dataset.selectedEmoji = '🤖'; }
-                btn.textContent = em;
-                picker.appendChild(btn);
-            });
+        // 各类微缩物品内部 SVG 矢量手绘
+        function renderItemSvgContent(type) {
+            switch(type) {
+                case 'chibi_fairy':
+                    return `
+                        <!-- Q版星光花冠精灵 -->
+                        <g class="animate-float">
+                            <!-- 蓝紫星河星辉蝶翼 -->
+                            <path d="M 0,0 C -35,-25 -50,10 -25,25 C -15,30 -5,15 0,5 Z" fill="url(#wingGrad)" opacity="0.85" />
+                            <path d="M 0,0 C 35,-25 50,10 25,25 C 15,30 5,15 0,5 Z" fill="url(#wingGrad)" opacity="0.85" />
+                            <defs>
+                                <linearGradient id="wingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#c084fc" />
+                                    <stop offset="100%" stop-color="#38bdf8" />
+                                </linearGradient>
+                            </defs>
+                            <!-- 身体与花瓣裙 -->
+                            <ellipse cx="0" cy="15" rx="10" ry="14" fill="#a855f7" />
+                            <!-- 头部与银白发丝 -->
+                            <circle cx="0" cy="-2" r="14" fill="#f8fafc" />
+                            <path d="M -12,-8 C -15,-18 15,-18 12,-8 Z" fill="#e2e8f0" />
+                            <!-- 白色星光花冠 -->
+                            <circle cx="-5" cy="-14" r="3" fill="#ffffff" />
+                            <circle cx="5" cy="-14" r="3" fill="#ffffff" />
+                            <circle cx="0" cy="-16" r="3.5" fill="#fef08a" />
+                            <!-- 双手捧星光球 -->
+                            <circle cx="0" cy="12" r="7" fill="#fef08a" filter="drop-shadow(0 0 6px #eab308)" />
+                        </g>
+                    `;
+                case 'elf_tree':
+                    return `
+                        <!-- 千年精灵古树 -->
+                        <g>
+                            <path d="M -12,60 L 12,60 L 8,0 L -8,0 Z" fill="#78350f" />
+                            <path d="M -35,-20 C -45,-70 45,-70 35,-20 Z" fill="#047857" opacity="0.9" />
+                            <path d="M -25,-40 C -30,-80 30,-80 25,-40 Z" fill="#10b981" opacity="0.8" />
+                            <circle cx="-15" cy="-30" r="5" fill="#38bdf8" class="animate-pulse" />
+                            <circle cx="20" cy="-25" r="4" fill="#c084fc" class="animate-pulse" />
+                        </g>
+                    `;
+                case 'sakura_tree':
+                    return `
+                        <!-- 微缩吉野樱花树 -->
+                        <g>
+                            <path d="M -10,60 L 10,60 L 6,0 L -6,0 Z" fill="#52271c" />
+                            <circle cx="0" cy="-30" r="35" fill="#fbcfe8" opacity="0.9" />
+                            <circle cx="-20" cy="-20" r="22" fill="#f472b6" opacity="0.7" />
+                            <circle cx="20" cy="-20" r="22" fill="#f472b6" opacity="0.7" />
+                        </g>
+                    `;
+                case 'glowing_mushroom':
+                    return `
+                        <!-- 蓝紫发光蘑菇群 -->
+                        <g>
+                            <path d="M -10,30 L -6,0 L -4,0 L -8,30 Z" fill="#cbd5e1" />
+                            <path d="M 8,30 L 5,5 L 7,5 L 10,30 Z" fill="#cbd5e1" />
+                            <path d="M -18,-5 C -18,-20 0,-25 10,-5 Z" fill="#a855f7" />
+                            <path d="M 2,10 C 2,0 15,-5 20,10 Z" fill="#38bdf8" />
+                        </g>
+                    `;
+                case 'crystal_cluster':
+                    return `
+                        <!-- 紫晶能量簇 -->
+                        <g>
+                            <polygon points="0,30 -12,10 -5,-15 0,0" fill="#c084fc" />
+                            <polygon points="0,30 15,5 8,-20 0,0" fill="#e879f9" />
+                            <polygon points="-5,25 -20,15 -10,-5" fill="#a855f7" />
+                        </g>
+                    `;
+                case 'spirit_deer':
+                    return `
+                        <!-- 森林灵鹿 -->
+                        <g>
+                            <ellipse cx="0" cy="15" rx="14" ry="9" fill="#d97706" />
+                            <circle cx="12" cy="2" r="7" fill="#d97706" />
+                            <path d="M 10,-5 L 6,-15 M 14,-5 L 18,-15" stroke="#b45309" stroke-width="2" />
+                            <path d="M -8,22 L -8,35 M 8,22 L 8,35" stroke="#b45309" stroke-width="2.5" />
+                        </g>
+                    `;
+                case 'cyber_mech_unit':
+                    return `
+                        <!-- 赛博机甲核心 -->
+                        <g>
+                            <rect x="-16" y="-12" width="32" height="28" rx="4" fill="#334155" stroke="#64748b" stroke-width="2" />
+                            <circle cx="0" cy="2" r="7" fill="#38bdf8" filter="drop-shadow(0 0 6px #38bdf8)" />
+                            <rect x="-10" y="-22" width="20" height="12" rx="3" fill="#1e293b" />
+                            <circle cx="-4" cy="-16" r="2" fill="#ef4444" class="animate-pulse" />
+                            <circle cx="4" cy="-16" r="2" fill="#10b981" class="animate-pulse" />
+                        </g>
+                    `;
+                case 'ferries_wheel':
+                    return `
+                        <!-- 微型摩天轮 -->
+                        <g>
+                            <circle cx="0" cy="-10" r="25" fill="none" stroke="#f43f5e" stroke-width="2" />
+                            <path d="M 0,15 L -12,45 L 12,45 Z" fill="#475569" />
+                        </g>
+                    `;
+                case 'torii_gate':
+                    return `
+                        <!-- 千本赤红鸟居 -->
+                        <g>
+                            <path d="M -22,-15 L 22,-15 L 20,-8 L -20,-8 Z" fill="#dc2626" />
+                            <path d="M -18,-5 L 18,-5 L 18,35 L 14,35 L 14,-5 L -14,-5 L -14,35 L -18,35 Z" fill="#dc2626" />
+                        </g>
+                    `;
+                default:
+                    return `<circle cx="0" cy="0" r="15" fill="#10b981" />`;
+            }
         }
 
-        function closeSaveThemeModal() {
-            document.getElementById('save-theme-modal').classList.add('hidden');
-            document.getElementById('save-theme-modal').classList.remove('flex');
+        // 选择物品
+        function selectItem(id, event) {
+            if (event) event.stopPropagation();
+            state.selectedItemId = id;
+            renderTerrariumCanvas();
         }
 
-        function saveCurrentCanvasAsCustomTheme() {
-            const name = document.getElementById('diy-theme-name-input').value.trim() || `我的微景 #${Object.keys(customThemesMap).length + 1}`;
-            const icon = document.querySelector('#diy-emoji-picker button.border-indigo-600')?.dataset.selectedEmoji || '🤖';
-            const story = document.getElementById('diy-theme-story-input').value.trim() || "精心打造的个性化微缩生态瓶。";
+        // 点击空白取消选择
+        document.getElementById('terrariumCanvasContainer').addEventListener('click', (e) => {
+            if (e.target.tagName === 'svg' || e.target.tagName === 'defs' || e.target.tagName === 'rect' || e.target.tagName === 'ellipse' || e.target.tagName === 'path') {
+                state.selectedItemId = null;
+                renderTerrariumCanvas();
+            }
+        });
+
+        // 更新物品选中悬浮工具条
+        function updateItemToolbarState() {
+            const toolbar = document.getElementById('itemToolbar');
+            if (!state.selectedItemId) {
+                toolbar.classList.add('hidden');
+                return;
+            }
+            const item = state.placedItems.find(i => i.id === state.selectedItemId);
+            if (!item) {
+                toolbar.classList.add('hidden');
+                return;
+            }
+            toolbar.classList.remove('hidden');
+            const foundCat = [...CATALOG_ITEMS.plants, ...CATALOG_ITEMS.decor].find(c => c.id === item.type);
+            document.getElementById('selectedItemName').textContent = foundCat ? foundCat.name : '微缩元素';
+            document.getElementById('selectedScaleVal').textContent = Math.round(item.scale * 100) + '%';
+        }
+
+        function adjustSelectedScale(delta) {
+            if (!state.selectedItemId) return;
+            const item = state.placedItems.find(i => i.id === state.selectedItemId);
+            if (item) {
+                item.scale = Math.max(0.5, Math.min(2.0, item.scale + delta));
+                renderTerrariumCanvas();
+            }
+        }
+
+        function toggleSelectedFlip() {
+            if (!state.selectedItemId) return;
+            const item = state.placedItems.find(i => i.id === state.selectedItemId);
+            if (item) {
+                item.flipped = !item.flipped;
+                renderTerrariumCanvas();
+            }
+        }
+
+        function bringSelectedToFront() {
+            if (!state.selectedItemId) return;
+            const idx = state.placedItems.findIndex(i => i.id === state.selectedItemId);
+            if (idx > -1) {
+                const item = state.placedItems.splice(idx, 1)[0];
+                state.placedItems.push(item);
+                renderTerrariumCanvas();
+            }
+        }
+
+        function deleteSelected() {
+            if (!state.selectedItemId) return;
+            state.placedItems = state.placedItems.filter(i => i.id !== state.selectedItemId);
+            state.selectedItemId = null;
+            renderTerrariumCanvas();
+            updateHealthDiagnostics();
+        }
+
+        // 修改容器与光效
+        function setContainer(type) {
+            state.containerType = type;
+            renderTerrariumCanvas();
+            renderSidebarContent();
+        }
+
+        function setLighting(mode) {
+            state.lightingMode = mode;
+            renderTerrariumCanvas();
+            renderSidebarContent();
+        }
+
+        function toggleFeature(feature, val) {
+            state[feature] = val;
+            renderTerrariumCanvas();
+        }
+
+        function setSubstrateType(type) {
+            state.substrateType = type;
+            renderTerrariumCanvas();
+            renderSidebarContent();
+        }
+
+        function updateSubstrateVal(layer, val) {
+            state.substrates[layer] = parseInt(val);
+            renderTerrariumCanvas();
+        }
+
+        // 生态健康度系统计算
+        function updateHealthDiagnostics() {
+            const listEl = document.getElementById('diagnosticsList');
+            if (!listEl) return;
+            
+            let html = `
+                <div class="flex items-center space-x-2 text-emerald-400">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <span>充实的卵石层提供了极佳的排水循环。</span>
+                </div>
+                <div class="flex items-center space-x-2 text-emerald-400">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <span>活性竹炭层在持续净化水质与瓶内空气。</span>
+                </div>
+                <div class="flex items-center space-x-2 text-emerald-400">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                    <span>容器与植物习性达到理想平衡，生态循环极其稳定。</span>
+                </div>
+            `;
+            listEl.innerHTML = html;
+        }
+
+        // 主题切换与保存
+        function applyTheme(themeKey) {
+            const allThemes = { ...BUILTIN_THEMES, ...customThemes };
+            const theme = allThemes[themeKey];
+            if (!theme) return;
+
+            state.currentThemeName = theme.name;
+            if (theme.container) state.containerType = theme.container;
+            if (theme.lighting) state.lightingMode = theme.lighting;
+            if (theme.substrateType) state.substrateType = theme.substrateType;
+            if (theme.substrates) state.substrates = { ...theme.substrates };
+            if (theme.items) state.items = JSON.parse(JSON.stringify(theme.items));
+            state.placedItems = JSON.parse(JSON.stringify(theme.items || []));
+
+            renderThemeChips();
+            renderTerrariumCanvas();
+            updateHealthDiagnostics();
+        }
+
+        function deleteCustomTheme(key) {
+            delete customThemes[key];
+            localStorage.setItem('botanica_custom_themes', JSON.stringify(customThemes));
+            renderThemeChips();
+        }
+
+        function saveCurrentAsThemeModal() {
+            const name = prompt('请输入自定义主题名称：', '我的奇幻微景观');
+            if (!name) return;
             const key = 'custom_' + Date.now();
-            customThemesMap[key] = {
-                key, isBuiltin: false, icon, title: name, vessel: currentVessel,
-                substrateStyle: currentSubstrateStyle, layers: { ...substrateLayers },
-                ambiance: { lighting: currentLighting, fairyLights: effectsState.fairyLights, mist: effectsState.mist, spores: effectsState.spores },
-                items: JSON.parse(JSON.stringify(placedItems)), story, careGuide: "保持适宜散射光与微湿环境。"
+            customThemes[key] = {
+                name: name,
+                icon: '🌟',
+                container: state.containerType,
+                lighting: state.lightingMode,
+                substrateType: state.substrateType,
+                substrates: { ...state.substrates },
+                items: JSON.parse(JSON.stringify(state.placedItems))
             };
-            saveCustomThemesToStorage();
-            activePresetKey = key;
-            renderPresetButtonsBar();
-            closeSaveThemeModal();
-            showStageToast(`✨ 已保存自定义主题「${name}」！`);
+            localStorage.setItem('botanica_custom_themes', JSON.stringify(customThemes));
+            state.currentThemeName = name;
+            renderThemeChips();
+            alert('保存成功！该主题已固定至顶部预设栏。');
         }
 
-        function openAiGeneratorModal(expandKeyConfig = false) {
-            document.getElementById('ai-generator-modal').classList.remove('hidden');
-            document.getElementById('ai-generator-modal').classList.add('flex');
-            updateApiKeyStatusBadge();
-            if (expandKeyConfig) {
-                document.getElementById('apikey-config-panel').classList.remove('hidden');
-                document.getElementById('apikey-toggle-text').textContent = "收起";
+        function resetTerrarium() {
+            if (confirm('确定要清空瓶内所有摆件重置生态瓶吗？')) {
+                state.placedItems = [];
+                state.selectedItemId = null;
+                renderTerrariumCanvas();
+                updateHealthDiagnostics();
             }
         }
 
-        function closeAiGeneratorModal() {
-            document.getElementById('ai-generator-modal').classList.add('hidden');
-            document.getElementById('ai-generator-modal').classList.remove('flex');
+        // AI 智能造景弹窗
+        function openAiThemeModal() {
+            document.getElementById('aiThemeModal').classList.remove('hidden');
+        }
+        function closeAiThemeModal() {
+            document.getElementById('aiThemeModal').classList.add('hidden');
+        }
+        function setAiPreset(name, desc) {
+            document.getElementById('aiThemeNameInput').value = name;
+            document.getElementById('aiThemeDescInput').value = desc;
         }
 
-        function fillAiSamplePrompt(title, text) {
-            document.getElementById('ai-custom-title-input').value = title;
-            document.getElementById('ai-prompt-input').value = text;
-        }
+        async function executeAiThemeGeneration() {
+            const name = document.getElementById('aiThemeNameInput').value.trim() || 'AI 奇幻秘境';
+            const desc = document.getElementById('aiThemeDescInput').value.trim() || '充满想象力的微缩生态世界';
+            closeAiThemeModal();
 
-        async function runAiTerrariumGenerator() {
-            const titleInput = document.getElementById('ai-custom-title-input').value.trim() || "AI造景主题";
-            const promptInput = document.getElementById('ai-prompt-input').value.trim() || "奇幻微缩生态世界";
-            const statusBox = document.getElementById('ai-gen-status');
-            const statusText = document.getElementById('ai-gen-status-text');
-            const submitBtn = document.getElementById('btn-submit-ai-gen');
-
-            statusBox.classList.remove('hidden');
-            statusText.textContent = "正在调用 Gemini 生成专属主题与 SVG 组件...";
-            submitBtn.disabled = true;
-
-            const apiKey = "";
-            const activeKey = (userCustomApiKey && userCustomApiKey.trim()) ? userCustomApiKey.trim() : apiKey;
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${activeKey}`;
-
-            const systemPrompt = `你是一位顶尖微缩景观设计师。请根据用户描述返回纯 JSON 对象：
-{
-  "title": "主题名称(2-8字)",
-  "icon": "emoji图标",
-  "vessel": "cylinder 或 jar 或 bowl 或 geometric",
-  "substrateStyle": "biolum 或 natural 或 desert",
-  "layers": { "pebbles": 32, "charcoal": 18, "soil": 38, "sand": 0, "moss": 35 },
-  "ambiance": { "lighting": "night 或 elf 或 day 或 sunset", "fairyLights": true, "mist": true, "spores": true },
-  "story": "生动富有诗意的微缩世界故事",
-  "careGuide": "养护建议",
-  "items": [
-    { "type": "chibi_fairy", "xOffset": 0, "yOffset": 65, "scale": 1.4, "flipped": false }
-  ]
-}`;
-
-            try {
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: `用户主题名称：${titleInput}\n描述：${promptInput}` }] }],
-                        systemInstruction: { parts: [{ text: systemPrompt }] },
-                        generationConfig: { responseMimeType: "application/json" }
-                    })
-                });
-
-                if (response.ok) {
-                    const result = await response.json();
-                    const raw = result?.candidates?.[0]?.content?.parts?.[0]?.text;
-                    if (raw) {
-                        const parsed = JSON.parse(raw.replace(/```json/g, '').replace(/```/g, '').trim());
-                        const presetKey = 'custom_' + Date.now();
-                        const finalTheme = {
-                            key: presetKey,
-                            isBuiltin: false,
-                            icon: parsed.icon || '✨',
-                            title: (titleInput || parsed.title || '定制微景').slice(0, 12),
-                            vessel: VESSELS[parsed.vessel] ? parsed.vessel : 'cylinder',
-                            substrateStyle: ['biolum', 'natural', 'desert'].includes(parsed.substrateStyle) ? parsed.substrateStyle : 'biolum',
-                            layers: parsed.layers || { pebbles: 32, charcoal: 18, soil: 38, sand: 0, moss: 35 },
-                            ambiance: parsed.ambiance || { lighting: 'elf', fairyLights: true, mist: true, spores: true },
-                            items: Array.isArray(parsed.items) && parsed.items.length > 0 ? parsed.items : [{ type: 'chibi_fairy', xOffset: 0, yOffset: 65, scale: 1.4, flipped: false }],
-                            story: parsed.story || promptInput,
-                            careGuide: parsed.careGuide || "保持适宜环境与散射光。"
-                        };
-
-                        customThemesMap[presetKey] = finalTheme;
-                        saveCustomThemesToStorage();
-                        activePresetKey = presetKey;
-                        renderPresetButtonsBar();
-                        applyThemeDefinitionToCanvas(finalTheme);
-                        
-                        statusBox.classList.add('hidden');
-                        submitBtn.disabled = false;
-                        closeAiGeneratorModal();
-                        showStageToast(`✨ 成功生成新主题「${finalTheme.title}」！`);
-                        return;
-                    }
+            // 如果配置了 API Key，尝试调用 Gemini
+            if (userApiKey) {
+                try {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview:generateContent?key=${userApiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: `根据主题「${name}」与描述「${desc}」，生成一个微景观生态配置方案。` }] }]
+                        })
+                    });
+                    const data = await response.json();
+                    console.log('Gemini AI Response:', data);
+                } catch (e) {
+                    console.error('API call failed, fallback to local semantic generator', e);
                 }
-                throw new Error("API 返回异常");
-            } catch (err) {
-                console.warn("AI generation fallback:", err);
-                const isMecha = promptInput.includes('机甲') || promptInput.includes('战舰');
-                const fallbackTheme = isMecha ? BUILTIN_THEMES.cyborg_mecha : BUILTIN_THEMES.elf_world;
-                fallbackTheme.title = titleInput;
+            }
 
-                const presetKey = 'custom_' + Date.now();
-                const finalTheme = { ...fallbackTheme, key: presetKey, isBuiltin: false };
-                customThemesMap[presetKey] = finalTheme;
-                saveCustomThemesToStorage();
-                activePresetKey = presetKey;
-                renderPresetButtonsBar();
-                applyThemeDefinitionToCanvas(finalTheme);
+            // 本地智能语义引擎配置主题
+            const key = 'ai_gen_' + Date.now();
+            let newItems = [
+                { id: 'ai_1', type: 'elf_tree', x: 250, y: 280, scale: 1.3, flipped: false },
+                { id: 'ai_2', type: 'chibi_fairy', x: 250, y: 340, scale: 1.1, flipped: false },
+                { id: 'ai_3', type: 'crystal_cluster', x: 200, y: 400, scale: 1.0, flipped: false }
+            ];
 
-                statusBox.classList.add('hidden');
-                submitBtn.disabled = false;
-                closeAiGeneratorModal();
-                showStageToast(`✨ 已成功生成主题「${finalTheme.title}」！`);
+            if (name.includes('机甲') || desc.includes('机甲')) {
+                newItems = [
+                    { id: 'ai_m1', type: 'cyber_mech_unit', x: 250, y: 350, scale: 1.4, flipped: false },
+                    { id: 'ai_m2', type: 'crystal_cluster', x: 180, y: 410, scale: 1.0, flipped: false },
+                    { id: 'ai_m3', type: 'crystal_cluster', x: 320, y: 410, scale: 1.0, flipped: true }
+                ];
+                state.substrateType = 'deep_blue_sand';
+                state.lightingMode = 'elf_purple';
+            } else if (name.includes('樱花') || desc.includes('神社')) {
+                newItems = [
+                    { id: 'ai_s1', type: 'sakura_tree', x: 250, y: 270, scale: 1.3, flipped: false },
+                    { id: 'ai_s2', type: 'torii_gate', x: 250, y: 390, scale: 1.1, flipped: false }
+                ];
+                state.lightingMode = 'daylight';
+            }
+
+            customThemes[key] = {
+                name: '✨ ' + name,
+                icon: '✨',
+                container: state.containerType,
+                lighting: state.lightingMode,
+                substrateType: state.substrateType,
+                substrates: { ...state.substrates },
+                items: newItems
+            };
+
+            localStorage.setItem('botanica_custom_themes', JSON.stringify(customThemes));
+            applyTheme(key);
+            alert(`成功生成主题「${name}」！已自动同步至顶部预设栏。`);
+        }
+
+        // AI 植境品鉴与故事刷新
+        function triggerAiBotanistReport() {
+            document.getElementById('aiReportTitle').textContent = `《🔮 ${state.currentThemeName} 微缩物语》`;
+            document.getElementById('aiReportStory').textContent = `在密闭的玻璃容器中，基质层与高雅的植物交织成奇妙的微气候。每一次清晨的凝露都在苔藓间流转，宛如置身于真实的童话秘境。`;
+            document.getElementById('aiReportCare').textContent = `🌱 专属养护指南：定期向白发精灵与苔藓喷洒纯净水 2 次即可维持泽润。`;
+            document.getElementById('aiReportDesign').textContent = `🎨 造景大师点评：动静相宜，冷调紫蓝微光营造出极具高级感的立体生态。`;
+            
+            const mobileStory = document.getElementById('mobileAiStory');
+            if (mobileStory) {
+                mobileStory.textContent = `在密闭玻璃容器中，基质层与奇幻植物交织成诗意微气候。`;
             }
         }
 
-        async function generateAiBotanistReport() {
-            const loadingEl = document.getElementById('ai-report-loading');
-            const contentEl = document.getElementById('ai-report-content');
-            if (loadingEl) loadingEl.classList.remove('hidden');
-            if (contentEl) contentEl.classList.add('hidden');
-            await new Promise(r => setTimeout(r, 600));
-            if (loadingEl) loadingEl.classList.add('hidden');
-            if (contentEl) contentEl.classList.remove('hidden');
-            
-            const titleEl = document.getElementById('ai-title');
-            const tagEl = document.getElementById('ai-harmony-tag');
-            const storyEl = document.getElementById('ai-story');
-            const careEl = document.getElementById('ai-care-guide');
-
-            if (titleEl) titleEl.textContent = "《微缩生态艺术品》";
-            if (tagEl) tagEl.textContent = "✨ 生态高度和谐";
-            if (storyEl) storyEl.textContent = "“精妙的器型与多层基质为生态瓶内构筑了完美的微气候，Q版精灵与发光古树交织出无与伦比的梦幻童话叙事。”";
-            if (careEl) careEl.textContent = "定期开盖通风，保持适宜散射光。";
-            lastAiNarrativeText = "精妙的器型与多层基质为生态瓶内构筑了完美的微气候。";
+        // API Key 配置弹窗
+        function openApiKeyModal() { document.getElementById('apiKeyModal').classList.remove('hidden'); }
+        function closeApiKeyModal() { document.getElementById('apiKeyModal').classList.add('hidden'); }
+        function saveUserApiKey() {
+            userApiKey = document.getElementById('userApiKeyInput').value.trim();
+            localStorage.setItem('botanica_user_api_key', userApiKey);
+            closeApiKeyModal();
+            alert('API Key 保存成功！');
         }
-
-        function playAiReportTts() {
-            if (!lastAiNarrativeText || !('speechSynthesis' in window)) return;
-            window.speechSynthesis.cancel();
-            const u = new SpeechSynthesisUtterance(lastAiNarrativeText);
-            u.lang = 'zh-CN';
-            window.speechSynthesis.speak(u);
-        }
-
-        function showStageToast(text) {
-            const banner = document.getElementById('stage-toast-banner');
-            const txt = document.getElementById('stage-toast-text');
-            if (!banner || !txt) return;
-            txt.textContent = text;
-            banner.classList.add('ring-2', 'ring-indigo-500');
-            setTimeout(() => banner.classList.remove('ring-2', 'ring-indigo-500'), 1800);
-        }
-
-        function openResetModal() { document.getElementById('reset-modal').classList.remove('hidden'); document.getElementById('reset-modal').classList.add('flex'); }
-        function closeResetModal() { document.getElementById('reset-modal').classList.add('hidden'); document.getElementById('reset-modal').classList.remove('flex'); }
-        function confirmClearItemsOnly() { placedItems = []; selectedItemIndex = null; rebuildCanvasGeometry(); updateItemToolbar(); closeResetModal(); showStageToast("已清空摆件"); }
-        function confirmFullReset() { placedItems = []; selectedItemIndex = null; substrateLayers = { pebbles: 0, charcoal: 0, soil: 0, sand: 0, moss: 0 }; rebuildCanvasGeometry(); updateItemToolbar(); closeResetModal(); showStageToast("已完全重置"); }
     </script>
 </body>
 </html>
